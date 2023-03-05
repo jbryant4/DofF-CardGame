@@ -1,3 +1,4 @@
+## Moms Kitchen
 This is a [Next.js](https://nextjs.org/) project template with Tailwind, Typescript, Prettier, Eslint preconfigured
 
 ## Getting Started
