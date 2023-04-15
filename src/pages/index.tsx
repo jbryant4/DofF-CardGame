@@ -1,13 +1,38 @@
+import { useState } from 'react';
 import createComponent from '~/utils/styles/createComponent';
 
-const DefaultWrapper = createComponent('div', {
-  className: 'flex flex-col h-screen items-center justify-center w-screen'
-});
 export default function Home() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    // Your login logic here, e.g. sending a POST request to your server
+  };
+
   return (
-    <DefaultWrapper>
-      <p>Fresh Next Template</p>
-      <p>Including: Typescript, Tailwind, Prettier, Eslint</p>
-    </DefaultWrapper>
+    <div className="bg-[url('/veggies-background.jpg')] bg-cover h-full w-full">
+      <div>
+        <form onSubmit={handleSubmit}>
+          <label>
+            Email:
+            <input
+              type="email"
+              value={email}
+              onChange={event => setEmail(event.target.value)}
+            />
+          </label>
+          <label>
+            Password:
+            <input
+              type="password"
+              value={password}
+              onChange={event => setPassword(event.target.value)}
+            />
+          </label>
+          <button type="submit">Login</button>
+        </form>
+      </div>
+    </div>
   );
 }
