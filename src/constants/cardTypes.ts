@@ -1,6 +1,6 @@
 //Types
-type Foundation = 'desert' | 'earth' | 'ocean';
 type PreReq = '1A' | '1C' | '2A' | '2C' | '3A' | Foundation;
+type Foundation = 'desert' | 'earth' | 'ocean';
 type Trait =
   | 'divine'
   | 'explorer'
@@ -8,20 +8,16 @@ type Trait =
   | 'nobility'
   | 'revolutionist'
   | 'scholar';
+
 type CardType = 'resource' | 'foundation' | 'army' | 'champion';
 
 type Card = {
-  bonus?: string;
   class?: [Trait];
-  description?: string;
   foundation?: Foundation;
-  id: number;
-  preReqs?: [PreReq];
-  combat?: {
-    health: number;
-    attack: number;
-    defense: number;
-  };
+  preReqs?: string[];
+  hp?: number;
+  att?: number;
+  def?: number;
   title: string;
   type: CardType;
 };
