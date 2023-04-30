@@ -9,7 +9,7 @@ export interface UserDocument extends Document {
   decks: string[];
 }
 
-export type UserModel = Model<UserDocument>
+export type UserModel = Model<UserDocument>;
 
 const UserSchema = new Schema<UserDocument, UserModel>({
   _id: {

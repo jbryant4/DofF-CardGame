@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 //turn into env for prod
 
-export default async function connectToDatabase() {
+export default async function connectFateCollection() {
   const uri =
-    'mongodb+srv://jbryant:Pqbnj7GIsu3KX4S5@duel-of-fates.dwbj3zc.mongodb.net/duel-of-fates?retryWrites=true&w=majority';
+    'mongodb://dueloffatescards:OKgDFvK7OI6RYtptdbcIOxpjC6nQEtSdFxiVpYCEGLDWAn63C9wgS28RlsAxbra6ECrKgQfgDvWwACDb2nhdWw==@dueloffatescards.mongo.cosmos.azure.com:10255/DuelOfFates?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@dueloffatescards@';
   // const MONGODB_URI = process.env.MONGODB_URI;
 
   if (!uri) {

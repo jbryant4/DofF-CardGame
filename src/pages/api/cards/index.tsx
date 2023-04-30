@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { NextApiRequest, NextApiResponse } from 'next';
-import Card, { CardDocument } from '~/Models/Card';
+import Card, { CardDocument } from '~/models/Card';
 import connectFateCollection from '~/utils/connectFateCollection';
 
 let cachedConnection: mongoose.Connection;

@@ -1,5 +1,5 @@
 //Types
-type PreReq = '1A' | '1C' | '2A' | '2C' | '3A' | Foundation;
+type PreReq = '1A' | '1C' | '2A' | '2C' | '3A' | '2F' | Foundation;
 type Foundation = 'desert' | 'earth' | 'ocean';
 type Trait =
   | 'divine'
@@ -9,7 +9,7 @@ type Trait =
   | 'revolutionist'
   | 'scholar';
 
-type CardType = 'resource' | 'foundation' | 'army' | 'champion';
+type CardType = 'resource' | 'foundation' | 'army' | 'champion' | '';
 
 type Card = {
   class?: [Trait];

@@ -1,30 +1,13 @@
 import bcrypt from 'bcrypt';
 import { NextApiRequest, NextApiResponse } from 'next';
-import User, { UserDocument } from '~/Models/User';
+import User, { UserDocument } from '~/models/User';
 import connectFateCollection from '~/utils/connectFateCollection';
-
-async function createUser(req: NextApiRequest, res: NextApiResponse) {
-  try {
-    const { userName, password, email } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user: UserDocument = new User({
-      userName,
-      password: hashedPassword,
-      email
-    });
-    await user.save();
-    res.status(201).json(user);
-  } catch (error) {
-    console.error('Error creating user:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-}
 
 async function editUser(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { id } = req.query;
     const { userName, password, email } = req.body;
-    const user: UserDocument = await User.findByIdAndUpdate(
+    const user = await User.findByIdAndUpdate(
       id as string,
       { userName, password, email },
       { new: true }

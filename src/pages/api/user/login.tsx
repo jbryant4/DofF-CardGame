@@ -1,38 +1,34 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { connectFateCollection } from '~/utils/connectFateCollection';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import { NextApiRequest, NextApiResponse } from 'next';
+import User, { UserDocument } from '~/models/User';
+import connectFateCollection from '~/utils/connectFateCollection';
 
-export default async function handleUserLogin(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method === 'POST') {
-    const { email, password } = req.body;
+async function login(req: NextApiRequest, res: NextApiResponse) {
+  await connectFateCollection();
 
-    // Connect to MongoDB
-    const { db, client } = await connectFateCollection();
+  try {
+    const { userName, password } = req.body;
 
-    try {
-      // Find user in database by email and password
-      const user = await db.collection('users').findOne({
-        email,
-        password
-      });
-
-      if (!user) {
-        res.status(401).json({ message: 'Invalid login credentials' });
-
-        return;
-      }
-
-      // User found, return success response
-      res.status(200).json({ message: 'Login successful' });
-    } catch (error) {
-      res.status(500).json({ message: 'Internal server error' });
-    } finally {
-      // Close the database connection when done
-      await client.close();
+    // Find the user by their username
+    const user: UserDocument | null = await User.findOne({ userName });
+    // If the user is not found or the password is incorrect, return an error
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res.status(401).json({ error: 'Invalid credentials' });
     }
-  } else {
-    res.status(405).end(); // Method Not Allowed
+
+    // Generate a JWT token with the user ID as the payload
+    // TODO make this when we go to prod process.env.JWT_SECRET
+    const token = jwt.sign({ sub: user._id }, 'testsecret', {
+      expiresIn: '1h'
+    });
+
+    // Return the token and the user data
+    res.json({ token, user });
+  } catch (error) {
+    console.error('Error logging in:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 }
+
+export default login;
