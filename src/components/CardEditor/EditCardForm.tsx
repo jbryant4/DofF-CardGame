@@ -38,7 +38,7 @@ const EditCardForm = () => {
           onChange={e => setSearch(e.target.value)}
           className="my-12"
         />
-        <div className="flex flex-col flex-wrap gap-8 h-3/4 overflow-scroll">
+        <div className="flex flex-col gap-8 h-3/4 overflow-scroll">
           {cardList.map(card => (
             <div
               key={card.title}
