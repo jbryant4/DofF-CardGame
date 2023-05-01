@@ -38,7 +38,7 @@ const CardEditor = () => {
           Edit a Card
         </div>
       </div>
-      {task === 'create' ? <NewCardForm newCard /> : null}
+      {task === 'create' ? <NewCardForm newCardForm /> : null}
       {task === 'edit' ? <EditCardForm /> : null}
     </div>
   );

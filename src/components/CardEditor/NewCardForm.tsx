@@ -6,16 +6,17 @@ import {
   preReqArray,
   traitArray
 } from '~/constants/cardEnumArrays';
-import { CardDocument, CardType, Foundation, Trait } from '~/models/Card';
+import { CardDocument } from '~/models/Card';
+import { newCard, updateCard } from '~/services/cardServices';
+import objectCleaner from '~/utils/objectCleaner';
 import TestImageCard from './TestImageCard';
 
 //TODO keep this somewhere better like local env file
-const storageAccountName = 'dofcardimages';
-const blankImageUrl = `https://${storageAccountName}.blob.core.windows.net/blank-images/`;
-const cardImageUrl = `https://${storageAccountName}.blob.core.windows.net/completed-images/`;
+const blankImageUrl = process.env.NEXT_PUBLIC_BLANK_IMAGE_URL;
+const cardImageUrl = process.env.NEXT_PUBLIC_CARD_IMAGE_URL;
 interface Props {
   initialState?: Partial<CardDocument>;
-  newCard: boolean;
+  newCardForm: boolean;
 }
 const blankCard: Partial<CardDocument> = {
   _id: '',
@@ -33,9 +34,9 @@ const blankCard: Partial<CardDocument> = {
   title: '',
   type: ''
 };
-const NewCardForm = ({ initialState = blankCard, newCard }: Props) => {
+const NewCardForm = ({ initialState = blankCard, newCardForm }: Props) => {
   const [cardValues, setCardValues] =
-    useState<Partial<CardDocument>>(initialState);
+    useState<Partial<CardDocument>>(blankCard);
   const handleChange = (
     e: React.ChangeEvent<
       | HTMLInputElement
@@ -62,9 +63,14 @@ const NewCardForm = ({ initialState = blankCard, newCard }: Props) => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (newCard) {
+    const cleanData = objectCleaner(cardValues);
+    console.log(cardValues, cleanData, cleanData._id);
+    if (newCardForm) {
+      await newCard(cleanData);
+    } else {
+      await updateCard(cleanData);
     }
   };
 
@@ -74,7 +80,12 @@ const NewCardForm = ({ initialState = blankCard, newCard }: Props) => {
   });
 
   useEffect(() => {
-    if (!cardValues.fileName) return;
+    if (
+      !cardValues.fileName ||
+      (initialState.blankUrl && initialState.blankUrl.length > 0)
+    )
+      return;
+
     setCardValues({
       ...cardValues,
       blankUrl: `${blankImageUrl}${cardValues.fileName}.jpg`,
@@ -85,8 +96,8 @@ const NewCardForm = ({ initialState = blankCard, newCard }: Props) => {
   return (
     <div className="flex gap-12 h-fit justify-center my-auto w-full">
       <form
-        onSubmit={handleSubmit}
         className="border border-white card-form flex flex-col gap-12 p-4 w-[450px]"
+        onSubmit={handleSubmit}
       >
         <div className="font-bold text-lg">Card Form</div>
         <label>
@@ -224,6 +235,7 @@ const NewCardForm = ({ initialState = blankCard, newCard }: Props) => {
             <input
               type="number"
               name="hp"
+              min={0}
               value={cardValues.hp}
               onChange={e => handleChange(e)}
               className="max-w-36"
@@ -235,6 +247,7 @@ const NewCardForm = ({ initialState = blankCard, newCard }: Props) => {
             <input
               type="number"
               name="atk"
+              min={0}
               value={cardValues.atk}
               onChange={e => handleChange(e)}
               className="max-w-36"
@@ -246,6 +259,7 @@ const NewCardForm = ({ initialState = blankCard, newCard }: Props) => {
             <input
               type="number"
               name="def"
+              min={0}
               value={cardValues.def}
               onChange={e => handleChange(e)}
               className="max-w-36"
@@ -257,7 +271,7 @@ const NewCardForm = ({ initialState = blankCard, newCard }: Props) => {
           type="submit"
           className="border border-black hover:text-green-600 mx-auto p-8 w-fit"
         >
-          {newCard ? 'Create Card' : 'Update Card'}
+          {newCardForm ? 'Create Card' : 'Update Card'}
         </button>
       </form>
       <TestImageCard

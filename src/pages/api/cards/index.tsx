@@ -40,8 +40,12 @@ export const editCard = async (req: NextApiRequest, res: NextApiResponse) => {
     //   return res.status(401).json({ error: 'Unauthorized' });
     // }
 
-    const { id } = req.query;
-    const card = await Card.findByIdAndUpdate(id, req.body, { new: true });
+    const { _id } = req.body;
+    const card = await Card.findByIdAndUpdate(
+      new mongoose.Types.ObjectId(_id),
+      req.body,
+      { new: true }
+    );
 
     if (!card) {
       return res.status(404).json({ error: 'Card not found' });
