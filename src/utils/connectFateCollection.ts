@@ -1,12 +1,8 @@
 import mongoose from 'mongoose';
-//turn into env for prod
 
 export default async function connectFateCollection() {
-  const uri =
-    'mongodb://dueloffatescards:OKgDFvK7OI6RYtptdbcIOxpjC6nQEtSdFxiVpYCEGLDWAn63C9wgS28RlsAxbra6ECrKgQfgDvWwACDb2nhdWw==@dueloffatescards.mongo.cosmos.azure.com:10255/DuelOfFates?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@dueloffatescards@';
-  // const testUri  =
-  //   'mongodb://dueloffatescards:OKgDFvK7OI6RYtptdbcIOxpjC6nQEtSdFxiVpYCEGLDWAn63C9wgS28RlsAxbra6ECrKgQfgDvWwACDb2nhdWw==@dueloffatescards.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@dueloffatescards@';
-  // const MONGODB_URI = process.env.MONGODB_URI;
+  const uri = process.env.NEXT_PUBLIC_DOF_URI;
+  const testUri = process.env.NEXT_PUBLIC_DOF_TEST_URI;
 
   if (!uri) {
     throw new Error('Please define the MONGODB_URI environment variable');
