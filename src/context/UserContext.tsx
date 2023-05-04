@@ -1,120 +1,81 @@
-import { useRouter } from 'next/router';
 import { createContext, useContext, useState } from 'react';
-import {
-  createUser,
-  deleteUser,
-  editUser,
-  getUser
-} from '~/services/userService';
-import User from '../types/user';
+import { CollectorDocument } from '~/models/Collector';
+// import { createCollector, findCollector } from '../api/collector';
 
-type UserContextType = {
-  user: User | null;
-  accessToken: string | null;
+type CollectorContextType = {
+  collector: CollectorDocument | null;
   isLoggedIn: boolean;
-  signUp: (userName: string, email: string, password: string) => Promise<void>;
-  logIn: (userName: string, password: string) => Promise<void>;
-  logOut: () => void;
-  forgotPassword: (email: string) => Promise<void>;
-  deleteUser: () => Promise<void>;
+  needCreation: boolean;
+  createCollector: (
+    collector: CollectorDocument
+  ) => Promise<CollectorDocument | null>;
+  findCollector: (email: string) => Promise<CollectorDocument | null>;
 };
 
-const defaultUserContext: UserContextType = {
-  user: null,
-  accessToken: null,
+const defaultCollectorContext: CollectorContextType = {
+  collector: null,
   isLoggedIn: false,
-  signUp: async (userName: string, email: string, password: string) => {},
-  logIn: async (userName: string, password: string) => {},
-  logOut: () => {},
-  forgotPassword: async (email: string) => {},
-  deleteUser: async () => {}
+  needCreation: false,
+  createCollector: async (collector: CollectorDocument) => null,
+  findCollector: async (email: string) => null
 };
 
-export const UserContext = createContext<UserContextType>(defaultUserContext);
+const CollectorContext = createContext<CollectorContextType>(
+  defaultCollectorContext
+);
 
-type UserProviderProps = {
+export function useCollector() {
+  return useContext(CollectorContext);
+}
+
+type Props = {
   children: React.ReactNode;
 };
 
-export function UserProvider({ children }: UserProviderProps) {
-  const [user, setUser] = useState<User | null>(null);
-  const [accessToken, setAccessToken] = useState<string | null>(null);
+export function CollectorProvider({ children }: Props) {
+  const [collector, setCollector] = useState<CollectorDocument | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [needCreation, setNeedCreation] = useState<boolean>(false);
 
-  async function signUp(userName: string, email: string, password: string) {
-    try {
-      // Create the user
-      const newUser = await createUser({
-        userName,
-        email,
-        password,
-        cards: [''],
-        decks: [['']]
-      });
+  async function createCollectorHandler(
+    collector: CollectorDocument
+  ): Promise<CollectorDocument | null> {
+    const createdCollector = await createCollector(collector);
+    setCollector(createdCollector);
+    setIsLoggedIn(true);
+    setNeedCreation(false);
 
-      // Log in the user
-      await logIn(userName, password);
-    } catch (error) {
-      console.error(error);
-    }
+    return createdCollector;
   }
 
-  async function logIn(userName: string, password: string) {
-    try {
-      const response = await fetch('/api/user/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ userName, password })
-      });
-      if (!response.ok) {
-        throw new Error('Failed to log in');
-      }
-      const { token, user } = await response.json();
-      setAccessToken(token);
-      setUser(user);
+  async function findCollectorHandler(
+    email: string
+  ): Promise<CollectorDocument | null> {
+    const foundCollector = await findCollector(email);
+    if (foundCollector) {
+      setCollector(foundCollector);
       setIsLoggedIn(true);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  function logOut() {
-    setAccessToken(null);
-    setUser(null);
-    setIsLoggedIn(false);
-  }
-
-  async function forgotPassword(email: string) {
-    // implementation for forgot password
-  }
-
-  async function userDelete() {
-    try {
-      await deleteUser(user._id);
-      setAccessToken(null);
-      setUser(null);
+      setNeedCreation(false);
+    } else {
+      setCollector(null);
       setIsLoggedIn(false);
-    } catch (error) {
-      console.error(error);
+      setNeedCreation(true);
     }
+
+    return foundCollector;
   }
+
+  const value: CollectorContextType = {
+    collector,
+    isLoggedIn,
+    needCreation,
+    createCollector: createCollectorHandler,
+    findCollector: findCollectorHandler
+  };
 
   return (
-    <UserContext.Provider
-      value={{
-        user,
-        accessToken,
-        isLoggedIn,
-        signUp,
-        logIn,
-        logOut,
-        forgotPassword,
-        userDelete
-      }}
-    >
+    <CollectorContext.Provider value={value}>
       {children}
-    </UserContext.Provider>
+    </CollectorContext.Provider>
   );
 }

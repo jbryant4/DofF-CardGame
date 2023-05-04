@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { NextApiRequest, NextApiResponse } from 'next';
-import User, { UserDocument } from '~/models/User';
+import CardCollector, { UserDocument } from '~/models/Collector';
 import connectFateCollection from '~/utils/connectFateCollection';
 
 async function createUser(req: NextApiRequest, res: NextApiResponse) {
@@ -26,7 +26,7 @@ async function createUser(req: NextApiRequest, res: NextApiResponse) {
         .json({ error: 'Please provide all fields as strings' });
     }
 
-    const user: UserDocument = new User({
+    const user: UserDocument = new CardCollector({
       userName,
       password,
       email,
@@ -37,9 +37,10 @@ async function createUser(req: NextApiRequest, res: NextApiResponse) {
     await user.save();
 
     // return created user data
-    res
-      .status(201)
-      .json({ message: 'User created successfully', user: user.toJSON() });
+    res.status(201).json({
+      message: 'Collector created successfully',
+      user: user.toJSON()
+    });
   } catch (error) {
     console.error('Error creating user:', error);
     res.status(500).json({ error: 'Internal server error' });

@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { NextApiRequest, NextApiResponse } from 'next';
-import User, { UserDocument } from '~/models/User';
+import CardCollector, { UserDocument } from '~/models/Collector';
 import connectFateCollection from '~/utils/connectFateCollection';
 
 async function login(req: NextApiRequest, res: NextApiResponse) {
@@ -11,7 +11,7 @@ async function login(req: NextApiRequest, res: NextApiResponse) {
     const { userName, password } = req.body;
 
     // Find the user by their username
-    const user: UserDocument | null = await User.findOne({ userName });
+    const user: UserDocument | null = await CardCollector.findOne({ userName });
     // If the user is not found or the password is incorrect, return an error
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ error: 'Invalid credentials' });

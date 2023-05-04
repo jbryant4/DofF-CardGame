@@ -1,13 +1,13 @@
 import bcrypt from 'bcrypt';
 import { NextApiRequest, NextApiResponse } from 'next';
-import User, { UserDocument } from '~/models/User';
+import CardCollector, { UserDocument } from '~/models/Collector';
 import connectFateCollection from '~/utils/connectFateCollection';
 
 async function editUser(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { id } = req.query;
     const { userName, password, email } = req.body;
-    const user = await User.findByIdAndUpdate(
+    const user = await CardCollector.findByIdAndUpdate(
       id as string,
       { userName, password, email },
       { new: true }
@@ -22,7 +22,7 @@ async function editUser(req: NextApiRequest, res: NextApiResponse) {
 async function deleteUser(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { id } = req.query;
-    await User.findByIdAndDelete(id as string);
+    await CardCollector.findByIdAndDelete(id as string);
     res.status(204).end();
   } catch (error) {
     console.error('Error deleting user:', error);
@@ -37,7 +37,7 @@ export const getAllUsers = async (
 ): Promise<void> => {
   try {
     // get all users, including the test user
-    const users: UserDocument[] = await User.find();
+    const users: UserDocument[] = await CardCollector.find();
 
     res.status(200).json(users);
   } catch (error) {
