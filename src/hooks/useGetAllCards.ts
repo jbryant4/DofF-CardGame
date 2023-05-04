@@ -14,20 +14,18 @@ const useGetAllCards = (): GetAllCardsResult => {
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    const loadData = async () => {
+    (async () => {
       try {
         setIsLoading(true);
         const data = await fetchCards();
         setCards(data);
         setError(null);
-      } catch (error) {
-        setError(error);
+      } catch (error: any) {
+        setError(error as Error);
       } finally {
         setIsLoading(false);
       }
-    };
-
-    loadData();
+    })();
   }, []);
 
   return { cards, isLoading, error };

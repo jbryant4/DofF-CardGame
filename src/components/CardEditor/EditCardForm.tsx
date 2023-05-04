@@ -51,7 +51,7 @@ const EditCardForm = () => {
         </div>
       </div>
       {editCard.title !== undefined ? (
-        <NewCardForm initialState={editCard} newCard={false} />
+        <NewCardForm initialState={editCard} newCardForm={false} />
       ) : null}
     </div>
   );

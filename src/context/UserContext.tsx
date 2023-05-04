@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from 'react';
 import { CollectorDocument } from '~/models/Collector';
-// import { createCollector, findCollector } from '../api/collector';
+import { createCollector } from '~/pages/api/collector';
 
 type CollectorContextType = {
   collector: CollectorDocument | null;
@@ -37,41 +37,15 @@ export function CollectorProvider({ children }: Props) {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [needCreation, setNeedCreation] = useState<boolean>(false);
 
-  async function createCollectorHandler(
-    collector: CollectorDocument
-  ): Promise<CollectorDocument | null> {
-    const createdCollector = await createCollector(collector);
-    setCollector(createdCollector);
-    setIsLoggedIn(true);
-    setNeedCreation(false);
+  // TODO add logic for grabbing user from auth0 and handling states dependant of if no user/ user is admin/ user is returned but we dont have them in our database (create user with default deck) (also if we create admin user pass 'all' into cards)
 
-    return createdCollector;
-  }
-
-  async function findCollectorHandler(
-    email: string
-  ): Promise<CollectorDocument | null> {
-    const foundCollector = await findCollector(email);
-    if (foundCollector) {
-      setCollector(foundCollector);
-      setIsLoggedIn(true);
-      setNeedCreation(false);
-    } else {
-      setCollector(null);
-      setIsLoggedIn(false);
-      setNeedCreation(true);
-    }
-
-    return foundCollector;
-  }
-
-  const value: CollectorContextType = {
-    collector,
-    isLoggedIn,
-    needCreation,
-    createCollector: createCollectorHandler,
-    findCollector: findCollectorHandler
-  };
+  // const value: CollectorContextType = {
+  //   collector,
+  //   isLoggedIn,
+  //   needCreation,
+  //   createCollector: createCollector,
+  //   findCollector: findCollectorHandler
+  // };
 
   return (
     <CollectorContext.Provider value={value}>
