@@ -1,12 +1,21 @@
-import { useUser } from '@auth0/nextjs-auth0/client';
+import { useRouter } from 'next/router';
+import { useContext, useEffect } from 'react';
+import { CollectorContext } from '~/context/CollectorContext';
 
 export default function Home() {
-  //TODO create CollectorContext  and depending on user state and route to auth0 login / admin home / dashboard / account creation/ normal site
+  const { isLoggedIn, needCreation } = useContext(CollectorContext);
+  const router = useRouter();
+  console.log('in index', { needCreation, isLoggedIn });
+  // route to different pages based on states
+  useEffect(() => {
+    if (needCreation) {
+      router.push('/creation');
+    } else if (isLoggedIn && !needCreation) {
+      router.push('/collection');
+    } else {
+      router.push('/cards');
+    }
+  }, [isLoggedIn, needCreation, router]);
 
-  return (
-    <div className="flex flex-col gap-16">
-      <a href="/api/auth/login?returnTo=/admin/cards">Login</a>
-      <a href="/api/auth/logout">Logout</a>
-    </div>
-  );
+  return null; // this will not render anything on the page
 }

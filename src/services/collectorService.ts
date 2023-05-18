@@ -46,9 +46,34 @@ export const updateCollector = async collectorData => {
   }
 };
 
-export const findCollector = async email => {
+export const findCollectorByEmail = async email => {
   try {
     const response = await fetch(`/api/collector?email=${email}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (response.status === 204) {
+      return null;
+    }
+
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.error);
+    }
+
+    return data;
+  } catch (error) {
+    console.error('Error finding collector:', error);
+    throw new Error('Failed to find collector');
+  }
+};
+
+export const findCollectorByUserName = async userName => {
+  try {
+    const response = await fetch(`/api/collector?userName=${userName}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'

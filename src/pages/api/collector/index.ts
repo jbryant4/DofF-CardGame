@@ -22,8 +22,10 @@ export const findCollector = async (
   res: NextApiResponse
 ) => {
   try {
-    const { email } = req.query;
-    const collector = await Collector.findOne({ email });
+    const { email, userName } = req.query;
+    const collector = await Collector.findOne(
+      email ? { email } : { userName }
+    );
     if (!collector) {
       // @ts-ignore
       res.status(204).send();

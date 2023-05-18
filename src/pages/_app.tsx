@@ -1,20 +1,26 @@
 import '../styles/globals.css';
-import type { AppProps } from 'next/app';
-import 'tailwindcss/tailwind.css';
-import { UserCardProvider } from '~/context/UserContext';
-import createComponent from '~/utils/styles/createComponent';
 import { UserProvider } from '@auth0/nextjs-auth0/client';
+import type { AppProps } from 'next/app';
+import Header from '@/Header/Header';
+import { CardProvider } from '~/context/CardContext';
+import { CollectorProvider } from '~/context/CollectorContext';
+import createComponent from '~/utils/styles/createComponent';
 
 const AppWrapper = createComponent('div', {
-  className: 'max-w-[1800px] bg-gray-500 mx-auto h-full'
+  className: 'max-w-[1800px] bg-gray-500 mx-auto h-screen'
 });
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <UserProvider>
-      <AppWrapper>
-        <Component {...pageProps} />
-      </AppWrapper>
+      <CollectorProvider>
+        <CardProvider>
+          <AppWrapper>
+            <Header />
+            <Component {...pageProps} />
+          </AppWrapper>
+        </CardProvider>
+      </CollectorProvider>
     </UserProvider>
   );
 }
