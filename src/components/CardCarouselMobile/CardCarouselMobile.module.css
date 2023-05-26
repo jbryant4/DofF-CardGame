@@ -1,0 +1,10 @@
+.mySlider {
+  width: 360px;
+}
+
+.swiper-pagination {
+  /* Apply styles to the pagination container */
+  /* For example: */
+  bottom: 0 !important;
+  background: chartreuse !important;
+}

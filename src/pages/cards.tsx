@@ -1,3 +1,14 @@
-const CardsHome = () => <div>what up boyyyyyy lets get some cards in this bitch</div>;
+import React, { useContext } from 'react';
+import FilterBarMobile from '@/FilterBarMobile/FilterBarMobile';
+import 'swiper/css/effect-cards';
+import { CardContext } from '~/context/CardContext';
+import CardCarouselMobile from '@/CardCarouselMobile';
 
-export default CardsHome;
+const CardPage = () => (
+    <div className="flex flex-col h-full items-center mt-36 lg:hidden">
+      <CardCarouselMobile />
+      <FilterBarMobile />
+    </div>
+  );
+
+export default CardPage;

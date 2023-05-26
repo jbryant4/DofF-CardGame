@@ -1,0 +1,24 @@
+.loading-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.card {
+  width: 250px;
+  height: 340px;
+  border: 1px solid #ccc;
+  background-image: url('/card-back.png');
+  background-size: cover;
+  animation: spin 2s infinite linear;
+}
+
+@keyframes spin {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}

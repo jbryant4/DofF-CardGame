@@ -16,22 +16,26 @@ type WholeDeck = {
 
 type CardContextType = {
   cards: CardDocument[];
+  localCards: CardDocument[];
   collection: CardDocument[];
   decks: WholeDeck[];
   unlockCard: (id: string) => Promise<void>;
   createDeck: (deck: Deck) => Promise<void>;
   editDeck: (deck: Deck) => Promise<void>;
   deleteDeck: (deck: Deck) => Promise<void>;
+  setLocalCards: React.Dispatch<React.SetStateAction<CardDocument[]>>;
 };
 const maxDecks = 6;
 const defaultCardContext: CardContextType = {
   cards: [],
+  localCards: [],
   collection: [],
   decks: [],
   unlockCard: async (_value: string) => {},
   createDeck: async (_value: Deck) => {},
   editDeck: async (_value: Deck) => {},
-  deleteDeck: async (_value: Deck) => {}
+  deleteDeck: async (_value: Deck) => {},
+  setLocalCards: () => {}
 };
 
 export const CardContext = createContext<CardContextType>(defaultCardContext);
@@ -60,6 +64,7 @@ function makeDecks(decks: Deck[], cards: CardDocument[]): WholeDeck[] {
 
 export function CardProvider({ children }: Props) {
   const [cards, setCards] = useState<CardDocument[]>([]);
+  const [localCards, setLocalCards] = useState<CardDocument[]>([]);
   const [collection, setCollection] = useState<CardDocument[]>([]);
   const [decks, setDecks] = useState<WholeDeck[]>([]);
 
@@ -81,7 +86,7 @@ export function CardProvider({ children }: Props) {
     // TODO might want to put these separate and go off the collector specific changes
     if (!collector) return;
     const filteredCards = filterCardsById(collector.cards, cards);
-    setCards(filteredCards);
+    setCollection(filteredCards);
     const madeDecks = makeDecks(collector.decks, cards);
     setDecks(madeDecks);
   }, [collector]);
@@ -89,14 +94,26 @@ export function CardProvider({ children }: Props) {
   const value = useMemo(
     () => ({
       cards,
+      localCards,
       collection,
       decks,
       unlockCard,
       createDeck,
       editDeck,
-      deleteDeck
+      deleteDeck,
+      setLocalCards
     }),
-    []
+    [
+      cards,
+      localCards,
+      collection,
+      decks,
+      unlockCard,
+      createDeck,
+      editDeck,
+      deleteDeck,
+      setLocalCards
+    ]
   );
 
   return <CardContext.Provider value={value}>{children}</CardContext.Provider>;
