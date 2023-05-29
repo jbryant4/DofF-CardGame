@@ -33,8 +33,7 @@ const CardCarouselMobile = () => {
         <LoadingCard />
       ) : (
         <Swiper
-          navigation
-          modules={[EffectFlip, Pagination, Navigation]}
+          modules={[EffectFlip, Pagination]}
           effect="flip"
           className={styles.mySlider}
           pagination={{
@@ -55,12 +54,13 @@ const CardCarouselMobile = () => {
               key={card._id}
               className="h-[450px] relative text-center"
             >
-              <div className="mx-auto w-[250px]">
+              <div className="mx-auto w-[300px]">
                 <img
                   alt={card.title}
                   src={index <= currentIndex + 2 ? `${card.blankUrl}` : ''}
                   loading="lazy"
                   onClick={e => handleImageClicked(e, card._id)}
+                  className="mx-auto"
                 />
                 <div className="swiper-lazy-preloader"></div>
               </div>

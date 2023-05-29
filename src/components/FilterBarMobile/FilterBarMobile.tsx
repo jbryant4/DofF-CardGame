@@ -4,7 +4,7 @@ import { CardContext } from '~/context/CardContext';
 import { CardDocument, CardType, Foundation } from '~/models/Card';
 import { Container, Wrapper } from './FilterBarMobile.styles';
 
-const Filters = {
+export const Filters = {
   champion: [
     'divine',
     'explorer',
