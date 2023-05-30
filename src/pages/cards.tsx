@@ -4,9 +4,11 @@ import 'swiper/css/effect-cards';
 import FilterBar from 'src/components/FilterBar';
 import { CardContext } from '~/context/CardContext';
 import CardCarouselMobile from '@/CardCarouselMobile';
+import { GlobalContext } from '~/context/GlobalContext';
 import { CardDocument } from '~/models/Card';
 import classNames from 'classnames';
 import CardCarousel from '@/CardCarousel';
+import createComponent from '~/utils/styles/createComponent';
 const formatHeaderText = (firstCard: CardDocument) => {
   if (firstCard.type === 'resource' || firstCard.type === 'army') {
     return `${firstCard.type} cards`;
@@ -20,29 +22,20 @@ const formatHeaderText = (firstCard: CardDocument) => {
     return `${firstCard.class} champion cards`;
   }
 };
+
+const PageContainer = createComponent('div', { className: '' });
+
 const CardPage = () => {
   const { localCards } = useContext(CardContext);
-  console.log(localCards[0]);
   const headerText = localCards[0] ? formatHeaderText(localCards[0]) : '';
+  const { isMobile } = useContext(GlobalContext);
 
   return (
-    <>
-      <div
-        className={classNames('mb-8 text-lg text-white', {
-          invisible: !headerText
-        })}
-      >
-        {headerText}
-      </div>
-      <div className="gap-4 h-full hidden items-center mt-12 w-full md:flex">
-        <FilterBar />
-        <CardCarousel />
-      </div>
-      <div className="flex flex-col h-full items-center mt-12 md:hidden">
-        <CardCarouselMobile />
-        <FilterBarMobile />
-      </div>
-    </>
+    <div className="grid grid-rows-[1fr_auto] h-full mt-24 md:grid-cols-[250px_1fr] md:grid-rows-none">
+      <FilterBar />
+      {isMobile ? <CardCarouselMobile /> : <CardCarousel />}
+      {/*<CardCarousel />*/}
+    </div>
   );
 };
 

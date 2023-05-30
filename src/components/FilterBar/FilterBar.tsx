@@ -1,14 +1,19 @@
 import classNames from 'classnames';
 import { useState, useContext } from 'react';
-import { Filters } from '@/FilterBarMobile/FilterBarMobile';
 import { CardContext } from '~/context/CardContext';
 import { CardType } from '~/models/Card';
-import { Container, Wrapper } from './Filters.styles';
+import {
+  Container,
+  Wrapper,
+  FilterTab,
+  SubFilterWrapper,
+  SubFilter
+} from './FilterBar.styles';
+import { Filters } from './Filters';
 
 const FilterBar = () => {
   const { cards, setLocalCards, localCards } = useContext(CardContext);
   const [selected, setSelected] = useState<CardType>('');
-  const [subFilters, setSubFilters] = useState<string[]>([]);
   const [selectedSubFilter, setSubSelected] = useState('');
 
   const handleFilterClick = filter => {
@@ -16,10 +21,8 @@ const FilterBar = () => {
     setSubSelected('');
     if (!Filters[filter]) {
       setLocalCards(cards.filter(card => card.type === filter));
-      setSubFilters([]);
     } else {
       setLocalCards([]);
-      setSubFilters(Filters[filter]);
     }
   };
   const handleSubFilterClick = subFilter => {
@@ -34,48 +37,48 @@ const FilterBar = () => {
   };
 
   return (
-    <Container className="h-full p-20 w-[250px]">
+    <Container className="bg-black flex flex-row flex-wrap gap-8 justify-center relative row-start-2 md:flex-col md:gap-0 md:h-full md:justify-start md:p-20 md:row-start-auto">
       {Object.keys(Filters).map(filter => (
-        <div key={filter}>
-          <div
+        <div key={filter} className="flex flex-col-reverse md:flex-col">
+          <FilterTab
             className={classNames(
-              'border border-black capitalize font-bold px-8 py-4',
+              'capitalize font-bold px-8 py-4 rounded-full text-center z-1 md:rounded-none md:text-left',
               {
-                'bg-blue-800 text-white': selected === filter,
-                'bg-white': selected !== filter
+                'bg-blue-800 text-white rounded-none': selected === filter,
+                'bg-white border-b border-black': selected !== filter
               }
             )}
             onClick={() => handleFilterClick(filter)}
           >
             {filter}
-          </div>
-          {selected === filter && subFilters.length > 0 && (
-            <div
+          </FilterTab>
+          {Filters[filter] ? (
+            <SubFilterWrapper
               className={classNames(
-                'duration-700 ease-in-out flex flex-wrap gap-4 justify-evenly transition-all',
+                'absolute bg-blue-800 bottom-[33px] duration-500 ease-in-out flex flex-row flex-wrap gap-4 inset-x-0 max-h-0 overflow-hidden transition-all md:flex-col md:flex-nowrap md:static',
                 {
-                  'opacity-0 h-0': !subFilters.length,
-                  'opacity-100 h-auto': subFilters.length > 0
+                  'max-h-[100px] md:max-h-[260px] py-8 px-16 md:border-b md:border-black':
+                    selected === filter
                 }
               )}
             >
-              {subFilters.map(subFilter => (
-                <div
+              {Filters[filter].map(subFilter => (
+                <SubFilter
                   key={subFilter}
                   className={classNames(
-                    'border border-black capitalize font-bold hover:bg-blue-800 px-8 py-4 rounded-full',
+                    'border border-black capitalize flex-1 font-bold hover:bg-white hover:text-black px-8 py-4 rounded-full text-center text-white',
                     {
-                      'bg-blue-800 text-white': selectedSubFilter === subFilter,
-                      'bg-white': selectedSubFilter !== subFilter
+                      'bg-white text-blue-800': selectedSubFilter === subFilter,
+                      'bg-blue-800': selectedSubFilter !== subFilter
                     }
                   )}
                   onClick={() => handleSubFilterClick(subFilter)}
                 >
                   {subFilter}
-                </div>
+                </SubFilter>
               ))}
-            </div>
-          )}
+            </SubFilterWrapper>
+          ) : null}
         </div>
       ))}
     </Container>

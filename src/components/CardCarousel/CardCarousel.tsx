@@ -1,17 +1,25 @@
 import { useState, useContext, useEffect } from 'react';
 import { EffectCoverflow, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import LoadingCard from '@/LoadingCard';
 import LoadingCardCircle from '@/LoadingCardCircle';
 import { CardContext } from '~/context/CardContext';
+import { GlobalContext } from '~/context/GlobalContext';
 import { Container, Wrapper } from './CardCarousel.styles';
-
 
 const CardCarousel = () => {
   const [isLoading, setLoading] = useState(false);
   const [currentIndex, setIndex] = useState(0);
   const { localCards } = useContext(CardContext);
+  const { isMobile } = useContext(GlobalContext);
 
   useEffect(() => {
+    console.log(localCards);
+    if (localCards.length === 0) {
+      setLoading(true);
+
+      return;
+    }
     setLoading(true);
     setIndex(0);
     setTimeout(() => {
@@ -19,10 +27,14 @@ const CardCarousel = () => {
     }, 1000);
   }, [localCards]);
 
-  return localCards.length > 0 ? (
-    <Container className="flex h-full justify-center w-full">
+  return (
+    <Container className="bg-blue-400 flex h-full justify-center row-start-1 w-full md:row-auto">
       {isLoading ? (
-        <LoadingCardCircle />
+        isMobile ? (
+          <LoadingCard />
+        ) : (
+          <LoadingCardCircle />
+        )
       ) : (
         <Wrapper className="w-full">
           <Swiper
@@ -58,7 +70,7 @@ const CardCarousel = () => {
         </Wrapper>
       )}
     </Container>
-  ) : null;
+  );
 };
 
 export default CardCarousel;

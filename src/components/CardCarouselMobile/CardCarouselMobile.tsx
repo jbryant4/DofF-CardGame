@@ -15,6 +15,12 @@ const CardCarouselMobile = () => {
   const router = useRouter();
 
   useEffect(() => {
+    console.log(localCards);
+    if (localCards.length === 0) {
+      setLoading(true);
+
+      return;
+    }
     setLoading(true);
     setIndex(0);
     setTimeout(() => {
@@ -27,7 +33,7 @@ const CardCarouselMobile = () => {
     router.push(`/cards/${cardId}`);
   };
 
-  return localCards.length > 0 ? (
+  return (
     <Container className="flex flex-col items-center">
       {isLoading ? (
         <LoadingCard />
@@ -72,7 +78,7 @@ const CardCarouselMobile = () => {
         </Swiper>
       )}
     </Container>
-  ) : null;
+  );
 };
 
 export default CardCarouselMobile;
