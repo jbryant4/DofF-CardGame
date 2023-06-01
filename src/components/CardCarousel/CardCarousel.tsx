@@ -1,24 +1,38 @@
 import { useRouter } from 'next/router';
 import { useState, useContext, useEffect, useRef } from 'react';
-import { EffectCoverflow, Pagination } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { SwiperSlide } from 'swiper/react';
 import CarouselConfig from '@/CardCarousel/CarouselConfig';
 import LoadingCard from '@/LoadingCard';
 import LoadingCardCircle from '@/LoadingCardCircle';
 import { CardContext } from '~/context/CardContext';
 import { GlobalContext } from '~/context/GlobalContext';
-import { Container, Wrapper } from './CardCarousel.styles';
+import { Container } from './CardCarousel.styles';
 const CardCarousel = () => {
-  const [isLoading, setLoading] = useState(false);
-  const [currentIndex, setIndex] = useState(0);
   const [carouselWidth, setWidth] = useState(0);
+  const [currentIndex, setIndex] = useState(0);
+  const [isLoading, setLoading] = useState(false);
+
   const { localCards } = useContext(CardContext);
   const { isMobile } = useContext(GlobalContext);
+
   const router = useRouter();
   const carouselContainerRef = useRef<HTMLDivElement>(null);
 
+  const LoaderToUse = isMobile ? <LoadingCard /> : <LoadingCardCircle />;
+
+  const handleImageClicked = (e, cardId) => {
+    e.preventDefault();
+    router.push(`/cards/${cardId}`);
+  };
+
   useEffect(() => {
-    console.log(localCards);
+    if (carouselContainerRef.current) {
+      setWidth(carouselContainerRef.current.offsetWidth);
+    }
+  }, []);
+
+  // Fake Loading State
+  useEffect(() => {
     if (localCards.length === 0) {
       setLoading(true);
 
@@ -30,34 +44,6 @@ const CardCarousel = () => {
       setLoading(false);
     }, 1000);
   }, [localCards]);
-
-  const LoaderToUse = isMobile ? <LoadingCard /> : <LoadingCardCircle />;
-  const handleImageClicked = (e, cardId) => {
-    e.preventDefault();
-    router.push(`/cards/${cardId}`);
-  };
-  console.log(carouselWidth);
-  useEffect(() => {
-    if (carouselContainerRef.current) {
-      setWidth(carouselContainerRef.current.offsetWidth);
-    }
-  }, []);
-
-  //TODO dev only
-  // useEffect(() => {
-  //   function handleResize() {
-  //     if (carouselContainerRef === null) return;
-  //
-  //     setWidth(carouselContainerRef.current.offsetWidth);
-  //   }
-  //
-  //   window.addEventListener('resize', handleResize);
-  //
-  //   // Clean up function
-  //   return () => {
-  //     window.removeEventListener('resize', handleResize);
-  //   };
-  // }, []);
 
   return (
     <Container ref={carouselContainerRef} className="h-full w-full">
