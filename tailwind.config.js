@@ -36,7 +36,6 @@ module.exports = {
       '6xl': '64px'
     },
     spacing: customSpacing,
-    maxWidth: customSpacing,
     right: customSpacing,
     left: customSpacing,
     top: customSpacing,

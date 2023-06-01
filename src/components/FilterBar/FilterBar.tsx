@@ -37,7 +37,7 @@ const FilterBar = () => {
   };
 
   return (
-    <Container className="bg-black flex flex-row flex-wrap gap-8 justify-center relative row-start-2 md:flex-col md:gap-0 md:h-full md:justify-start md:p-20 md:row-start-auto">
+    <Container className="bg-black flex flex-row flex-wrap gap-8 justify-center relative w-full md:flex-col md:gap-0 md:h-full md:justify-start md:p-20 md:w-[250px]">
       {Object.keys(Filters).map(filter => (
         <div key={filter} className="flex flex-col-reverse md:flex-col">
           <FilterTab

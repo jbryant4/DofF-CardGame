@@ -14,3 +14,10 @@
 .card-form textarea {
   width: 100%;
 }
+
+.mobile-swiper {
+  --swiper-pagination-bottom: -14px;
+  --swiper-pagination-bullet-size: 12px;
+  --swiper-pagination-bullet-width: 12px;
+  --swiper-pagination-bullet-height: 12px;
+}
