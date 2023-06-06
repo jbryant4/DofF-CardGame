@@ -22,7 +22,7 @@ const CardCarousel = () => {
 
   const handleImageClicked = (e, cardId) => {
     e.preventDefault();
-    router.push(`/cards/${cardId}`);
+    router.push(`/card/${cardId}`);
   };
 
   useEffect(() => {
