@@ -18,7 +18,7 @@ const OneArmyIcon = forwardRef<SVGSVGElement, OwnProps>(
       <defs>
         <style>
           {`   .pr1a-1 {
-                    fill: url(#linear-gradient);
+                    fill: url(#linear-gradient-1a);
                 }
 
                     .pr1a-2 {
@@ -26,15 +26,15 @@ const OneArmyIcon = forwardRef<SVGSVGElement, OwnProps>(
                 }
 
                     .pr1a-3 {
-                    fill: url(#linear-gradient-3);
+                    fill: url(#linear-gradient-1a-3);
                 }
 
                     .1apr-4 {
-                    fill: url(#linear-gradient-2);
+                    fill: url(#linear-gradient-1a-2);
                 }`}
         </style>
         <linearGradient
-          id="linear-gradient"
+          id="linear-gradient-1a"
           x1="490"
           y1="-11.6156"
           x2="490"
@@ -52,7 +52,7 @@ const OneArmyIcon = forwardRef<SVGSVGElement, OwnProps>(
           <stop offset=".9957" stop-color="#ae8e1f" />
         </linearGradient>
         <linearGradient
-          id="linear-gradient-2"
+          id="linear-gradient-1a-2"
           x1="487.3478"
           y1="810.7242"
           x2="487.3478"
@@ -63,7 +63,7 @@ const OneArmyIcon = forwardRef<SVGSVGElement, OwnProps>(
           <stop offset="1" stop-color="#28393f" />
         </linearGradient>
         <linearGradient
-          id="linear-gradient-3"
+          id="linear-gradient-1a-3"
           x1="305.6541"
           y1="670.8851"
           x2="921.2765"

@@ -17,7 +17,7 @@ const DesertFoundationIcon = forwardRef<SVGSVGElement, OwnProps>(
       <defs>
         <style>
           {`    .dfi-1 {
-                    fill: url(#linear-gradient);
+                    fill: url(#linear-gradient-df);
                 }
 
                 .dfi-2 {
@@ -25,7 +25,7 @@ const DesertFoundationIcon = forwardRef<SVGSVGElement, OwnProps>(
                 }`}
         </style>
         <linearGradient
-          id="linear-gradient"
+          id="linear-gradient-df"
           x1="490"
           y1="0"
           x2="490"

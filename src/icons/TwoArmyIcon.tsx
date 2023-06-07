@@ -18,7 +18,7 @@ const TwoArmyIcon = forwardRef<SVGSVGElement, OwnProps>(
       <defs>
         <style>
           {`   .pr2a-1 {
-                  fill: url(#linear-gradient);
+                  fill: url(#linear-gradient-2a);
               }
 
                   .pr2a-2 {
@@ -26,19 +26,19 @@ const TwoArmyIcon = forwardRef<SVGSVGElement, OwnProps>(
               }
 
                   .pr2a-3 {
-                  fill: url(#linear-gradient-3);
+                  fill: url(#linear-gradient-2a-3);
               }
 
                   .pr2a-4 {
-                  fill: url(#linear-gradient-4);
+                  fill: url(#linear-gradient-2a-4);
               }
 
                   .pr2a-5 {
-                  fill: url(#linear-gradient-2);
+                  fill: url(#linear-gradient-2a-2);
               }`}
         </style>
         <linearGradient
-          id="linear-gradient"
+          id="linear-gradient-2a"
           x1="490"
           y1="-28.5545"
           x2="490"
@@ -56,7 +56,7 @@ const TwoArmyIcon = forwardRef<SVGSVGElement, OwnProps>(
           <stop offset=".9957" stop-color="#ae8e1f" />
         </linearGradient>
         <linearGradient
-          id="linear-gradient-2"
+          id="linear-gradient-2a-2"
           x1="487.3215"
           y1="813.868"
           x2="487.3215"
@@ -67,7 +67,7 @@ const TwoArmyIcon = forwardRef<SVGSVGElement, OwnProps>(
           <stop offset="1" stop-color="#28393f" />
         </linearGradient>
         <linearGradient
-          id="linear-gradient-3"
+          id="linear-gradient-2a-3"
           x1="303.8469"
           y1="672.6581"
           x2="925.5037"
@@ -78,13 +78,13 @@ const TwoArmyIcon = forwardRef<SVGSVGElement, OwnProps>(
           <stop offset="1" stop-color="#e5f1f5" />
         </linearGradient>
         <linearGradient
-          id="linear-gradient-4"
+          id="linear-gradient-2a-4"
           x1="301.8485"
           y1="672.6581"
           x2="923.5053"
           y2="68.2098"
           gradientTransform="translate(978) rotate(-180) scale(1 -1)"
-          xlinkHref="#linear-gradient-3"
+          xlinkHref="#linear-gradient-2a-3"
         />
       </defs>
       <path
