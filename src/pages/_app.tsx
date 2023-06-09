@@ -13,7 +13,8 @@ import 'swiper/css/effect-coverflow';
 import '../styles/globals.css';
 
 const AppWrapper = createComponent('div', {
-  className: 'max-w-[1800px] bg-gray-500 mx-auto h-screen flex flex-col'
+  className:
+    'max-w-[1800px] bg-gray-500 mx-auto overflow-hidden h-screen flex flex-col'
 });
 
 export default function App({ Component, pageProps }: AppProps) {

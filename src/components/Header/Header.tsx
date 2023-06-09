@@ -5,7 +5,7 @@ const Header = () => {
   const { isLoggedIn } = useContext(CollectorContext);
 
   return (
-    <div className="bg-blue-500 flex flex-col justify-end px-12 py-4">
+    <div className="bg-blue-500 flex px-12 py-16 w-full">
       {isLoggedIn ? (
         <a href="/api/auth/logout">Logout</a>
       ) : (

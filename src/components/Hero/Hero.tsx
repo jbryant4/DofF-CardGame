@@ -10,11 +10,8 @@ const Hero = ({ card }: OwnProps) => {
   const [value, setValue] = useState();
 
   return (
-    <Container className="bg-white h-[40vh] relative w-full">
-      <img
-        src={card.blankUrl}
-        className="h-full object-fill opacity-70 w-full"
-      />
+    <Container className="relative w-full">
+      <img src={card.blankUrl} className="mx-auto object-fill opacity-70" />
       <Wrapper className="absolute bottom-0 text-center text-green-600 w-full">
         {card.title}
       </Wrapper>
