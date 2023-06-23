@@ -1,9 +1,9 @@
 import { forwardRef } from 'react';
 
-type OwnProps = React.SVGProps<SVGSVGElement> & { size?: number };
+type OwnProps = React.SVGProps<SVGSVGElement> & { size?: number; atk?: number };
 
 const AttackIcon = forwardRef<SVGSVGElement, OwnProps>(
-  ({ size = 100, ...props }, ref) => (
+  ({ size = 100, atk = 7, ...props }, ref) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={size}
@@ -26,6 +26,16 @@ const AttackIcon = forwardRef<SVGSVGElement, OwnProps>(
         <path d="m8.5 90.898c-0.60156-0.39844-1.1992-0.60156-1.6992-0.69922-0.30078 0-0.69922 0.10156-1 0.30078-0.30078 0.10156-0.60156 0.39844-0.89844 0.69922-0.10156 0.19922-0.30078 0.39844-0.39844 0.60156 0.30078-0.19922 0.60156-0.19922 0.89844-0.19922 0.5 0.10156 1.1992 0.5 1.8008 0.89844l0.10156 0.10156c0.19922 0.10156 0.60156 0.30078 1 0.39844 0.5 0.19922 1 0.30078 1.6016 0.30078 0.5 0 1-0.10156 1.5-0.30078-0.5-0.30078-0.89844-0.69922-1.3008-1-0.60547-0.39844-1.1055-0.80078-1.6055-1.1016z" />
         <path d="m4.3984 91.801c0 3.0664-4.5977 3.0664-4.5977 0 0-3.0664 4.5977-3.0664 4.5977 0" />
       </g>
+      <text
+        x="50"
+        y="35"
+        fontSize="55"
+        fontWeight="bold"
+        text-anchor="middle"
+        alignment-baseline="middle"
+      >
+        {atk}
+      </text>
     </svg>
   )
 );

@@ -8,6 +8,7 @@ import NobleIcon from '~/icons/NobleIcon';
 import OceanFoundationIcon from '~/icons/OceanFoundationIcon';
 import OneArmyIcon from '~/icons/OneArmyIcon';
 import OneChampionIcon from '~/icons/OneChampionIcon';
+import RevolutionistIcon from '~/icons/RevolutionistIcon';
 import ScholarIcon from '~/icons/ScholarIcon';
 import ThreeArmyIcon from '~/icons/ThreeArmyIcon';
 import TwoArmyIcon from '~/icons/TwoArmyIcon';
@@ -35,6 +36,7 @@ const IconLibrary = ({}: OwnProps) => {
         <ExplorerIcon />
         <NobleIcon />
         <FighterIcon />
+        <RevolutionistIcon />
       </Wrapper>
     </Container>
   );

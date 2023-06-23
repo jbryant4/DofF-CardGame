@@ -10,10 +10,10 @@ const OneArmyIcon = forwardRef<SVGSVGElement, OwnProps>(
       id="Layer_1"
       data-name="Layer 1"
       viewBox="0 0 980 975.1329"
-      {...props}
-      ref={ref}
       width={size}
       height={size}
+      {...props}
+      ref={ref}
     >
       <defs>
         <style>

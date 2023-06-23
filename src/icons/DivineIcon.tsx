@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 
 type OwnProps = React.SVGProps<SVGSVGElement> & { size?: number };
 
-const TwoArmyIcon = forwardRef<SVGSVGElement, OwnProps>(
+const DivineIcon = forwardRef<SVGSVGElement, OwnProps>(
   ({ size = 128, ...props }, ref) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -194,4 +194,4 @@ const TwoArmyIcon = forwardRef<SVGSVGElement, OwnProps>(
   )
 );
 
-export default TwoArmyIcon;
+export default DivineIcon;

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import AttackIcon from '~/icons/AttackIcon';
-import HeartIcon from '~/icons/Heart';
+import HeartIcon from '~/icons/HealthBarIcon';
 import ShieldIcon from '~/icons/ShieldIcon';
 import { Container, Wrapper } from './CombatStats.styles';
 
