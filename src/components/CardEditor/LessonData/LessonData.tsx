@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 // import MediaLinksForm from './MediaLinksForm';
 // import QuickNotesForm from './QuickNotesForm';
-// import QuestionsForm from './QuestionsForm';
 import BlueBtn from '@/Global/BlueBtn';
 import { CardDocument, Question } from '~/models/Card';
 import LessonForm from './LessonForm';
+import QuestionForm from './QuestionForm';
 
 type OwnProps = {
   mediaLinks: string[] | undefined;
@@ -23,8 +23,9 @@ const LessonData = ({
   >('quickNotes');
 
   return (
-    <div className="max-w-md">
-      <div className="border-b-[4px] border-blue-600 border-solid flex gap-8 justify-between mb-4 pb-8">
+    <div className="border border-solid p-12 w-[450px]">
+      <div className="font-bold mb-24 text-2xl">Lesson Data</div>
+      <div className="flex gap-8 justify-between mb-4 pb-8">
         <BlueBtn
           onClick={() => setActiveForm('mediaLinks')}
           active={activeForm === 'mediaLinks'}
@@ -61,9 +62,9 @@ const LessonData = ({
         />
       )}
 
-      {/*{activeForm === 'questions' && (*/}
-      {/*  <QuestionsForm quiestions={quiz} setCardValues={setCardValues} />*/}
-      {/*)}*/}
+      {activeForm === 'questions' && (
+        <QuestionForm questions={quiz} setCardValues={setCardValues} />
+      )}
     </div>
   );
 };

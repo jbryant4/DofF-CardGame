@@ -102,7 +102,7 @@ const NewCardForm = ({ initialState = blankCard, newCardForm }: Props) => {
   }, [cardValues.fileName]);
 
   return (
-    <div className="flex gap-12 h-fit justify-center my-auto w-full">
+    <div className="flex gap-12 h-fit justify-center max-h-[90%] my-auto w-full">
       <form
         className="border border-white card-form flex flex-col gap-12 p-4 w-[450px]"
         onSubmit={handleSubmit}
