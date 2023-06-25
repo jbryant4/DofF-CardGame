@@ -67,7 +67,7 @@ const Card = () => {
         >
           <RevolutionistIcon size={55} x={25} y={25} fill="black" />
         </Hex>
-        <div className="absolute bg-black border-blue-600 border-solid border-t border-x px-32 text-white top-[-25px] w-full">
+        <div className="absolute bg-black border-blue-600 border-solid border-t border-x pl-32 text-white top-[-25px] w-full">
           {title}
         </div>
         {!preReqs ? null : (

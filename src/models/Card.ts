@@ -31,6 +31,9 @@ export interface CardDocument extends Document {
   fileName: string;
   foundation?: Foundation[];
   lesson?: LessonType;
+  location?: string;
+  primaryClass?: Trait;
+  secondaryClass?: Trait;
   preReqs?: PreReq[];
   quiz?: Question[];
   hp?: number;
@@ -38,6 +41,8 @@ export interface CardDocument extends Document {
   def?: number;
   title: string;
   type: CardType;
+  yearStart: number;
+  yearEnd: number;
 }
 
 const CardSchema = new mongoose.Schema({
@@ -56,6 +61,7 @@ const CardSchema = new mongoose.Schema({
     mediaLinks: [{ type: String }],
     quickNotes: [{ type: String }]
   },
+  location: { type: String },
   quiz: [
     {
       prompt: { type: String },
@@ -63,6 +69,28 @@ const CardSchema = new mongoose.Schema({
       answer: { type: String }
     }
   ],
+  primaryClass: {
+    type: String,
+    enum: [
+      'divine',
+      'explorer',
+      'fighter',
+      'nobility',
+      'revolutionist',
+      'scholar'
+    ]
+  },
+  secondaryClass: {
+    type: String,
+    enum: [
+      'divine',
+      'explorer',
+      'fighter',
+      'nobility',
+      'revolutionist',
+      'scholar'
+    ]
+  },
   preReqs: [
     {
       type: String,
@@ -77,7 +105,9 @@ const CardSchema = new mongoose.Schema({
     type: String,
     enum: ['resource', 'foundation', 'army', 'champion'],
     required: true
-  }
+  },
+  yearStart: { type: Number },
+  yearEnd: { type: Number }
 });
 
 const Card: Model<CardDocument> =

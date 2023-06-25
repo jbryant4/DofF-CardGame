@@ -1,12 +1,11 @@
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import NewCardForm from '@/CardEditor/NewCardForm';
-import { useGetAllCards } from '~/hooks';
+import { CardContext } from '~/context/CardContext';
 import { CardDocument } from '~/models/Card';
 
 const EditCardForm = () => {
   const [editCard, setEditCard] = useState<Partial<CardDocument>>({});
-  const { cards, isLoading, error } = useGetAllCards();
+  const { cards, isLoading, error } = useContext(CardContext);
   const [search, setSearch] = useState('');
   const [cardList, setCardList] = useState<CardDocument[]>([]);
 
@@ -25,9 +24,7 @@ const EditCardForm = () => {
     throw Error(`Error getting Cards : ${error}`);
   }
 
-  return isLoading ? (
-    <div>Grabbing Cards</div>
-  ) : (
+  return (
     <div className="flex gap-4 h-full justify-center mt-20 overflow-hidden w-full">
       <div
         className={
@@ -39,6 +36,7 @@ const EditCardForm = () => {
       >
         Select Different Card
       </div>
+
       <div
         className={
           editCard.title !== undefined
@@ -46,25 +44,31 @@ const EditCardForm = () => {
             : 'bg-white font-bold h-3/4 overflow-hidden px-16'
         }
       >
-        <input
-          type="text"
-          name="fileName"
-          value={search}
-          placeholder="Search Card Title"
-          onChange={e => setSearch(e.target.value)}
-          className="bg-gray-700 my-12 p-8 text-white"
-        />
-        <div className="flex flex-col gap-8 max-h-[85%] overflow-y-auto">
-          {cardList.map(card => (
-            <div
-              key={card.title}
-              className="border-[3px] border-blue-700 hover:bg-blue-700 hover:text-white p-8 rounded text-sm w-[200px]"
-              onClick={() => setEditCard(card)}
-            >
-              {card.title}
+        {isLoading ? (
+          <div>Grabbing Cards</div>
+        ) : (
+          <>
+            <input
+              type="text"
+              name="fileName"
+              value={search}
+              placeholder="Search Card Title"
+              onChange={e => setSearch(e.target.value)}
+              className="bg-gray-700 my-12 p-8 text-white"
+            />
+            <div className="flex flex-col gap-8 max-h-[85%] overflow-y-auto">
+              {cardList.map(card => (
+                <div
+                  key={card.title}
+                  className="border-[3px] border-blue-700 hover:bg-blue-700 hover:text-white p-8 rounded text-sm w-[200px]"
+                  onClick={() => setEditCard(card)}
+                >
+                  {card.title}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+        )}
       </div>
 
       {editCard.title !== undefined ? (

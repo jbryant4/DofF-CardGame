@@ -10,7 +10,7 @@ export const fetchCards = async (): Promise<CardDocument[]> => {
   return data as CardDocument[];
 };
 
-export const newCard = async cardData => {
+export const newCard = async (cardData): Promise<CardDocument> => {
   try {
     const response = await fetch('/api/cards', {
       method: 'POST',
@@ -33,7 +33,7 @@ export const newCard = async cardData => {
   }
 };
 
-export const updateCard = async cardData => {
+export const updateCard = async (cardData): Promise<CardDocument> => {
   try {
     const response = await fetch(`/api/cards`, {
       method: 'PUT',
