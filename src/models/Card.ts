@@ -1,7 +1,7 @@
 import mongoose, { Document, Model, Schema } from 'mongoose';
 
 export type Foundation = 'desert' | 'earth' | 'ocean';
-export type PreReq = '1A' | '1C' | '2A' | '2C' | '3A' | '2F' | Foundation;
+export type PreReq = '1a' | '1c' | '2a' | '2c' | '3a' | '2f' | Foundation;
 export type Trait =
   | 'divine'
   | 'explorer'
@@ -12,6 +12,16 @@ export type Trait =
 
 export type CardType = '' | 'resource' | 'foundation' | 'army' | 'champion';
 
+export type LessonType = {
+  mediaLinks: string[];
+  quickNotes: string[];
+};
+
+export type Question = {
+  prompt: string;
+  options: string[];
+  answer: string;
+};
 export interface CardDocument extends Document {
   blankUrl?: string;
   cardUrl?: string;
@@ -20,7 +30,9 @@ export interface CardDocument extends Document {
   effectText?: string;
   fileName: string;
   foundation?: Foundation[];
+  lesson?: LessonType;
   preReqs?: PreReq[];
+  quiz?: Question[];
   hp?: number;
   atk?: number;
   def?: number;
@@ -40,6 +52,17 @@ const CardSchema = new mongoose.Schema({
   effectText: { type: String },
   fileName: { type: String, required: true },
   foundation: [{ type: String, enum: ['desert', 'earth', 'ocean'] }],
+  lesson: {
+    mediaLinks: [{ type: String }],
+    quickNotes: [{ type: String }]
+  },
+  quiz: [
+    {
+      prompt: { type: String },
+      options: [{ type: String }],
+      answer: { type: String }
+    }
+  ],
   preReqs: [
     {
       type: String,

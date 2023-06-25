@@ -2,12 +2,12 @@ import { Foundation, PreReq, CardType, Trait } from '~/models/Card';
 
 export const foundationArray: Foundation[] = ['desert', 'earth', 'ocean'];
 export const preReqArray: PreReq[] = [
-  '1A',
-  '1C',
-  '2A',
-  '2C',
-  '3A',
-  '2F',
+  '1a',
+  '1c',
+  '2a',
+  '2c',
+  '3a',
+  '2f',
   ...foundationArray
 ];
 

@@ -1,17 +1,19 @@
 import { useState } from 'react';
+import { CardDocument, LessonType } from '~/models/Card';
 import { Container, Wrapper } from './Lesson.styles';
 
 type OwnProps = {
-  description?: string;
+  lesson?: LessonType;
+  setCardValues: React.Dispatch<React.SetStateAction<Partial<CardDocument>>>;
 };
 
-const Lesson = ({ description }: OwnProps) => {
+const Lesson = ({ lesson }: OwnProps) => {
   const [value, setValue] = useState();
 
   return (
     <Container>
       <Wrapper>Lesson</Wrapper>
-      <div>{description}</div>
+      <div>PUT LESSON HERE</div>
     </Container>
   );
 };

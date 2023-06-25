@@ -2,7 +2,6 @@ import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { CardContext } from '~/context/CardContext';
 import Hero from '@/Hero';
-import CombatStats from '@/CombatStats';
 import Lesson from '@/Lesson';
 
 const CardDetailsPage = () => {
@@ -18,13 +17,7 @@ const CardDetailsPage = () => {
     <>
       <div className="flex flex-col h-full overflow-y-auto pb-[54px] pt-24 px-24">
         <Hero card={card} />
-        <CombatStats attack={card.atk} health={card.hp} defense={card.def} />
         <Lesson description={testText} />
-      </div>
-      <div className="bg-blue-400 h-fit py-8 w-full md:hidden">
-        <div className="bg-gray-700 font-bold mx-auto my-auto px-24 py-8 rounded-full text-2xl">
-          Unlock: {card.title}
-        </div>
       </div>
     </>
   ) : (

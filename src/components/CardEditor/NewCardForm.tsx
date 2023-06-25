@@ -1,15 +1,16 @@
 import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
+import ImageSection from '@/CardEditor/ImageSection';
 import {
   cardTypeArray,
   foundationArray,
   preReqArray,
   traitArray
 } from '~/constants/cardEnumArrays';
-import { CardDocument } from '~/models/Card';
+import { CardDocument, LessonType } from '~/models/Card';
 import { newCard, updateCard } from '~/services/cardServices';
 import objectCleaner from '~/utils/objectCleaner';
-import TestImageCard from './TestImageCard';
+import LessonData from './LessonData';
 
 //TODO keep this somewhere better like local env file
 const blankImageUrl = process.env.NEXT_PUBLIC_BLANK_IMAGE_URL;
@@ -27,7 +28,12 @@ const blankCard: Partial<CardDocument> = {
   effectText: '',
   fileName: '',
   foundation: [],
+  lesson: {
+    mediaLinks: [],
+    quickNotes: []
+  },
   preReqs: [],
+  quiz: [],
   hp: 0,
   atk: 0,
   def: 0,
@@ -51,6 +57,7 @@ const NewCardForm = ({ initialState = blankCard, newCardForm }: Props) => {
     });
   };
 
+  useEffect(() => console.log(cardValues), [cardValues]);
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const options = Array.from(e.target.options);
     const selectedValues = options
@@ -65,12 +72,13 @@ const NewCardForm = ({ initialState = blankCard, newCardForm }: Props) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const cleanData = objectCleaner(cardValues);
-    console.log(cardValues, cleanData, cleanData._id);
+    console.log(cardValues);
+    // const cleanData = objectCleaner(cardValues);
+    // console.log(cardValues, cleanData, cleanData._id);
     if (newCardForm) {
-      await newCard(cleanData);
+      await newCard(cardValues);
     } else {
-      await updateCard(cleanData);
+      await updateCard(cardValues);
     }
   };
 
@@ -199,8 +207,8 @@ const NewCardForm = ({ initialState = blankCard, newCardForm }: Props) => {
             Pre Requisites
             <select
               name="preReqs"
-              value={cardValues.preReqs}
               onChange={e => handleSelectChange(e)}
+              value={cardValues.preReqs}
               multiple
             >
               {preReqArray.map(option => (
@@ -238,7 +246,7 @@ const NewCardForm = ({ initialState = blankCard, newCardForm }: Props) => {
               min={0}
               value={cardValues.hp}
               onChange={e => handleChange(e)}
-              className="max-w-36"
+              className="w-64"
             />
           </label>
 
@@ -250,7 +258,7 @@ const NewCardForm = ({ initialState = blankCard, newCardForm }: Props) => {
               min={0}
               value={cardValues.atk}
               onChange={e => handleChange(e)}
-              className="max-w-36"
+              className="w-64"
             />
           </label>
 
@@ -262,7 +270,7 @@ const NewCardForm = ({ initialState = blankCard, newCardForm }: Props) => {
               min={0}
               value={cardValues.def}
               onChange={e => handleChange(e)}
-              className="max-w-36"
+              className="w-64"
             />
           </label>
         </div>
@@ -274,7 +282,13 @@ const NewCardForm = ({ initialState = blankCard, newCardForm }: Props) => {
           {newCardForm ? 'Create Card' : 'Update Card'}
         </button>
       </form>
-      <TestImageCard
+      <LessonData
+        mediaLinks={cardValues.lesson?.mediaLinks ?? []}
+        setCardValues={setCardValues}
+        quickNotes={cardValues.lesson?.quickNotes}
+        quiz={cardValues.quiz}
+      />
+      <ImageSection
         blankUrl={cardValues.blankUrl ?? ''}
         cardUrl={cardValues.cardUrl ?? ''}
       />

@@ -28,21 +28,37 @@ const EditCardForm = () => {
   return isLoading ? (
     <div>Grabbing Cards</div>
   ) : (
-    <div className="flex gap-4 h-full justify-center mt-20 overflow-hidden">
-      <div>
+    <div className="flex gap-4 h-full justify-center mt-20 overflow-hidden w-full">
+      <div
+        className={
+          editCard.title === undefined
+            ? 'hidden'
+            : 'rounded-full py-4 px-12 bg-black text-white h-fit ml-8 '
+        }
+        onClick={() => setEditCard({})}
+      >
+        Select Different Card
+      </div>
+      <div
+        className={
+          editCard.title !== undefined
+            ? 'hidden'
+            : 'bg-white font-bold h-3/4 overflow-hidden px-16'
+        }
+      >
         <input
           type="text"
           name="fileName"
           value={search}
           placeholder="Search Card Title"
           onChange={e => setSearch(e.target.value)}
-          className="my-12"
+          className="bg-gray-700 my-12 p-8 text-white"
         />
-        <div className="flex flex-col gap-8 h-3/4 overflow-scroll">
+        <div className="flex flex-col gap-8 max-h-[85%] overflow-y-auto">
           {cardList.map(card => (
             <div
               key={card.title}
-              className="border border-blue-700 hover:bg-blue-700 hover:text-white p-8 text-sm"
+              className="border-[3px] border-blue-700 hover:bg-blue-700 hover:text-white p-8 rounded text-sm w-[200px]"
               onClick={() => setEditCard(card)}
             >
               {card.title}
@@ -50,6 +66,7 @@ const EditCardForm = () => {
           ))}
         </div>
       </div>
+
       {editCard.title !== undefined ? (
         <NewCardForm initialState={editCard} newCardForm={false} />
       ) : null}

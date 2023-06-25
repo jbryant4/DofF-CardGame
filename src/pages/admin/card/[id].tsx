@@ -120,19 +120,6 @@ const Card = () => {
           </>
         )}
       </div>
-      <div>{preReqs}</div>
-      {/*<div>{effectText}</div>*/}
-      {/*<div>{hp}</div>*/}
-      {/*<div>*/}
-      {/*  {def}*/}
-      {/*  {atk}*/}
-      {/*</div>*/}
-      {/*<div>{title}</div>*/}
-      {/*<div>{foundation}</div>*/}
-      {/*<div>{traits}</div>*/}
-      <div>
-        {type} {foundation}
-      </div>
     </Container>
   );
 };
