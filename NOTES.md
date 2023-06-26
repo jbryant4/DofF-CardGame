@@ -13,11 +13,10 @@ Should make new type gameCard that takes the combat stats/effects from card docu
 
 #### Card Details page
 
- - Lesson section(quick notes / video)
-   - this will require data updates(admin updates)
- - Quiz
-   - this will also require data/admin updates
- - Possibly linking cards to be unlocked(since i think only champions will have videos)
+- Lesson section(quick notes / video)
+  
+- Quiz
+- Possibly linking cards to be unlocked(since i think only champions will have videos)
 
 #### Collection Page
 

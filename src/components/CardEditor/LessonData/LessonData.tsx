@@ -23,7 +23,7 @@ const LessonData = ({
   >('quickNotes');
 
   return (
-    <div className="border border-solid p-12 w-[450px]">
+    <div className="border border-solid overflow-y-auto p-12 w-[400px]">
       <div className="font-bold mb-24 text-2xl">Lesson Data</div>
       <div className="flex gap-8 justify-between mb-4 pb-8">
         <BlueBtn

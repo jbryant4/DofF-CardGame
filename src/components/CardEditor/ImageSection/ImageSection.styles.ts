@@ -2,7 +2,7 @@ import createComponent from '~/utils/styles/createComponent';
 
 export const Container = createComponent('div', {
   className:
-    'bg-white flex flex-col gap-24 items-center max-w-[250px] p-16 rounded'
+    'bg-white flex flex-col gap-4 overflow-y-auto items-center p-8 rounded'
 });
 
 export const ImageWrapper = createComponent('div', {

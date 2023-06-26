@@ -54,8 +54,8 @@ const Card = () => {
       <div
         className={classNames(
           'mt-56 mx-auto relative',
-          { 'w-[250px] h-[375px]': isMobile },
-          { 'w-[250px] h-[375px] ': !isMobile }
+          { 'w-[255px] h-[340px]': isMobile },
+          { 'w-[255px] h-[340px] ': !isMobile }
         )}
       >
         <img src={blankUrl} className="absolute h-full left-0 top-0 w-full" />

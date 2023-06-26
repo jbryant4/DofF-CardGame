@@ -25,12 +25,12 @@ const EditCardForm = () => {
   }
 
   return (
-    <div className="flex gap-4 h-full justify-center mt-20 overflow-hidden w-full">
+    <div className="flex flex-col gap-4 h-full items-center justify-start overflow-hidden w-full">
       <div
         className={
           editCard.title === undefined
             ? 'hidden'
-            : 'rounded-full py-4 px-12 bg-black text-white h-fit ml-8 '
+            : 'rounded-full py-4 px-12 bg-black text-white h-fit w-fit ml-8 '
         }
         onClick={() => setEditCard({})}
       >
@@ -41,7 +41,7 @@ const EditCardForm = () => {
         className={
           editCard.title !== undefined
             ? 'hidden'
-            : 'bg-white font-bold h-3/4 overflow-hidden px-16'
+            : 'bg-white font-bold h-3/4 w-fit overflow-hidden px-16'
         }
       >
         {isLoading ? (
@@ -54,9 +54,9 @@ const EditCardForm = () => {
               value={search}
               placeholder="Search Card Title"
               onChange={e => setSearch(e.target.value)}
-              className="bg-gray-700 my-12 p-8 text-white"
+              className="bg-gray-700 my-12 p-8 text-white w-fit"
             />
-            <div className="flex flex-col gap-8 max-h-[85%] overflow-y-auto">
+            <div className="flex flex-col gap-8 h-[600px] overflow-y-auto">
               {cardList.map(card => (
                 <div
                   key={card.title}

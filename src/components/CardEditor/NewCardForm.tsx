@@ -87,8 +87,8 @@ const NewCardForm = ({ initialState = blankCard, newCardForm }: Props) => {
   }, [cardValues.fileName]);
 
   return (
-    <form onSubmit={handleSubmit} className="h-fit max-h-[90%] my-auto w-full">
-      <div className="flex gap-12 justify-center my-auto w-full">
+    <form onSubmit={handleSubmit} className="flex-grow h-full w-full">
+      <div className="flex gap-12 h-[550px] justify-center w-full">
         <CardForm cardValues={cardValues} setCardValues={setCardValues} />
         <LessonData
           mediaLinks={cardValues.lesson?.mediaLinks ?? []}
@@ -101,7 +101,7 @@ const NewCardForm = ({ initialState = blankCard, newCardForm }: Props) => {
           cardUrl={cardValues.cardUrl ?? ''}
         />
       </div>
-      <div className="flex gap-8 items-center justify-center mt-12">
+      <div className="flex flex-shrink-0 gap-8 items-center justify-center mt-12">
         <button
           type="submit"
           className="border border-black hover:text-green-600 p-8 w-fit"

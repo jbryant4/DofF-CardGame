@@ -41,7 +41,7 @@ const CardForm = ({ cardValues, setCardValues }: OwnProps) => {
   };
 
   return (
-    <div className="border border-white card-form flex flex-col gap-12 p-4 w-[550px]">
+    <div className="border border-white card-form flex flex-col gap-12 overflow-y-auto p-4 w-[550px]">
       <div className="font-bold mb-24 text-2xl">Card Form</div>
       <div className="flex justify-around">
         <label>

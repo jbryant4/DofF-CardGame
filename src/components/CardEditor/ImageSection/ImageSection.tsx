@@ -12,9 +12,7 @@ const ImageSection = ({ blankUrl, cardUrl }: OwnProps) => {
     <Container>
       <h2 className="font-bold text-2xl">Images</h2>
       <div className="text-blue-800 text-sm">
-        * So that images are not stretched we should try to and aim for a 3/4
-        aspect ratio on the cards the missing space will be seen in light blue
-        space
+        * aim for a 3/4 aspect ratio on the cards
       </div>
       <div>
         Blank Img

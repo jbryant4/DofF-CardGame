@@ -26,7 +26,7 @@ const CardPage = () => {
   const headerText = localCards[0] ? formatHeaderText(localCards[0]) : '';
 
   return (
-    <div className="flex flex-col-reverse h-full mt-24 w-full md:flex-row">
+    <div className="flex flex-col-reverse h-full w-full md:flex-row">
       <FilterBar />
       <CardCarousel />
     </div>

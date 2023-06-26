@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { CardContext } from '~/context/CardContext';
-import Hero from '@/Hero';
 import Lesson from '@/Lesson';
+import Card from '@/Card';
 
 const CardDetailsPage = () => {
   const router = useRouter();
@@ -16,8 +16,8 @@ const CardDetailsPage = () => {
   return card ? (
     <>
       <div className="flex flex-col h-full overflow-y-auto pb-[54px] pt-24 px-24">
-        <Hero card={card} />
-        <Lesson description={testText} />
+        <Card card={card} />
+        <Lesson lesson={card.lesson} />
       </div>
     </>
   ) : (

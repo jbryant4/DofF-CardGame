@@ -17,6 +17,10 @@ const AppWrapper = createComponent('div', {
     'max-w-[1800px] bg-gray-500 mx-auto overflow-hidden h-screen flex flex-col'
 });
 
+const ComponentWrapper = createComponent('div', {
+  className: 'w-full  mx-auto  h-full'
+});
+
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <UserProvider>
@@ -25,7 +29,9 @@ export default function App({ Component, pageProps }: AppProps) {
           <GlobalProvider>
             <AppWrapper>
               <Header />
-              <Component {...pageProps} />
+              <ComponentWrapper>
+                <Component {...pageProps} />
+              </ComponentWrapper>
             </AppWrapper>
           </GlobalProvider>
         </CardProvider>

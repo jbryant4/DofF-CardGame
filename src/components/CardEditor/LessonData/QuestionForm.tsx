@@ -55,7 +55,7 @@ const QuestionsForm = ({ questions, setCardValues }) => {
         <div className="flex flex-wrap w-full">
           {newOptions.map((option, index) => (
             <input
-              className="border border border-black border-solid p-4 w-2/4"
+              className="border border-black border-solid p-4 w-2/4"
               key={index}
               type="text"
               value={option}
@@ -67,7 +67,7 @@ const QuestionsForm = ({ questions, setCardValues }) => {
         </div>
         <div>
           <input
-            className="border border border-black border-solid p-4 w-2/4"
+            className="border border-black border-solid p-4 w-2/4"
             type="text"
             value={newAnswer}
             onChange={e => setNewAnswer(e.target.value)}
@@ -82,7 +82,7 @@ const QuestionsForm = ({ questions, setCardValues }) => {
           {enableBtn ? 'Add' : 'answer must be 1 of 4 options'}
         </BlueBtn>
       </div>
-      <div className="h-[450px] overflow-auto">
+      <div className="h-fit overflow-auto">
         {questions.length > 0 ? (
           questions.map((question, index) => (
             <div className="border border-gray-300 flex gap-4 items-center justify-between my-8 p-4 rounded">
