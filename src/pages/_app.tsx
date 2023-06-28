@@ -32,6 +32,7 @@ export default function App({ Component, pageProps }: AppProps) {
               <ComponentWrapper>
                 <Component {...pageProps} />
               </ComponentWrapper>
+              <div className="bg-blue-800 h-20" />
             </AppWrapper>
           </GlobalProvider>
         </CardProvider>

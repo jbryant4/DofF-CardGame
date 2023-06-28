@@ -7,7 +7,7 @@ const CardEditor = () => {
   const [task, setTask] = useState<'edit' | 'create' | null>(null);
 
   return (
-    <div className="flex flex-col gap-4 items-center text-center w-full">
+    <div className="flex flex-col gap-4 h-full items-center text-center w-full">
       <div className={classNames('mr-16 mt-8 self-end', { hidden: !task })}>
         <div
           className="bg-blue-800 hover:bg-white hover:text-blue-800 px-8 py-4 rounded-2xl text-lg text-white"

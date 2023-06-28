@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React, { useContext, useEffect, useState } from 'react';
 import CardForm from '@/CardEditor/CardForm';
 import ImageSection from '@/CardEditor/ImageSection';
+import ScrollDiv from '@/Global/ScrollDiv';
 import {
   cardTypeArray,
   foundationArray,
@@ -70,7 +71,7 @@ const NewCardForm = ({ initialState = blankCard, newCardForm }: Props) => {
   useEffect(() => {
     if (initialState?._id === cardValues._id) return;
     setCardValues({ ...blankCard, ...initialState });
-  });
+  }, []);
 
   useEffect(() => {
     if (
@@ -87,24 +88,26 @@ const NewCardForm = ({ initialState = blankCard, newCardForm }: Props) => {
   }, [cardValues.fileName]);
 
   return (
-    <form onSubmit={handleSubmit} className="flex-grow h-full w-full">
-      <div className="flex gap-12 h-[550px] justify-center w-full">
-        <CardForm cardValues={cardValues} setCardValues={setCardValues} />
-        <LessonData
-          mediaLinks={cardValues.lesson?.mediaLinks ?? []}
-          setCardValues={setCardValues}
-          quickNotes={cardValues.lesson?.quickNotes}
-          quiz={cardValues.quiz}
-        />
-        <ImageSection
-          blankUrl={cardValues.blankUrl ?? ''}
-          cardUrl={cardValues.cardUrl ?? ''}
-        />
-      </div>
-      <div className="flex flex-shrink-0 gap-8 items-center justify-center mt-12">
+    <form onSubmit={handleSubmit} className="flex-grow h-fit w-full">
+      <ScrollDiv heightBreakPoint={800}>
+        <div className="flex gap-12 h-fit justify-center overflow-y-hidden w-full">
+          <CardForm cardValues={cardValues} setCardValues={setCardValues} />
+          <LessonData
+            mediaLinks={cardValues.lesson?.mediaLinks ?? []}
+            setCardValues={setCardValues}
+            quickNotes={cardValues.lesson?.quickNotes}
+            quiz={cardValues.quiz}
+          />
+          <ImageSection
+            blankUrl={cardValues.blankUrl ?? ''}
+            cardUrl={cardValues.cardUrl ?? ''}
+          />
+        </div>
+      </ScrollDiv>
+      <div className="flex flex-shrink-0 gap-8 items-center justify-center">
         <button
           type="submit"
-          className="border border-black hover:text-green-600 p-8 w-fit"
+          className="border border-black hover:text-green-600 my-8 p-8 w-fit"
         >
           {newCardForm ? 'Create Card' : 'Update Card'}
         </button>
