@@ -64,7 +64,7 @@ const NewCardForm = ({ initialState = blankCard, newCardForm }: Props) => {
   useEffect(() => {
     if (initialState?._id === cardValues._id) return;
     setCardValues({ ...blankCard, ...initialState });
-  }, []);
+  }, [cardValues._id, initialState]);
 
   useEffect(() => {
     if (
@@ -78,7 +78,7 @@ const NewCardForm = ({ initialState = blankCard, newCardForm }: Props) => {
       blankUrl: `${blankImageUrl}${cardValues.fileName}.jpg`,
       cardUrl: `${cardImageUrl}${cardValues.fileName}.png`
     });
-  }, [cardValues.fileName]);
+  }, [cardValues, cardValues.fileName, initialState.blankUrl]);
 
   return (
     <form

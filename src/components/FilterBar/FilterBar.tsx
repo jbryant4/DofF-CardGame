@@ -4,7 +4,6 @@ import { CardContext } from '~/context/CardContext';
 import { CardType } from '~/models/Card';
 import {
   Container,
-  Wrapper,
   FilterTab,
   SubFilterWrapper,
   SubFilter
@@ -12,7 +11,7 @@ import {
 import { Filters } from './Filters';
 
 const FilterBar = () => {
-  const { cards, setLocalCards, localCards } = useContext(CardContext);
+  const { cards, setLocalCards } = useContext(CardContext);
   const [selected, setSelected] = useState<CardType>('');
   const [selectedSubFilter, setSubSelected] = useState('');
 

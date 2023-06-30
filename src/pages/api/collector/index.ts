@@ -11,10 +11,12 @@ export const createCollector = async (
 ) => {
   try {
     const collector = await Collector.create(req.body);
-    res.status(201).json(collector);
+
+    return res.status(201).json(collector);
   } catch (error) {
-    console.error(error);
-    res.status(400).json({ message: 'Unable to create collector' });
+    return res
+      .status(400)
+      .json({ message: `Unable to create collector: ${error}` });
   }
 };
 export const findCollector = async (
@@ -30,10 +32,10 @@ export const findCollector = async (
 
       return;
     }
-    res.status(200).json(collector);
+
+    return res.status(200).json(collector);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
+    return res.status(500).json({ message: `Internal server error: ${error}` });
   }
 };
 
@@ -42,16 +44,19 @@ export const updateCollector = async (
   res: NextApiResponse
 ) => {
   try {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     const { _id, ...update } = req.body;
     const collector = await Collector.findByIdAndUpdate(
       new mongoose.Types.ObjectId(_id),
       req.body,
       { new: true }
     );
-    res.status(200).json(collector);
+
+    return res.status(200).json(collector);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error updating collector' });
+    return res
+      .status(500)
+      .json({ message: `Error updating collector: ${error}` });
   }
 };
 
@@ -67,10 +72,12 @@ export const deleteCollector = async (
     if (!collector) {
       return res.status(404).json({ error: 'Collector not found' });
     }
+
     res.status(204).end();
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error deleting collector' });
+    return res
+      .status(500)
+      .json({ message: `Error deleting collector: ${error}` });
   }
 };
 
@@ -95,7 +102,7 @@ export default async function collectorHandler(
       await findCollector(req, res);
       break;
     default:
-      res.status(405).json({ error: 'Method not allowed' });
+      return res.status(405).json({ error: 'Method not allowed' });
       break;
   }
 }

@@ -57,7 +57,7 @@ module.exports = {
       'warn',
       { argsIgnorePattern: '^_', varsIgnorePattern: '[iI]gnored' }
     ],
-    'react/display-names': 'off',
+    'react/display-name': 'off',
     'react/jsx-filename-extension': ['warn', { extensions: ['.jsx', '.tsx'] }],
     'react/prop-types': 'off',
     'react-hooks/exhaustive-deps': 'error'
