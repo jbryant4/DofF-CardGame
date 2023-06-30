@@ -11,6 +11,7 @@
     "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,
+    "noImplicitAny": false,
     "paths": {
       "~/*": ["src/*"],
       "@/*": ["src/components/*"]
@@ -21,5 +22,12 @@
     "target": "es6"
   },
   "exclude": ["build", "node_modules"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"]
+  "include": [
+    ".eslintrc.js",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "**/*.jsx"
+  ]
 }

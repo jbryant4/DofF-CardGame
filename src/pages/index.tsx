@@ -1,13 +1,19 @@
-import createComponent from '~/utils/styles/createComponent';
+import { useRouter } from 'next/router';
+import { useContext, useEffect } from 'react';
+import GateWay from '@/GateWay';
+import { CollectorContext } from '~/context/CollectorContext';
 
-const DefaultWrapper = createComponent('div', {
-  className: 'flex flex-col h-screen items-center justify-center w-screen'
-});
 export default function Home() {
-  return (
-    <DefaultWrapper>
-      <p>Fresh Next Template</p>
-      <p>Including: Typescript, Tailwind, Prettier, Eslint</p>
-    </DefaultWrapper>
-  );
+  const { isLoggedIn, needCreation } = useContext(CollectorContext);
+  const router = useRouter();
+  // route to different pages based on states
+  useEffect(() => {
+    if (needCreation) {
+      router.push('/creation');
+    } else if (isLoggedIn && !needCreation) {
+      router.push('/collection');
+    } else {
+      router.push('/cards');
+    }
+  }, [isLoggedIn, needCreation, router]);
 }
