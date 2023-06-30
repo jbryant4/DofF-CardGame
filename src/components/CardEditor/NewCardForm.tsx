@@ -1,18 +1,10 @@
-import classNames from 'classnames';
 import React, { useContext, useEffect, useState } from 'react';
 import CardForm from '@/CardEditor/CardForm';
 import ImageSection from '@/CardEditor/ImageSection';
 import ScrollDiv from '@/Global/ScrollDiv';
-import {
-  cardTypeArray,
-  foundationArray,
-  preReqArray,
-  traitArray
-} from '~/constants/cardEnumArrays';
 import { CardContext } from '~/context/CardContext';
-import { CardDocument, LessonType } from '~/models/Card';
+import { CardDocument } from '~/models/Card';
 import { newCard, updateCard } from '~/services/cardServices';
-import objectCleaner from '~/utils/objectCleaner';
 import LessonData from './LessonData';
 
 //TODO keep this somewhere better like local env file
@@ -48,6 +40,7 @@ const blankCard: Partial<CardDocument> = {
   yearEnd: 0,
   yearStart: 0
 };
+
 const NewCardForm = ({ initialState = blankCard, newCardForm }: Props) => {
   const [cardValues, setCardValues] =
     useState<Partial<CardDocument>>(blankCard);
@@ -88,9 +81,12 @@ const NewCardForm = ({ initialState = blankCard, newCardForm }: Props) => {
   }, [cardValues.fileName]);
 
   return (
-    <form onSubmit={handleSubmit} className="flex-grow h-fit w-full">
+    <form
+      onSubmit={handleSubmit}
+      className="flex-grow h-fit overflow-auto w-full"
+    >
       <ScrollDiv heightBreakPoint={800}>
-        <div className="flex gap-12 h-fit justify-center overflow-y-hidden w-full">
+        <div className="flex gap-12 h-fit justify-center overflow-auto overflow-y-hidden w-full">
           <CardForm cardValues={cardValues} setCardValues={setCardValues} />
           <LessonData
             mediaLinks={cardValues.lesson?.mediaLinks ?? []}

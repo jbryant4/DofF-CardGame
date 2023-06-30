@@ -21,9 +21,7 @@ export default async function checkAdmin(req, res) {
     }
 
     // Admin exists and password is correct
-    return res
-      .status(200)
-      .json({ message: 'Admin exists and password is correct' });
+    return res.status(200);
   } catch (error) {
     return res.status(500).json({ error: `Server error: ${error}` });
   }

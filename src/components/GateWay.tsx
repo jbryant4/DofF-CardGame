@@ -1,5 +1,4 @@
 import { useContext, useState } from 'react';
-import { GiphyFetch } from 'react-giphy-searchbox';
 import { GlobalContext } from '~/context/GlobalContext';
 
 const hasSpecialCharacters = (value: string) => {

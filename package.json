@@ -27,8 +27,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-youtube": "^10.1.0",
-    "swiper": "^9.3.2",
-    "typescript": "^4.9.4"
+    "swiper": "^9.3.2"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.47.1",
@@ -51,7 +50,8 @@
     "prettier-eslint": "^15.0.1",
     "prettier-eslint-cli": "^7.1.0",
     "prettier-plugin-sort-class-names": "^3.0.1",
-    "tailwindcss": "^3.2.4"
+    "tailwindcss": "^3.2.4",
+    "typescript": "^5.1.6"
   },
   "lint-staged": {
     "*.{css,js,jsx,json,ts,tsx}": "prettier-eslint --write"
