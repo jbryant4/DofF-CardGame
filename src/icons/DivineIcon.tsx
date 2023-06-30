@@ -57,15 +57,15 @@ const DivineIcon = forwardRef<SVGSVGElement, OwnProps>(
           y2="956.0331"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0" stop-color="#ffce79" />
-          <stop offset=".0595" stop-color="#f6c572" />
-          <stop offset=".1554" stop-color="#deae5f" />
-          <stop offset=".2756" stop-color="#b88940" />
-          <stop offset=".4142" stop-color="#825516" />
-          <stop offset=".4572" stop-color="#714408" />
-          <stop offset=".7321" stop-color="#e2be47" />
-          <stop offset=".7417" stop-color="#dfbc45" />
-          <stop offset=".9957" stop-color="#ae8e1f" />
+          <stop offset="0" stopColor="#ffce79" />
+          <stop offset=".0595" stopColor="#f6c572" />
+          <stop offset=".1554" stopColor="#deae5f" />
+          <stop offset=".2756" stopColor="#b88940" />
+          <stop offset=".4142" stopColor="#825516" />
+          <stop offset=".4572" stopColor="#714408" />
+          <stop offset=".7321" stopColor="#e2be47" />
+          <stop offset=".7417" stopColor="#dfbc45" />
+          <stop offset=".9957" stopColor="#ae8e1f" />
         </linearGradient>
         <linearGradient
           id="linear-gradient-divine-2"
@@ -75,9 +75,9 @@ const DivineIcon = forwardRef<SVGSVGElement, OwnProps>(
           y2="144.9383"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset=".034" stop-color="#fff" />
-          <stop offset=".172" stop-color="#d9dadb" />
-          <stop offset=".9305" stop-color="#bdd4db" />
+          <stop offset=".034" stopColor="#fff" />
+          <stop offset=".172" stopColor="#d9dadb" />
+          <stop offset=".9305" stopColor="#bdd4db" />
         </linearGradient>
         <linearGradient
           id="linear-gradient-divine-3"
@@ -87,8 +87,8 @@ const DivineIcon = forwardRef<SVGSVGElement, OwnProps>(
           y2="603.9936"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset=".4713" stop-color="#fff" />
-          <stop offset="1" stop-color="#cdd0d1" />
+          <stop offset=".4713" stopColor="#fff" />
+          <stop offset="1" stopColor="#cdd0d1" />
         </linearGradient>
         <linearGradient
           id="linear-gradient-divine-4"

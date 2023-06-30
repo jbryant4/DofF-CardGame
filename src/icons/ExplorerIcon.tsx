@@ -41,22 +41,22 @@ const TwoArmyIcon = forwardRef<SVGSVGElement, OwnProps>(
           y2="662.925"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0" stop-color="#ffce79" />
-          <stop offset=".0723" stop-color="#fbca75" />
-          <stop offset=".1409" stop-color="#efbf6c" />
-          <stop offset=".2082" stop-color="#dcac5d" />
-          <stop offset=".2745" stop-color="#c19248" />
-          <stop offset=".3402" stop-color="#9e702c" />
-          <stop offset=".4046" stop-color="#74470b" />
-          <stop offset=".4102" stop-color="#714408" />
-          <stop offset=".715" stop-color="#e2be47" />
-          <stop offset=".7591" stop-color="#d1aa3a" />
-          <stop offset=".9032" stop-color="#a06f14" />
-          <stop offset=".9209" stop-color="#a47417" />
-          <stop offset=".9424" stop-color="#b08321" />
-          <stop offset=".9659" stop-color="#c49b32" />
-          <stop offset=".9907" stop-color="#e0bd49" />
-          <stop offset=".9935" stop-color="#e4c24c" />
+          <stop offset="0" stopColor="#ffce79" />
+          <stop offset=".0723" stopColor="#fbca75" />
+          <stop offset=".1409" stopColor="#efbf6c" />
+          <stop offset=".2082" stopColor="#dcac5d" />
+          <stop offset=".2745" stopColor="#c19248" />
+          <stop offset=".3402" stopColor="#9e702c" />
+          <stop offset=".4046" stopColor="#74470b" />
+          <stop offset=".4102" stopColor="#714408" />
+          <stop offset=".715" stopColor="#e2be47" />
+          <stop offset=".7591" stopColor="#d1aa3a" />
+          <stop offset=".9032" stopColor="#a06f14" />
+          <stop offset=".9209" stopColor="#a47417" />
+          <stop offset=".9424" stopColor="#b08321" />
+          <stop offset=".9659" stopColor="#c49b32" />
+          <stop offset=".9907" stopColor="#e0bd49" />
+          <stop offset=".9935" stopColor="#e4c24c" />
         </linearGradient>
         <linearGradient
           id="linear-gradient-explorer-2"
@@ -66,8 +66,8 @@ const TwoArmyIcon = forwardRef<SVGSVGElement, OwnProps>(
           y2="267.2487"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset=".3029" stop-color="#fff" />
-          <stop offset=".9957" stop-color="#d4e6eb" />
+          <stop offset=".3029" stopColor="#fff" />
+          <stop offset=".9957" stopColor="#d4e6eb" />
         </linearGradient>
         <linearGradient
           id="linear-gradient-explorer-3"
@@ -77,8 +77,8 @@ const TwoArmyIcon = forwardRef<SVGSVGElement, OwnProps>(
           y2="311.7663"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0" stop-color="#fff" />
-          <stop offset=".8491" stop-color="#b6bec1" />
+          <stop offset="0" stopColor="#fff" />
+          <stop offset=".8491" stopColor="#b6bec1" />
         </linearGradient>
         <linearGradient
           id="linear-gradient-explorer-4"
@@ -88,9 +88,9 @@ const TwoArmyIcon = forwardRef<SVGSVGElement, OwnProps>(
           y2="313.4919"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset=".3029" stop-color="#fff" />
-          <stop offset=".6765" stop-color="#e3e4e5" />
-          <stop offset=".9957" stop-color="#d4e6eb" />
+          <stop offset=".3029" stopColor="#fff" />
+          <stop offset=".6765" stopColor="#e3e4e5" />
+          <stop offset=".9957" stopColor="#d4e6eb" />
         </linearGradient>
       </defs>
       <path

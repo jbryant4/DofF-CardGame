@@ -20,8 +20,8 @@ const ShieldIcon = ({ size = 100, def = 9, ...props }: OwnProps) => (
       y="55"
       fontSize="55"
       fontWeight="bold"
-      text-anchor="middle"
-      alignment-baseline="middle"
+      textAnchor="middle"
+      alignmentBaseline="middle"
       fill="black"
     >
       {def}

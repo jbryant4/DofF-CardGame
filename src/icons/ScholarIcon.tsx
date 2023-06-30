@@ -53,14 +53,14 @@ const ScholarIcon = forwardRef<SVGSVGElement, OwnProps>(
           y2="56.6156"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset=".0813" stop-color="#ae8e1f" />
-          <stop offset=".3428" stop-color="#f2ca4a" />
-          <stop offset=".3928" stop-color="#d2aa38" />
-          <stop offset=".4633" stop-color="#ad8423" />
-          <stop offset=".5286" stop-color="#926814" />
-          <stop offset=".5859" stop-color="#81570b" />
-          <stop offset=".6291" stop-color="#7c5208" />
-          <stop offset=".9005" stop-color="#ffce79" />
+          <stop offset=".0813" stopColor="#ae8e1f" />
+          <stop offset=".3428" stopColor="#f2ca4a" />
+          <stop offset=".3928" stopColor="#d2aa38" />
+          <stop offset=".4633" stopColor="#ad8423" />
+          <stop offset=".5286" stopColor="#926814" />
+          <stop offset=".5859" stopColor="#81570b" />
+          <stop offset=".6291" stopColor="#7c5208" />
+          <stop offset=".9005" stopColor="#ffce79" />
         </linearGradient>
         <linearGradient
           id="linear-gradient-scholar-2"
@@ -70,9 +70,9 @@ const ScholarIcon = forwardRef<SVGSVGElement, OwnProps>(
           y2="76.2281"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0" stop-color="#fff" />
-          <stop offset=".5182" stop-color="#cdd1d2" />
-          <stop offset="1" stop-color="#badbe1" />
+          <stop offset="0" stopColor="#fff" />
+          <stop offset=".5182" stopColor="#cdd1d2" />
+          <stop offset="1" stopColor="#badbe1" />
         </linearGradient>
         <linearGradient
           id="linear-gradient-scholar-3"
@@ -98,10 +98,10 @@ const ScholarIcon = forwardRef<SVGSVGElement, OwnProps>(
           y2="73.1474"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0" stop-color="#fff" />
-          <stop offset=".4364" stop-color="#cdd1d2" />
-          <stop offset=".7265" stop-color="#c5d4d7" />
-          <stop offset="1" stop-color="#badbe1" />
+          <stop offset="0" stopColor="#fff" />
+          <stop offset=".4364" stopColor="#cdd1d2" />
+          <stop offset=".7265" stopColor="#c5d4d7" />
+          <stop offset="1" stopColor="#badbe1" />
         </linearGradient>
         <linearGradient
           id="linear-gradient-scholar-6"
@@ -111,11 +111,11 @@ const ScholarIcon = forwardRef<SVGSVGElement, OwnProps>(
           y2="40.2356"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset=".0646" stop-color="#fff" />
-          <stop offset=".2159" stop-color="#f1f3f3" />
-          <stop offset=".4955" stop-color="#cfd3d4" />
-          <stop offset=".5152" stop-color="#cdd1d2" />
-          <stop offset="1" stop-color="#badbe1" />
+          <stop offset=".0646" stopColor="#fff" />
+          <stop offset=".2159" stopColor="#f1f3f3" />
+          <stop offset=".4955" stopColor="#cfd3d4" />
+          <stop offset=".5152" stopColor="#cdd1d2" />
+          <stop offset="1" stopColor="#badbe1" />
         </linearGradient>
       </defs>
       <path

@@ -81,16 +81,16 @@ const TwoChampionIcon = forwardRef<SVGSVGElement, OwnProps>(
           y2="929.5097"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0" stop-color="#ffce79" />
-          <stop offset=".0611" stop-color="#f9c874" />
-          <stop offset=".14" stop-color="#e9b867" />
-          <stop offset=".2287" stop-color="#ce9f52" />
-          <stop offset=".3245" stop-color="#a97a35" />
-          <stop offset=".4251" stop-color="#7a4d0f" />
-          <stop offset=".4435" stop-color="#714408" />
-          <stop offset=".7321" stop-color="#e2be47" />
-          <stop offset=".7417" stop-color="#dfbc45" />
-          <stop offset=".9957" stop-color="#ae8e1f" />
+          <stop offset="0" stopColor="#ffce79" />
+          <stop offset=".0611" stopColor="#f9c874" />
+          <stop offset=".14" stopColor="#e9b867" />
+          <stop offset=".2287" stopColor="#ce9f52" />
+          <stop offset=".3245" stopColor="#a97a35" />
+          <stop offset=".4251" stopColor="#7a4d0f" />
+          <stop offset=".4435" stopColor="#714408" />
+          <stop offset=".7321" stopColor="#e2be47" />
+          <stop offset=".7417" stopColor="#dfbc45" />
+          <stop offset=".9957" stopColor="#ae8e1f" />
         </linearGradient>
         <linearGradient
           id="linear-gradient-2c-2"
@@ -100,8 +100,8 @@ const TwoChampionIcon = forwardRef<SVGSVGElement, OwnProps>(
           y2="191.8515"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0" stop-color="#000002" />
-          <stop offset="1" stop-color="#1a2529" />
+          <stop offset="0" stopColor="#000002" />
+          <stop offset="1" stopColor="#1a2529" />
         </linearGradient>
         <linearGradient
           id="linear-gradient-2c-3"
@@ -111,8 +111,8 @@ const TwoChampionIcon = forwardRef<SVGSVGElement, OwnProps>(
           y2="193.4693"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0" stop-color="#4c4c4c" />
-          <stop offset="1" stop-color="#66757a" />
+          <stop offset="0" stopColor="#4c4c4c" />
+          <stop offset="1" stopColor="#66757a" />
         </linearGradient>
         <linearGradient
           id="linear-gradient-2c-4"

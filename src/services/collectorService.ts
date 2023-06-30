@@ -16,7 +16,7 @@ export const newCollector = async collector => {
       throw new Error('Failed to create user');
     }
 
-    return response.json();
+    return await response.json();
   } catch (error) {
     console.error('Error creating collector:', error);
     throw new Error('Failed to create card');

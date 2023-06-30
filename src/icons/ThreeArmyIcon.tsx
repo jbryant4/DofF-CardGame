@@ -65,10 +65,10 @@ const ThreeArmyIcon = forwardRef<SVGSVGElement, OwnProps>(
           y2="981.2525"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0" stop-color="#fc0" />
-          <stop offset=".2746" stop-color="#f6c300" />
-          <stop offset=".7154" stop-color="#deab00" />
-          <stop offset="1" stop-color="#c90" />
+          <stop offset="0" stopColor="#fc0" />
+          <stop offset=".2746" stopColor="#f6c300" />
+          <stop offset=".7154" stopColor="#deab00" />
+          <stop offset="1" stopColor="#c90" />
         </linearGradient>
         <linearGradient
           id="linear-gradient-3a-2"
@@ -78,8 +78,8 @@ const ThreeArmyIcon = forwardRef<SVGSVGElement, OwnProps>(
           y2="324.522"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0" stop-color="#000" />
-          <stop offset="1" stop-color="#28393f" />
+          <stop offset="0" stopColor="#000" />
+          <stop offset="1" stopColor="#28393f" />
         </linearGradient>
         <linearGradient
           id="linear-gradient-3a-3"
@@ -89,10 +89,10 @@ const ThreeArmyIcon = forwardRef<SVGSVGElement, OwnProps>(
           y2="34.9124"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0" stop-color="#fff" />
-          <stop offset=".0433" stop-color="#fcfdfe" />
-          <stop offset=".4801" stop-color="#ebf4f7" />
-          <stop offset=".7989" stop-color="#e5f1f5" />
+          <stop offset="0" stopColor="#fff" />
+          <stop offset=".0433" stopColor="#fcfdfe" />
+          <stop offset=".4801" stopColor="#ebf4f7" />
+          <stop offset=".7989" stopColor="#e5f1f5" />
         </linearGradient>
         <linearGradient
           id="linear-gradient-3a-4"
@@ -134,8 +134,8 @@ const ThreeArmyIcon = forwardRef<SVGSVGElement, OwnProps>(
           y2="324.3817"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0" stop-color="#fff" />
-          <stop offset="1" stop-color="#e5f1f5" />
+          <stop offset="0" stopColor="#fff" />
+          <stop offset="1" stopColor="#e5f1f5" />
         </linearGradient>
         <linearGradient
           id="linear-gradient-3a-9"

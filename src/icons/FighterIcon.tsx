@@ -53,12 +53,12 @@ const FighterIcon = forwardRef<SVGSVGElement, OwnProps>(
           y2="18.0157"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset=".0813" stop-color="#ae8e1f" />
-          <stop offset=".3428" stop-color="#f2ca4a" />
-          <stop offset=".3931" stop-color="#d6ae3a" />
-          <stop offset=".5218" stop-color="#956c16" />
-          <stop offset=".5824" stop-color="#7c5208" />
-          <stop offset=".8674" stop-color="#ffce79" />
+          <stop offset=".0813" stopColor="#ae8e1f" />
+          <stop offset=".3428" stopColor="#f2ca4a" />
+          <stop offset=".3931" stopColor="#d6ae3a" />
+          <stop offset=".5218" stopColor="#956c16" />
+          <stop offset=".5824" stopColor="#7c5208" />
+          <stop offset=".8674" stopColor="#ffce79" />
         </linearGradient>
         <linearGradient
           id="linear-gradient-fighter-2"
@@ -68,9 +68,9 @@ const FighterIcon = forwardRef<SVGSVGElement, OwnProps>(
           y2="351.7278"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset=".5561" stop-color="#fff" />
-          <stop offset=".6508" stop-color="#c9ced0" />
-          <stop offset="1" stop-color="#b5c7cd" />
+          <stop offset=".5561" stopColor="#fff" />
+          <stop offset=".6508" stopColor="#c9ced0" />
+          <stop offset="1" stopColor="#b5c7cd" />
         </linearGradient>
         <linearGradient
           id="linear-gradient-fighter-3"
@@ -112,9 +112,9 @@ const FighterIcon = forwardRef<SVGSVGElement, OwnProps>(
           y2="131.0953"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset=".0307" stop-color="#f1f1f1" />
-          <stop offset=".3984" stop-color="#6b6b6b" />
-          <stop offset="1" stop-color="#667e86" />
+          <stop offset=".0307" stopColor="#f1f1f1" />
+          <stop offset=".3984" stopColor="#6b6b6b" />
+          <stop offset="1" stopColor="#667e86" />
         </linearGradient>
       </defs>
       <path

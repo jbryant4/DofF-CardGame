@@ -66,7 +66,7 @@ const Hex = forwardRef<SVGSVGElement, OwnProps>(
       >
         <path
           d="M 5 30 L 50 5 L 95 30 L 95 70 L 50 95 L 5 70 Z"
-          stroke-width="2"
+          strokeWidth="2"
         />
         {iconToUse}
       </svg>
