@@ -5,7 +5,7 @@ import { CardDocument } from '~/models/Card';
 
 const EditCardForm = () => {
   const [editCard, setEditCard] = useState<Partial<CardDocument>>({});
-  const { cards, isLoading, error } = useContext(CardContext);
+  const { cards, isLoading, errorText } = useContext(CardContext);
   const [search, setSearch] = useState('');
   const [cardList, setCardList] = useState<CardDocument[]>([]);
 
@@ -20,8 +20,8 @@ const EditCardForm = () => {
     }
   }, [cards, search]);
 
-  if (error) {
-    throw Error(`Error getting Cards : ${error}`);
+  if (errorText) {
+    throw Error(`Error getting Cards : ${errorText}`);
   }
 
   return (
