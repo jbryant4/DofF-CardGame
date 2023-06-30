@@ -31,8 +31,8 @@ const AttackIcon = forwardRef<SVGSVGElement, OwnProps>(
         y="35"
         fontSize="55"
         fontWeight="bold"
-        text-anchor="middle"
-        alignment-baseline="middle"
+        textAnchor="middle"
+        alignmentBaseline="middle"
       >
         {atk}
       </text>

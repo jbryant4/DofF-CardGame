@@ -39,9 +39,9 @@ const RevolutionistIcon = forwardRef<SVGSVGElement, OwnProps>(
           gradientTransform="matrix(1, 0, 0, -1, 0, 870)"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0.2834" stop-color="#ffce45" />
-          <stop offset="0.773" stop-color="#aa5724" />
-          <stop offset="1" stop-color="#7e370c" />
+          <stop offset="0.2834" stopColor="#ffce45" />
+          <stop offset="0.773" stopColor="#aa5724" />
+          <stop offset="1" stopColor="#7e370c" />
         </linearGradient>
         <linearGradient
           id="linear-gradient-revolutionist-2"
@@ -52,8 +52,8 @@ const RevolutionistIcon = forwardRef<SVGSVGElement, OwnProps>(
           gradientTransform="matrix(1, 0, 0, -1, 0, 870)"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0.0038" stop-color="#fbfbfb" />
-          <stop offset="1" stop-color="#bfbfbf" />
+          <stop offset="0.0038" stopColor="#fbfbfb" />
+          <stop offset="1" stopColor="#bfbfbf" />
         </linearGradient>
         <linearGradient
           id="linear-gradient-revolutionist-3"

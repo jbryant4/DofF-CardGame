@@ -1,8 +1,6 @@
 import classNames from 'classnames';
-import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { Container } from '@/Card/Card.styles';
-import { CardContext } from '~/context/CardContext';
 import { GlobalContext } from '~/context/GlobalContext';
 import AttackIcon from '~/icons/AttackIcon';
 import CornerStatIcon from '~/icons/CornerStatIcon';

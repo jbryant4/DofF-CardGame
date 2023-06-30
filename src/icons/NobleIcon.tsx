@@ -45,13 +45,13 @@ const NobleIcon = forwardRef<SVGSVGElement, OwnProps>(
           y2="21.7958"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0" stop-color="#e4c24c" />
-          <stop offset=".2187" stop-color="#865a18" />
-          <stop offset=".4027" stop-color="#f2ca4a" />
-          <stop offset=".4548" stop-color="#d6ae3a" />
-          <stop offset=".5881" stop-color="#956c16" />
-          <stop offset=".6508" stop-color="#7c5208" />
-          <stop offset="1" stop-color="#ffce79" />
+          <stop offset="0" stopColor="#e4c24c" />
+          <stop offset=".2187" stopColor="#865a18" />
+          <stop offset=".4027" stopColor="#f2ca4a" />
+          <stop offset=".4548" stopColor="#d6ae3a" />
+          <stop offset=".5881" stopColor="#956c16" />
+          <stop offset=".6508" stopColor="#7c5208" />
+          <stop offset="1" stopColor="#ffce79" />
         </linearGradient>
         <linearGradient
           id="linear-gradient-noble-2"
@@ -61,12 +61,12 @@ const NobleIcon = forwardRef<SVGSVGElement, OwnProps>(
           y2="-74.2595"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset=".2481" stop-color="#fff" />
-          <stop offset=".2713" stop-color="#f2f2f2" />
-          <stop offset=".3305" stop-color="#d7d7d7" />
-          <stop offset=".3834" stop-color="#c7c7c7" />
-          <stop offset=".4241" stop-color="#c2c2c2" />
-          <stop offset="1" stop-color="#aed5da" />
+          <stop offset=".2481" stopColor="#fff" />
+          <stop offset=".2713" stopColor="#f2f2f2" />
+          <stop offset=".3305" stopColor="#d7d7d7" />
+          <stop offset=".3834" stopColor="#c7c7c7" />
+          <stop offset=".4241" stopColor="#c2c2c2" />
+          <stop offset="1" stopColor="#aed5da" />
         </linearGradient>
         <linearGradient
           id="linear-gradient-noble-3"

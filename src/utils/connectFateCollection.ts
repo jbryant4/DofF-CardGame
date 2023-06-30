@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 export default async function connectFateCollection() {
   // TODO change up access tokens before pushing out to prod
   const uri = process.env.NEXT_PUBLIC_DOF_URI;
-  const testUri = process.env.NEXT_PUBLIC_DOF_TEST_URI;
+  // const testUri = process.env.NEXT_PUBLIC_DOF_TEST_URI;
 
   if (!uri) {
     throw new Error('Please define the MONGODB_URI environment variable');

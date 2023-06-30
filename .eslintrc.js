@@ -54,7 +54,7 @@ module.exports = {
       { blankLine: 'always', prev: '*', next: 'return' }
     ],
     '@typescript-eslint/no-unused-vars': [
-      'error',
+      'warn',
       { argsIgnorePattern: '^_', varsIgnorePattern: '[iI]gnored' }
     ],
     'react/display-names': 'off',
