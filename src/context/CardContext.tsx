@@ -3,7 +3,8 @@ import React, {
   useContext,
   useEffect,
   useMemo,
-  useState
+  useState,
+  useCallback
 } from 'react';
 import { CollectorContext } from '~/context/CollectorContext';
 import { CardDocument } from '~/models/Card';
@@ -20,7 +21,7 @@ type CardContextType = {
   collection: CardDocument[];
   decks: WholeDeck[];
   isLoading: boolean;
-  error: Error | null;
+  errorText: Error | null;
   unlockCard: (id: string) => Promise<void>;
   createDeck: (deck: Deck) => Promise<void>;
   editDeck: (deck: Deck) => Promise<void>;
@@ -35,7 +36,7 @@ const defaultCardContext: CardContextType = {
   collection: [],
   decks: [],
   isLoading: false,
-  error: null,
+  errorText: null,
   unlockCard: async (_value: string) => {},
   createDeck: async (_value: Deck) => {},
   editDeck: async (_value: Deck) => {},
@@ -71,17 +72,17 @@ function makeDecks(decks: Deck[], cards: CardDocument[]): WholeDeck[] {
 export function CardProvider({ children }: Props) {
   const [cards, setCards] = useState<CardDocument[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<Error | null>(null);
+  const [errorText, setError] = useState<Error | null>(null);
   const [localCards, setLocalCards] = useState<CardDocument[]>([]);
   const [collection, setCollection] = useState<CardDocument[]>([]);
   const [decks, setDecks] = useState<WholeDeck[]>([]);
   const [fetchTrigger, setFetchTrigger] = useState(0);
   const { collector, setCollector } = useContext(CollectorContext);
 
-  const unlockCard = async (id: string): Promise<void> => {};
-  const createDeck = async (deck: Deck): Promise<void> => {};
-  const editDeck = async (deck: Deck): Promise<void> => {};
-  const deleteDeck = async (deck: Deck): Promise<void> => {};
+  const unlockCard = useCallback(async (id: string): Promise<void> => {}, []);
+  const createDeck = useCallback(async (deck: Deck): Promise<void> => {}, []);
+  const editDeck = useCallback(async (deck: Deck): Promise<void> => {}, []);
+  const deleteDeck = useCallback(async (deck: Deck): Promise<void> => {}, []);
 
   useEffect(() => {
     (async () => {
@@ -105,7 +106,7 @@ export function CardProvider({ children }: Props) {
     setCollection(filteredCards);
     const madeDecks = makeDecks(collector.decks, cards);
     setDecks(madeDecks);
-  }, [collector]);
+  }, [cards, collector]);
 
   const value = useMemo(
     () => ({
@@ -114,7 +115,7 @@ export function CardProvider({ children }: Props) {
       collection,
       decks,
       isLoading,
-      error,
+      errorText,
       unlockCard,
       createDeck,
       editDeck,
@@ -128,7 +129,7 @@ export function CardProvider({ children }: Props) {
       collection,
       decks,
       isLoading,
-      error,
+      errorText,
       unlockCard,
       createDeck,
       editDeck,

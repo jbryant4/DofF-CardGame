@@ -69,7 +69,7 @@ const Card = ({ card }: OwnProps) => {
         {!preReqs ? null : (
           <div className="absolute left-[-29px] top-36 z-20">
             {preReqs.map(req => (
-              <PreReqIcon preReq={req} />
+              <PreReqIcon key={req} preReq={req} />
             ))}
           </div>
         )}

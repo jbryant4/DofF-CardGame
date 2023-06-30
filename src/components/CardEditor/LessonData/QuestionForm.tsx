@@ -85,7 +85,10 @@ const QuestionsForm = ({ questions, setCardValues }) => {
       <div className="h-fit overflow-auto">
         {questions.length > 0 ? (
           questions.map((question, index) => (
-            <div className="border border-gray-300 flex gap-4 items-center justify-between my-8 p-4 rounded">
+            <div
+              key={index}
+              className="border border-gray-300 flex gap-4 items-center justify-between my-8 p-4 rounded"
+            >
               <div key={index} className="flex flex-col">
                 <div className="flex">
                   <div className="flex-shrink-0 w-fit">{index}).</div>

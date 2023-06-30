@@ -39,7 +39,7 @@ const ScrollDiv: React.FC<ScrollDivProps> = ({
           : 'fit-content';
       setCalculated(true);
     }
-  }, []);
+  }, [heightBreakPoint, heightCalculated]);
 
   return (
     <div ref={scrollDivRef} className="h-full max-h-fit overflow-auto">

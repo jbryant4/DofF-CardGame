@@ -40,6 +40,7 @@ export const editCard = async (req: NextApiRequest, res: NextApiResponse) => {
     //   return res.status(401).json({ error: 'Unauthorized' });
     // }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     const { _id } = req.body;
     const card = await Card.findByIdAndUpdate(
       new mongoose.Types.ObjectId(_id),
