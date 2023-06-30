@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { NextApiRequest, NextApiResponse } from 'next';
-import Card, { CardDocument } from '~/models/Card';
+import Card from '~/models/Card';
 import connectFateCollection from '~/utils/connectFateCollection';
 
 let cachedConnection: mongoose.Connection;
@@ -11,10 +11,10 @@ export const getAllCards = async (
 ) => {
   try {
     const cards = await Card.find();
-    res.status(200).json(cards);
+
+    return res.status(200).json(cards);
   } catch (error) {
-    console.error('Error getting all cards:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({ error: `Internal server error: ${error}` });
   }
 };
 
@@ -26,10 +26,10 @@ export const createCard = async (req: NextApiRequest, res: NextApiResponse) => {
     // }
 
     const card = await Card.create(req.body);
-    res.status(201).json(card);
+
+    return res.status(201).json(card);
   } catch (error) {
-    console.error('Error creating card:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({ error: `Internal server error: ${error}` });
   }
 };
 
@@ -51,10 +51,9 @@ export const editCard = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(404).json({ error: 'Card not found' });
     }
 
-    res.status(200).json(card);
+    return res.status(200).json(card);
   } catch (error) {
-    console.error('Error editing card:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({ error: `Internal server error: ${error}` });
   }
 };
 
@@ -74,8 +73,7 @@ export const deleteCard = async (req: NextApiRequest, res: NextApiResponse) => {
 
     res.status(204).end();
   } catch (error) {
-    console.error('Error deleting card:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({ error: `Internal server error: ${error}` });
   }
 };
 
@@ -102,7 +100,7 @@ export default async function cardHandler(
       await getAllCards(req, res);
       break;
     default:
-      res.status(405).json({ error: 'Method not allowed' });
+      return res.status(405).json({ error: 'Method not allowed' });
       break;
   }
 }

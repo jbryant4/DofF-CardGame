@@ -1,16 +1,21 @@
-import React, { useState, useEffect, createContext, useContext } from 'react';
+import { useState, useEffect, createContext, useContext } from 'react';
 
 export const GlobalContext = createContext({
-  isMobile: false
+  isMobile: false,
+  isAdmin: false,
+  setAdmin: _value => {}
 });
 
 export const GlobalProvider = ({ children }) => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isAdmin, setAdmin] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
     };
+
+    handleResize();
 
     window.addEventListener('resize', handleResize);
 
@@ -20,7 +25,7 @@ export const GlobalProvider = ({ children }) => {
   }, []);
 
   return (
-    <GlobalContext.Provider value={{ isMobile }}>
+    <GlobalContext.Provider value={{ isAdmin, isMobile, setAdmin }}>
       {children}
     </GlobalContext.Provider>
   );

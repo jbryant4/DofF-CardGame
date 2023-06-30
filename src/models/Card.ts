@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 import mongoose, { Document, Model, Schema } from 'mongoose';
 
 export type Foundation = 'desert' | 'earth' | 'ocean';

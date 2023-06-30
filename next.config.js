@@ -5,7 +5,8 @@ const nextConfig = {
   swcMinify: true,
   typescript: {
     tsconfigPath: './tsconfig.json'
-  }
+  },
+  pageExtensions: ['jsx', 'js', 'tsx', 'ts']
 };
 
 module.exports = nextConfig;

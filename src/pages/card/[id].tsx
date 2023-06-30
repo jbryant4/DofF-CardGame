@@ -17,7 +17,7 @@ const CardDetailsPage = () => {
     <>
       <div className="flex flex-col h-full overflow-y-auto pb-[54px] pt-24 px-24">
         <Card card={card} />
-        <Lesson lesson={card.lesson} />
+        {card.lesson ? <Lesson lesson={card.lesson} /> : null}
       </div>
     </>
   ) : (

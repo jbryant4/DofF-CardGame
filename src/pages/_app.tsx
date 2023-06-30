@@ -1,4 +1,4 @@
-import { UserProvider } from '@auth0/nextjs-auth0/client';
+// import { UserProvider } from '@auth0/nextjs-auth0/client';
 import type { AppProps } from 'next/app';
 import Header from '@/Header/Header';
 import { CardProvider } from '~/context/CardContext';
@@ -23,20 +23,18 @@ const ComponentWrapper = createComponent('div', {
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <UserProvider>
-      <CollectorProvider>
-        <CardProvider>
-          <GlobalProvider>
-            <AppWrapper>
-              <Header />
-              <ComponentWrapper>
-                <Component {...pageProps} />
-              </ComponentWrapper>
-              <div className="bg-blue-800 h-20" />
-            </AppWrapper>
-          </GlobalProvider>
-        </CardProvider>
-      </CollectorProvider>
-    </UserProvider>
+    <CollectorProvider>
+      <CardProvider>
+        <GlobalProvider>
+          <AppWrapper>
+            <Header />
+            <ComponentWrapper>
+              <Component {...pageProps} />
+            </ComponentWrapper>
+            <div className="bg-blue-800 h-20" />
+          </AppWrapper>
+        </GlobalProvider>
+      </CardProvider>
+    </CollectorProvider>
   );
 }

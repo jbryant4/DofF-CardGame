@@ -15,9 +15,9 @@ const ScrollDiv: React.FC<ScrollDivProps> = ({
   const [heightCalculated, setCalculated] = useState(false);
 
   useEffect(() => {
-    console.log('here');
     if (scrollDivRef.current && !heightCalculated) {
-      const parentHeight = scrollDivRef.current.parentNode?.clientHeight ?? 0;
+      const parentHeight =
+        (scrollDivRef.current.parentNode as HTMLElement)?.clientHeight ?? 0;
       const siblingHeights = Array.from(
         scrollDivRef.current.parentNode?.childNodes ?? []
       )
@@ -32,7 +32,6 @@ const ScrollDiv: React.FC<ScrollDivProps> = ({
         );
 
       const scrollDivHeight = parentHeight - siblingHeights;
-      console.log(parentHeight, siblingHeights, scrollDivHeight);
 
       scrollDivRef.current.style.height =
         scrollDivHeight < heightBreakPoint

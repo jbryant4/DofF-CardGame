@@ -1,7 +1,6 @@
-import { useUser } from '@auth0/nextjs-auth0/client';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Africa } from '~/constants/starterDecks';
 import { CollectorContext } from '~/context/CollectorContext';
 import { CollectorDocument } from '~/models/Collector';
@@ -9,7 +8,7 @@ import { CollectorDocument } from '~/models/Collector';
 const MyForm = () => {
   const [userName, setUsername] = useState('');
   const [errorText, setErrorText] = useState('');
-  const { user: { email = '' } = {} } = useUser();
+  // const { user: { email = '' } = {} } = useUser();
   const router = useRouter();
   const { fetchCollectorByUserName, createCollector } =
     useContext(CollectorContext);
@@ -27,8 +26,8 @@ const MyForm = () => {
     if (userNameExist) {
       setErrorText('User Name Already Exist');
     } else {
-      const payload: CollectorDocument = {
-        email,
+      const payload: Partial<CollectorDocument> = {
+        email: 'test@test.com',
         userName,
         cards: [],
         decks: [Africa]
@@ -42,7 +41,7 @@ const MyForm = () => {
     console.log('Username:', userName);
   };
 
-  return (
+  return true ? null : (
     <div className="flex flex-col h-full items-center">
       <div className="my-36">Create a UserName</div>
       <form
