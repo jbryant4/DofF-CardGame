@@ -13,7 +13,7 @@ const CardDetailsPage = () => {
   return card ? (
     <div className="grid grid-cols-[1fr,2fr] h-full items-center overflow-y-auto pb-[54px] pt-24 px-24">
       <Card card={card} />
-      {card.lesson ? <Lesson lesson={card.lesson} title={card.title} /> : null}
+      {card.lesson ? <Lesson lesson={card.lesson} /> : null}
     </div>
   ) : (
     <div>Ooops, this card doesn`&apos;`t exist</div>
