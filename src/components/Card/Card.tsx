@@ -75,7 +75,7 @@ const Card = ({ card }: OwnProps) => {
         )}
         <div className="absolute bg-black border-b border-blue-600 border-l border-solid h-full left-0 w-16 z-10" />
         <div className="absolute bg-black border-b border-blue-600 border-r border-solid h-full right-0 w-16 z-10" />
-        <div className="absolute bg-black border-b border-blue-600 border-solid bottom-0 h-40 h-full left-0 w-full z-[8]" />
+        <div className="absolute bg-black border-b border-blue-600 border-solid bottom-0 h-40 left-0 w-full z-[8]" />
         {!effectText ? null : (
           <div className="absolute bg-gray-700/90 bottom-0 h-1/2 left-0py-5 pt-8 px-20 text-center text-sm w-full">
             {effectText}

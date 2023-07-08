@@ -10,7 +10,7 @@ const ImageSection = ({ blankUrl, cardUrl }: OwnProps) => {
 
   return showImages ? (
     <Container>
-      <h2 className="font-bold text-2xl">Images</h2>
+      <h2 className="font-bold text-24">Images</h2>
       <div className="text-blue-800 text-sm">
         * aim for a 3/4 aspect ratio on the cards
       </div>

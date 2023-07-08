@@ -82,7 +82,7 @@ const QuestionsForm = ({ questions, setCardValues }) => {
           {enableBtn ? 'Add' : 'answer must be 1 of 4 options'}
         </BlueBtn>
       </div>
-      <div className="h-fit overflow-auto">
+      <div className="h-[400px] overflow-auto">
         {questions.length > 0 ? (
           questions.map((question, index) => (
             <div
@@ -96,7 +96,7 @@ const QuestionsForm = ({ questions, setCardValues }) => {
                     {question.prompt}
                   </div>
                 </div>
-                <div className="flex gap-8 justify-center">
+                <div className="flex flex-col gap-8 items-start ml-12">
                   {question.options.map((option, optionIndex) => (
                     <div
                       key={optionIndex}

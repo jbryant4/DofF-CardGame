@@ -21,7 +21,7 @@ const CardEditor = () => {
           hidden: Boolean(task)
         })}
       >
-        <div className="text-2xl w-fit">
+        <div className="text-24 w-fit">
           HI Admin
           <br /> What would you like to do today?
         </div>

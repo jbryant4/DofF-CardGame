@@ -1,4 +1,3 @@
-const theme = require('tailwindcss/defaultTheme');
 /** @type {import('tailwindcss').Config} */
 const customSpacing = {
   0: '0',
@@ -24,22 +23,25 @@ module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     fontSize: {
-      xs: '12px',
-      sm: '14px',
-      base: '16px',
-      lg: '18px',
-      xl: '20px',
-      '2xl': '24px',
-      '3xl': '30px',
-      '4xl': '36px',
-      '5xl': '48px',
-      '6xl': '64px'
+      12: '12px',
+      14: '14px',
+      16: '16px',
+      18: '18px',
+      20: '20px',
+      24: '24px',
+      30: '30px',
+      36: '36px',
+      48: '48px',
+      64: '64px'
     },
     spacing: customSpacing,
     right: customSpacing,
     left: customSpacing,
     top: customSpacing,
-    bottom: customSpacing
+    bottom: customSpacing,
+    listStyleImage: {
+      quill: 'url("/quill.png")'
+    }
   },
   extend: {
     width: customSpacing,

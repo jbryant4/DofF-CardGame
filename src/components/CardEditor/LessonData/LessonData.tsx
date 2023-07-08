@@ -24,7 +24,7 @@ const LessonData = ({
 
   return (
     <div className="border border-solid h-fit overflow-y-auto p-12 w-[400px]">
-      <div className="font-bold mb-24 text-2xl">Lesson Data</div>
+      <div className="font-bold mb-24 text-24">Lesson Data</div>
       <div className="flex gap-8 justify-between mb-4 pb-8">
         <BlueBtn
           onClick={() => setActiveForm('mediaLinks')}
