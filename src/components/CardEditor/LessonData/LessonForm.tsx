@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import BlueBtn from '@/Global/BlueBtn';
-import lesson from '@/Lesson';
 import { CardDocument } from '~/models/Card';
 
 type OwnProps = {

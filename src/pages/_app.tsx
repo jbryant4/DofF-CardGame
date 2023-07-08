@@ -18,7 +18,7 @@ const AppWrapper = createComponent('div', {
 });
 
 const ComponentWrapper = createComponent('div', {
-  className: 'w-full  mx-auto  h-full'
+  className: 'w-full  mx-auto  h-full overflow-auto'
 });
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -31,7 +31,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <ComponentWrapper>
               <Component {...pageProps} />
             </ComponentWrapper>
-            <div className="bg-blue-800 h-20" />
+            <div className="bg-blue-800 h-full max-h-[36px]" />
           </AppWrapper>
         </GlobalProvider>
       </CardProvider>

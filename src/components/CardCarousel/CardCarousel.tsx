@@ -48,7 +48,9 @@ const CardCarousel = () => {
   return (
     <Container ref={carouselContainerRef} className="h-full w-full">
       {isLoading ? (
-        LoaderToUse
+        <div className="flex h-full items-center justify-center w-full">
+          {LoaderToUse}
+        </div>
       ) : (
         <CarouselConfig
           setIndex={setIndex}

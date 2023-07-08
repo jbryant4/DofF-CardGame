@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 import { HTMLProps } from 'react';
-type OwnProps = { active?: boolean; children: string };
+type OwnProps = { active?: boolean };
 
 type BlueBtnProps = OwnProps & HTMLProps<HTMLDivElement>;
 const BlueBtn = ({ active = false, children, ...props }: BlueBtnProps) => (

@@ -20,8 +20,6 @@ const FilterBar = () => {
     setSubSelected('');
     if (!Filters[filter]) {
       setLocalCards(cards.filter(card => card.type === filter));
-    } else {
-      setLocalCards([]);
     }
   };
   const handleSubFilterClick = subFilter => {

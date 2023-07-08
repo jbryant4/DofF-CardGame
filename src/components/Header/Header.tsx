@@ -14,7 +14,7 @@ const Header = () => {
       setUrl('admin');
 
       return;
-    } else if (pathname.includes('cards')) {
+    } else if (pathname.includes('card')) {
       setUrl('cards');
 
       return;
@@ -24,7 +24,7 @@ const Header = () => {
   }, [router.pathname]);
 
   return (
-    <div className="bg-blue-500 flex min-h-36 px-12 py-16 w-full">
+    <div className="bg-blue-800 flex min-h-36 px-12 py-16 w-full">
       {/*{isLoggedIn ? (*/}
       {/*  <a href="/api/auth/logout">Logout</a>*/}
       {/*) : (*/}

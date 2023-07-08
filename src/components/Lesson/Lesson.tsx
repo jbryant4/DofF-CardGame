@@ -1,19 +1,12 @@
 import { useState } from 'react';
-import YouTube from 'react-youtube';
+import BlueBtn from '@/Global/BlueBtn';
 import Cog from '~/icons/Cog';
-import { CardDocument, LessonType } from '~/models/Card';
-import { Container, Wrapper } from './Lesson.styles';
+import { LessonType } from '~/models/Card';
+import { Container } from './Lesson.styles';
+
 type OwnProps = {
   lesson: LessonType;
-  title: string;
 };
-function extractYouTubeVideoId(url) {
-  const videoIdMatch = url.match(
-    /(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&?\s]+)/
-  );
-
-  return videoIdMatch ? videoIdMatch[1] : '';
-}
 
 function editShortUrl(url) {
   if (url.includes('youtube.com/shorts/')) {
@@ -25,54 +18,45 @@ function editShortUrl(url) {
   return url;
 }
 
-const getVideoComponenet = (url: string) => {
-  switch (true) {
-    case url.includes('youtube') && url.includes('short'):
-      const newUrl = editShortUrl(url);
+const getVideoComponent = (url: string) => {
+  if (url.includes('youtube') && url.includes('shorts')) {
+    const newUrl = editShortUrl(url);
 
-      return (
-        <div>
-          <iframe
-            width="315"
-            height="560"
-            src={newUrl}
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-          ></iframe>
-        </div>
-      );
-    case url.includes('youtube'):
-      const videoId = extractYouTubeVideoId(url);
-
-      return (
-        <div key={url}>
-          <YouTube videoId={videoId} />
-        </div>
-      );
-    case url.includes('tiktok'):
-      return (
-        <div key={url}>
-          <video controls className="h-auto w-full">
-            <source src={url} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </div>
-      );
-    default:
-      return null;
+    return (
+      <div>
+        <iframe
+          width="282"
+          height="500"
+          src={newUrl}
+          title="YouTube video player"
+          allow="encrypted-media;"
+        ></iframe>
+      </div>
+    );
   }
+
+  return (
+    <div className="font-bold text-center text-red-800">
+      Not a Youtube Short Url!! <br />
+      Please update on admin page
+    </div>
+  );
 };
-const Lesson = ({ lesson, title }: OwnProps) => {
+const Lesson = ({ lesson }: OwnProps) => {
   const { mediaLinks, quickNotes } = lesson;
   const nothingToShow = mediaLinks.length === 0 && quickNotes.length === 0;
   const [activate, setActivate] = useState(false);
+  const [mediaIndex, setMediaIndex] = useState(0);
+
+  const numberArray = Array.from(
+    { length: mediaLinks.length },
+    (_, index) => index + 1
+  );
 
   return nothingToShow ? (
     <div>Nothing to Show</div>
   ) : (
-    <Container className="border border-black border-solid grid grid-cols-[3fr,2fr] p-24 rounded w-full">
+    <Container className="border border-black border-solid grid grid-cols-[1fr,1fr] p-24 rounded w-full">
       <div>
         <div className="flex h-fit items-center mb-12 mx-auto relative w-fit">
           <Cog
@@ -86,7 +70,7 @@ const Lesson = ({ lesson, title }: OwnProps) => {
           </div>
         </div>
         <div className="font-serif">
-          <ul className="px-24 text-20">
+          <ul className="px-24 text-18">
             {quickNotes.map((note, index) => (
               <li key={index} className="flex gap-8 items-start">
                 <img src="/quill.png" className="w-24" />
@@ -96,7 +80,20 @@ const Lesson = ({ lesson, title }: OwnProps) => {
           </ul>
         </div>
       </div>
-      <div>{mediaLinks.map(url => getVideoComponenet(url))}</div>
+      <div className="flex items-center justify-around">
+        <div>{getVideoComponent(mediaLinks[mediaIndex])}</div>
+        <div className="flex flex-col gap-12">
+          {numberArray.map(num => (
+            <BlueBtn
+              active={num - 1 === mediaIndex}
+              key={num}
+              onClick={() => setMediaIndex(num - 1)}
+            >
+              {num}
+            </BlueBtn>
+          ))}
+        </div>
+      </div>
     </Container>
   );
 };

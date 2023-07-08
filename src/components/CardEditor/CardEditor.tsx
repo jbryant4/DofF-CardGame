@@ -26,13 +26,13 @@ const CardEditor = () => {
           <br /> What would you like to do today?
         </div>
         <div
-          className="border border-white hover:bg-white hover:text-green-600 py-4 text-lg w-[230px]"
+          className="border border-white hover:bg-white hover:text-green-600 py-4 text-24 w-[230px]"
           onClick={() => setTask('create')}
         >
           Create a Card
         </div>
         <div
-          className="border border-white hover:bg-white hover:text-green-600 py-4 text-lg w-[230px]"
+          className="border border-white hover:bg-white hover:text-green-600 py-4 text-24 w-[230px]"
           onClick={() => setTask('edit')}
         >
           Edit a Card

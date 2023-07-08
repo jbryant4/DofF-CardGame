@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { EffectCoverflow, EffectFlip, Pagination } from 'swiper';
+import { EffectCoverflow, EffectFlip, Pagination, Navigation } from 'swiper';
 import { Swiper } from 'swiper/react';
 
 type OwnProps = {
@@ -14,7 +14,9 @@ const CarouselConfig = ({
   isMobile,
   maxWidth
 }: OwnProps) => {
-  const effectToUse = isMobile ? EffectFlip : EffectCoverflow;
+  const effectsToUse = isMobile
+    ? [EffectFlip, Pagination]
+    : [EffectCoverflow, Pagination, Navigation];
 
   return (
     <Swiper
@@ -44,11 +46,10 @@ const CarouselConfig = ({
               type: 'fraction'
             }
       }
-      modules={[effectToUse, Pagination]}
+      modules={effectsToUse}
+      navigation={isMobile ? false : true}
       style={isMobile ? {} : { width: maxWidth }}
-      className={classnames('bg-blue-400 mx-auto pb-20 w-full md:h-full', {
-        'swiper-mobile': isMobile
-      })}
+      className="bg-blue-400 mt-64 mx-auto pb-20 py-12 w-full md:h-fit md:py-24"
       onActiveIndexChange={swiper => setIndex(swiper.activeIndex)}
       updateOnWindowResize={true}
     >
