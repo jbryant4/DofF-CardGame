@@ -21,8 +21,9 @@ export type LessonType = {
 export type Question = {
   prompt: string;
   options: string[];
-  answer: string;
+  answer: string | string[];
 };
+
 export interface CardDocument extends Document {
   blankUrl?: string;
   cardUrl?: string;
@@ -67,7 +68,7 @@ const CardSchema = new mongoose.Schema({
     {
       prompt: { type: String },
       options: [{ type: String }],
-      answer: { type: String }
+      answer: { type: String, required: true }
     }
   ],
   primaryClass: {

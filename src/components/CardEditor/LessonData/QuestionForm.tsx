@@ -1,48 +1,72 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import BlueBtn from '@/Global/BlueBtn';
-import { Question } from '~/models/Card';
+import { Question, CardDocument } from '~/models/Card';
+import QuestionTab from './QuestionTab';
 
-const QuestionsForm = ({ questions, setCardValues }) => {
+type OwnProps = {
+  questions: Question[];
+  setCardValues: Dispatch<SetStateAction<Partial<CardDocument>>>;
+};
+
+const QuestionForm = ({ questions, setCardValues }: OwnProps) => {
   const [newQuestion, setNewQuestion] = useState('');
   const [newOptions, setNewOptions] = useState(['', '', '', '']);
-  const [newAnswer, setNewAnswer] = useState('');
+  const [selectedOptions, setSelectedOptions] = useState<number[]>([]);
+
   const enableBtn =
-    newOptions.every(option => option.length > 0) &&
-    newOptions.includes(newAnswer);
-  console.log(enableBtn);
-  const setState = (array: Question[]) => {
-    setCardValues(prevState => ({
-      ...prevState,
-      quiz: array
-    }));
-  };
-
-  const handleAddQuestion = () => {
-    if (newQuestion && newOptions.length >= 2 && newAnswer) {
-      const updatedQuestions = [
-        ...questions,
-        { prompt: newQuestion, options: newOptions, answer: newAnswer }
-      ];
-      setState(updatedQuestions);
-      setNewQuestion('');
-      setNewOptions(['', '', '', '']);
-      setNewAnswer('');
-    }
-  };
-
-  const handleRemoveQuestion = index => {
-    const updatedQuestions = questions.filter((_, i) => i !== index);
-    setState(updatedQuestions);
-  };
-
+    newOptions.filter((_, index) => selectedOptions.includes(index)).length !==
+    0;
   const handleOptionChange = (index, value) => {
     const updatedOptions = [...newOptions];
     updatedOptions[index] = value;
     setNewOptions(updatedOptions);
   };
 
+  const handleCheckboxChange = index => {
+    const updatedSelectedOptions = [...selectedOptions];
+    if (updatedSelectedOptions.includes(index)) {
+      // If the option is already selected, remove it from the array
+      updatedSelectedOptions.splice(updatedSelectedOptions.indexOf(index), 1);
+    } else {
+      // If the option is not selected, add it to the array
+      updatedSelectedOptions.push(index);
+    }
+    setSelectedOptions(updatedSelectedOptions);
+  };
+
+  const setState = (array: Question[]) => {
+    setCardValues(prevState => ({
+      ...prevState,
+      quiz: array
+    }));
+  };
+  const handleRemoveQuestion = index => {
+    const updatedQuestions = questions.filter((_, i) => i !== index);
+    setState(updatedQuestions);
+  };
+
+  const handleAddQuestion = () => {
+    if (newQuestion && newOptions.length >= 2) {
+      const answer = newOptions.filter((_, index) =>
+        selectedOptions.includes(index)
+      );
+
+      const question = {
+        prompt: newQuestion,
+        options: newOptions.filter(option => option !== ''),
+        answer: answer
+      };
+      console.log(question);
+      const updatedQuestions = [...questions, question];
+
+      setState(updatedQuestions);
+      setNewQuestion('');
+      setNewOptions(['', '', '', '']);
+    }
+  };
+
   return (
-    <div>
+    <>
       <div className="border-blue-800 border-solid border-y-[4px] my-12 p-12 space-y-12">
         <div>
           <textarea
@@ -52,76 +76,48 @@ const QuestionsForm = ({ questions, setCardValues }) => {
             placeholder="Enter a new question"
           />
         </div>
-        <div className="flex flex-wrap w-full">
+        <div className="flex flex-col gap-8 w-full">
           {newOptions.map((option, index) => (
-            <input
-              className="border border-black border-solid p-4 w-2/4"
-              key={index}
-              type="text"
-              value={option}
-              onChange={e => handleOptionChange(index, e.target.value)}
-              placeholder={`Option ${index + 1}`}
-              style={{ flexBasis: '50%' }}
-            />
+            <div className="flex gap-8 w-full" key={index}>
+              <input
+                className="border border-black border-solid p-4 w-full"
+                type="text"
+                value={option}
+                onChange={e => handleOptionChange(index, e.target.value)}
+                placeholder={`Option ${index + 1}`}
+              />
+              <input
+                type="checkbox"
+                checked={selectedOptions.includes(index)}
+                onChange={() => handleCheckboxChange(index)}
+                disabled={option.trim().length === 0}
+              />
+            </div>
           ))}
-        </div>
-        <div>
-          <input
-            className="border border-black border-solid p-4 w-2/4"
-            type="text"
-            value={newAnswer}
-            onChange={e => setNewAnswer(e.target.value)}
-            placeholder="Enter the answer"
-          />
         </div>
         <BlueBtn
           disabled={!enableBtn}
           active={false}
           onClick={handleAddQuestion}
         >
-          {enableBtn ? 'Add' : 'answer must be 1 of 4 options'}
+          {enableBtn ? 'Add' : 'answer must be present'}
         </BlueBtn>
       </div>
-      <div className="h-[400px] overflow-auto">
+      <div className="h-[250px] overflow-auto">
         {questions.length > 0 ? (
           questions.map((question, index) => (
-            <div
-              key={index}
-              className="border border-gray-300 flex gap-4 items-center justify-between my-8 p-4 rounded"
-            >
-              <div key={index} className="flex flex-col">
-                <div className="flex">
-                  <div className="flex-shrink-0 w-fit">{index}).</div>
-                  <div className="break-all flex-grow px-8">
-                    {question.prompt}
-                  </div>
-                </div>
-                <div className="flex flex-col gap-8 items-start ml-12">
-                  {question.options.map((option, optionIndex) => (
-                    <div
-                      key={optionIndex}
-                      className={`py-2 break-all flex-grow ${
-                        option === question.answer
-                          ? 'font-bold text-blue-800'
-                          : ''
-                      }`}
-                    >
-                      {option}
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <BlueBtn onClick={() => handleRemoveQuestion(index)}>
-                Delete
-              </BlueBtn>
-            </div>
+            <QuestionTab
+              key={question.prompt}
+              removeQuestion={() => handleRemoveQuestion(index)}
+              question={question}
+            />
           ))
         ) : (
           <div>Currently have no Data</div>
         )}
       </div>
-    </div>
+    </>
   );
 };
 
-export default QuestionsForm;
+export default QuestionForm;
