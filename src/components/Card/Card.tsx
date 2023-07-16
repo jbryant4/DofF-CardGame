@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { useContext } from 'react';
 import { Container } from '@/Card/Card.styles';
+import CardType from '~/constants/CardType';
 import { GlobalContext } from '~/context/GlobalContext';
 import AttackIcon from '~/icons/AttackIcon';
 import CornerStatIcon from '~/icons/CornerStatIcon';
@@ -10,9 +11,8 @@ import Hex from '~/icons/Hex';
 import PreReqIcon from '~/icons/PreReqIcon';
 import RevolutionistIcon from '~/icons/RevolutionistIcon';
 import ShieldIcon from '~/icons/ShieldIcon';
-import { CardDocument } from '~/models/Card';
 
-function getHexIconKey(card: CardDocument) {
+function getHexIconKey(card: CardType) {
   switch (card.type) {
     case 'army':
       return ['army'];
@@ -25,7 +25,7 @@ function getHexIconKey(card: CardDocument) {
   }
 }
 type OwnProps = {
-  card: CardDocument;
+  card: CardType;
 };
 const Card = ({ card }: OwnProps) => {
   const { isMobile } = useContext(GlobalContext);
