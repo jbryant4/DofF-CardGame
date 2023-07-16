@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import Card from '@/Card';
 import BlueBtn from '@/Global/BlueBtn';
 import Lesson from '@/Lesson';
@@ -9,10 +9,10 @@ import { ModalContext } from '~/context/ModalContext';
 
 const CardDetailsPage = () => {
   const router = useRouter();
-  const { id } = router.query;
-  const { cards } = useContext(CardContext);
+  const { id } = router.query as { id: string };
+  const { getCard } = useContext(CardContext);
   const { setOpenModal } = useContext(ModalContext);
-  const card = cards.find(c => c._id === id);
+  const card = getCard(id);
 
   return card ? (
     <div className="grid grid-cols-[1fr,2fr] h-full items-center overflow-y-auto pb-[54px] pt-24 px-24">

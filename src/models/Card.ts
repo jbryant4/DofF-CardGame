@@ -43,9 +43,18 @@ export interface CardDocument extends Document {
   def?: number;
   title: string;
   type: CardType;
-  yearStart: number;
-  yearEnd: number;
+  yearStart?: number;
+  yearEnd?: number;
 }
+function validateAnswer(value: string | string[]): boolean {
+  return typeof value === 'string' || Array.isArray(value);
+}
+
+const QuestionSchema = new Schema({
+  prompt: { type: String },
+  options: [{ type: String }],
+  answer: { type: Schema.Types.Mixed, validate: validateAnswer }
+});
 
 const CardSchema = new mongoose.Schema({
   _id: {
@@ -64,13 +73,7 @@ const CardSchema = new mongoose.Schema({
     quickNotes: [{ type: String }]
   },
   location: { type: String },
-  quiz: [
-    {
-      prompt: { type: String },
-      options: [{ type: String }],
-      answer: { type: String, required: true }
-    }
-  ],
+  quiz: [QuestionSchema],
   primaryClass: {
     type: String,
     enum: [

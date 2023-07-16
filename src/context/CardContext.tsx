@@ -6,10 +6,13 @@ import React, {
   useState,
   useCallback
 } from 'react';
+import Card from '~/constants/CardType';
+import defaultCard from '~/constants/defaultCard';
 import { CollectorContext } from '~/context/CollectorContext';
 import { CardDocument } from '~/models/Card';
 import { Deck } from '~/models/Collector';
 import { fetchCards } from '~/services/cardServices';
+
 type WholeDeck = {
   title: string;
   cards: CardDocument[];
@@ -22,6 +25,7 @@ type CardContextType = {
   decks: WholeDeck[];
   isLoading: boolean;
   errorText: Error | null;
+  getCard: (id: string) => Card;
   unlockCard: (id: string) => Promise<void>;
   createDeck: (deck: Deck) => Promise<void>;
   editDeck: (deck: Deck) => Promise<void>;
@@ -37,6 +41,7 @@ const defaultCardContext: CardContextType = {
   decks: [],
   isLoading: false,
   errorText: null,
+  getCard: (_value: string) => defaultCard,
   unlockCard: async (_value: string) => {},
   createDeck: async (_value: Deck) => {},
   editDeck: async (_value: Deck) => {},
@@ -84,6 +89,19 @@ export function CardProvider({ children }: Props) {
   const editDeck = useCallback(async (deck: Deck): Promise<void> => {}, []);
   const deleteDeck = useCallback(async (deck: Deck): Promise<void> => {}, []);
 
+  const getCard = useCallback(
+    (id): Card => {
+      const data = cards.find(c => c._id === id);
+
+      if (data) {
+        return data;
+      } else {
+        return defaultCard;
+      }
+    },
+    [cards]
+  );
+
   useEffect(() => {
     (async () => {
       try {
@@ -116,6 +134,7 @@ export function CardProvider({ children }: Props) {
       decks,
       isLoading,
       errorText,
+      getCard,
       unlockCard,
       createDeck,
       editDeck,
@@ -130,6 +149,7 @@ export function CardProvider({ children }: Props) {
       decks,
       isLoading,
       errorText,
+      getCard,
       unlockCard,
       createDeck,
       editDeck,

@@ -1,7 +1,8 @@
 enum ModalEnum {
   None,
   Unlock,
-  Breakdown
+  Breakdown,
+  Quiz
 }
 
 export default ModalEnum;
