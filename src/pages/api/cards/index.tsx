@@ -49,7 +49,7 @@ export const editCard = async (req: NextApiRequest, res: NextApiResponse) => {
     );
 
     if (!card) {
-      return res.status(404).json({ error: 'Card not found' });
+      return res.status(404).json({ error: 'UpdatedCard not found' });
     }
 
     return res.status(200).json(card);
@@ -69,7 +69,7 @@ export const deleteCard = async (req: NextApiRequest, res: NextApiResponse) => {
     const card = await Card.findByIdAndDelete(id);
 
     if (!card) {
-      return res.status(404).json({ error: 'Card not found' });
+      return res.status(404).json({ error: 'UpdatedCard not found' });
     }
 
     res.status(204).end();

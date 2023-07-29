@@ -5,13 +5,13 @@ Should make new type gameCard that takes the combat stats/effects from card docu
 
 
 ###  Alpha release Check List 
-#### Card
+#### UpdatedCard
  - border color based on foundation 
  - fix overflowing effect text/ work on short handing the text
  - work on different size cards(unsure if the dynamic card concept will work)
  - ToolTips/ modals for the card when clicked on
 
-#### Card Details page
+#### UpdatedCard Details page
 
 - Lesson section(quick notes / video)
   

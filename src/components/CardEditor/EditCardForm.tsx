@@ -34,7 +34,7 @@ const EditCardForm = () => {
         }
         onClick={() => setEditCard({})}
       >
-        Select Different Card
+        Select Different UpdatedCard
       </div>
 
       <div
@@ -52,7 +52,7 @@ const EditCardForm = () => {
               type="text"
               name="fileName"
               value={search}
-              placeholder="Search Card Title"
+              placeholder="Search UpdatedCard Title"
               onChange={e => setSearch(e.target.value)}
               className="bg-gray-700 my-12 p-8 text-white w-fit"
             />

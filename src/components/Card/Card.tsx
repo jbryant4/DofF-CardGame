@@ -49,7 +49,7 @@ const Card = ({ card }: OwnProps) => {
     <Container className="">
       <div
         className={classNames(
-          'mt-56 mx-auto relative',
+          'mx-auto relative',
           { 'w-[255px] h-[340px]': isMobile },
           { 'w-[255px] h-[340px] ': !isMobile }
         )}
@@ -60,9 +60,7 @@ const Card = ({ card }: OwnProps) => {
           stroke="black"
           icon={hexIconKey}
           className="absolute left-[-30px] stroke-blue-600 top-[-42px] z-20"
-        >
-          <RevolutionistIcon size={55} x={25} y={25} fill="black" />
-        </Hex>
+        />
         <div className="absolute bg-black border-blue-600 border-solid border-t border-x pl-32 text-white top-[-25px] w-full">
           {title}
         </div>

@@ -279,7 +279,7 @@ export const cards = [
     type: 'resource',
 
     effectText:
-      'One Ocean Card may attack twice this round. (Including attacking the player twice if no champions are present). This card is removed after 2 turns or if one Ocean/Sea based card is destroyed'
+      'One Ocean UpdatedCard may attack twice this round. (Including attacking the player twice if no champions are present). This card is removed after 2 turns or if one Ocean/Sea based card is destroyed'
   },
   {
     title: 'Bubonic Plague',
@@ -345,7 +345,7 @@ export const cards = [
     type: 'resource',
 
     effectText:
-      'You may draw one additional Foundation Card. Both players may look at their next three cards. Discard this card at the end of this turn.'
+      'You may draw one additional Foundation UpdatedCard. Both players may look at their next three cards. Discard this card at the end of this turn.'
   },
   {
     title: 'Proselytize',
@@ -898,7 +898,7 @@ export const cards = [
 
     class: ['scholar'],
     effectText:
-      'Destroy one army card on your field to instantly heal one Champion or Army Card.'
+      'Destroy one army card on your field to instantly heal one Champion or Army UpdatedCard.'
   },
   {
     title: 'Ismael I',

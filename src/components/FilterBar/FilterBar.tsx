@@ -63,10 +63,10 @@ const FilterBar = () => {
                 <SubFilter
                   key={subFilter}
                   className={classNames(
-                    'border border-black capitalize flex-1 font-bold hover:bg-white hover:text-black px-8 py-4 rounded-full text-center text-white',
+                    'border border-black capitalize flex-1 font-bold hover:bg-white hover:text-black px-8 py-4 rounded-full text-center ',
                     {
                       'bg-white text-blue-800': selectedSubFilter === subFilter,
-                      'bg-blue-800': selectedSubFilter !== subFilter
+                      'bg-blue-800 text-white': selectedSubFilter !== subFilter
                     }
                   )}
                   onClick={() => handleSubFilterClick(subFilter)}

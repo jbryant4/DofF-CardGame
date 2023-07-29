@@ -105,12 +105,12 @@ const NewCardForm = ({ initialState = blankCard, newCardForm }: Props) => {
           type="submit"
           className="border border-black hover:text-green-600 my-8 p-8 w-fit"
         >
-          {newCardForm ? 'Create Card' : 'Update Card'}
+          {newCardForm ? 'Create UpdatedCard' : 'Update UpdatedCard'}
         </button>
         <div className={callComplete ? 'font-bold text-green-600' : 'hidden'}>
           {newCardForm
-            ? 'Card Created Successfully'
-            : 'Card Updated Successfully'}
+            ? 'UpdatedCard Created Successfully'
+            : 'UpdatedCard Updated Successfully'}
         </div>
       </div>
     </form>

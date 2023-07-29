@@ -15,10 +15,39 @@ const HeartIcon = forwardRef<SVGSVGElement, OwnProps>(
       className="text-30 text-black"
     >
       {hp > 0 ? (
-        <path
-          fill="red"
-          d="m87.234 16.777c-10.246-10.246-26.863-10.336-37.215-0.28125-10.363-10.082-26.996-9.9961-37.25 0.26172-5.0117 5.0078-7.7695 11.672-7.7695 18.758s2.7578 13.746 7.7695 18.758l37.234 37.234 37.23-37.23c5.0078-5.0078 7.7656-11.668 7.7656-18.75 0-7.082-2.7578-13.742-7.7656-18.75z"
-        />
+        <>
+          <defs>
+            <radialGradient
+              id="grad1"
+              cx="50%"
+              cy="50%"
+              r="50%"
+              fx="50%"
+              fy="50%"
+            >
+              <stop offset="0%" style={{ stopColor: 'red', stopOpacity: 1 }} />
+              <stop
+                offset="100%"
+                style={{ stopColor: 'darkred', stopOpacity: 1 }}
+              />
+            </radialGradient>
+            <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur in="SourceAlpha" stdDeviation="5" />
+              <feOffset dx="0" dy="9" result="offsetblur" />
+              <feFlood floodColor="darkred" floodOpacity="0.5" />
+              <feComposite in2="offsetblur" operator="in" />
+              <feMerge>
+                <feMergeNode />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+          <path
+            fill="url(#grad1)"
+            d="m87.234 16.777c-10.246-10.246-26.863-10.336-37.215-0.28125-10.363-10.082-26.996-9.9961-37.25 0.26172-5.0117 5.0078-7.7695 11.672-7.7695 18.758s2.7578 13.746 7.7695 18.758l37.234 37.234 37.23-37.23c5.0078-5.0078 7.7656-11.668 7.7656-18.75 0-7.082-2.7578-13.742-7.7656-18.75z"
+            filter="url(#shadow)"
+          />
+        </>
       ) : (
         <g>
           <path

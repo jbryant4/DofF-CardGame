@@ -47,12 +47,11 @@ const getIconToUse = (icon: string) => {
 
 type OwnProps = React.SVGProps<SVGSVGElement> & {
   size?: number;
-  children: ReactNode;
   icon?: string[];
 };
 
 const Hex = forwardRef<SVGSVGElement, OwnProps>(
-  ({ size = 100, icon, children, ...props }, ref) => {
+  ({ size = 100, icon, ...props }, ref) => {
     const iconToUse = getIconToUse(icon ? icon[0] : '');
 
     return (
@@ -68,6 +67,7 @@ const Hex = forwardRef<SVGSVGElement, OwnProps>(
           d="M 5 30 L 50 5 L 95 30 L 95 70 L 50 95 L 5 70 Z"
           strokeWidth="2"
         />
+
         {iconToUse}
       </svg>
     );
