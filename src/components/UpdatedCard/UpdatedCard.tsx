@@ -14,19 +14,6 @@ type CardPlacement =
   | 'down-defending'
   | 'down-attacking';
 
-function getHexIconKey(card: CardType) {
-  switch (card.type) {
-    case 'army':
-      return ['army'];
-    case 'foundation':
-      return card.foundation;
-    case 'champion':
-      return card.class;
-    default:
-      return ['resource'];
-  }
-}
-
 type OwnProps = {
   card: CardType;
   width?: number;
@@ -58,24 +45,7 @@ const UpdatedCard = ({ card, width = 255 }: OwnProps) => {
   const [combatDef, setDef] = useState(defaultCombatStat);
   const [combatAtk, setAtk] = useState(defaultCombatStat);
   const [placement, setPlacement] = useState<CardPlacement>('attacking');
-  const [active, setActive] = useState(false);
-  const [animation, setAnimation] = useState('');
   const [unlocked, setUnlocked] = useState(false);
-
-  useEffect(() => {
-    if (active) {
-      setAnimation('fill');
-      const timer = setTimeout(() => {
-        setAnimation('loop');
-      }, 4000); // same duration as fill animation
-
-      return () => {
-        clearTimeout(timer);
-      };
-    } else {
-      setAnimation('');
-    }
-  }, [active]);
 
   const { borderThickness, innerCardWidth, combatCircleRadius, imageHeight } =
     useGetCardDimensions(width);
@@ -134,6 +104,7 @@ const UpdatedCard = ({ card, width = 255 }: OwnProps) => {
 
       <div className="overflow-hidden relative">
         <img
+          alt="card image"
           src={blankUrl}
           className="object-cover"
           style={{
@@ -191,7 +162,38 @@ const UpdatedCard = ({ card, width = 255 }: OwnProps) => {
                   />
                 )}
               </div>
-
+              <div id="off-attack-defense" className="flex items-end relative">
+                <div
+                  className="bg-green-300 flex items-center justify-center overflow-hidden relative rounded-full z-[2]"
+                  style={{
+                    width: combatCircleRadius / 2,
+                    height: combatCircleRadius / 2,
+                    fontSize: Math.floor(combatCircleRadius / 2) - 10,
+                    marginBottom: combatCircleRadius / 4
+                  }}
+                >
+                  {placement.includes('attack')
+                    ? combatAtk.current
+                    : combatDef.current}
+                </div>
+                {placement.includes('attack') ? (
+                  <ShieldIcon
+                    className="absolute z-[1]"
+                    style={{
+                      left: -combatCircleRadius / 2 / 2.6
+                    }}
+                    size={(combatCircleRadius / 2) * 1.8}
+                  />
+                ) : (
+                  <AttackIcon
+                    className="absolute z-[1]"
+                    style={{
+                      left: -combatCircleRadius / 2 / 2
+                    }}
+                    size={(combatCircleRadius / 2) * 2}
+                  />
+                )}
+              </div>
               {effectText && (
                 <div className="flex h-full items-center overflow-y-auto p-8 text-12">
                   {effectText}
@@ -240,7 +242,6 @@ const UpdatedCard = ({ card, width = 255 }: OwnProps) => {
         </div>
         <div onClick={() => setPlacement('attacking')}>atk</div>
         <div onClick={() => setPlacement('defending')}>def</div>
-        <div onClick={() => setActive(prevState => !prevState)}>fire</div>
         <div onClick={() => setUnlocked(prevState => !prevState)}>unlock</div>
       </div>
     </div>
