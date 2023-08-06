@@ -17,6 +17,8 @@ const NobilityIcon = dynamic(() => import('./NobleIcon'));
 const ExplorerIcon = dynamic(() => import('./ExplorerIcon'));
 
 const getIconToUse = (icon: string) => {
+  if (!icon) return null;
+
   switch (icon.toLowerCase()) {
     case 'earth':
       return <EarthIcon size={70} x={15} y={15} />;
@@ -52,7 +54,7 @@ type OwnProps = React.SVGProps<SVGSVGElement> & {
 
 const Hex = forwardRef<SVGSVGElement, OwnProps>(
   ({ size = 100, icon, ...props }, ref) => {
-    const iconToUse = getIconToUse(icon ? icon[0] : '');
+    const iconToUse = icon ? getIconToUse(icon[0]) : null;
 
     return (
       <svg

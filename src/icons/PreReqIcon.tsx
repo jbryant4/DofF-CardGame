@@ -36,7 +36,7 @@ const getIconToUse = (preReq: PreReq) => {
     case '2c':
       return <TwoChampIcon size={51} x={24} y={24} />;
     default:
-      return <EarthIcon size={55} />;
+      return null;
   }
 };
 

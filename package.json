@@ -21,12 +21,14 @@
     "@types/react-dom": "18.0.10",
     "bcrypt": "^5.1.0",
     "classnames": "^2.3.2",
+    "compass-mixins": "^0.12.12",
     "jsonwebtoken": "^9.0.0",
     "mongodb": "^5.1.0",
     "mongoose": "^7.0.2",
     "next": "13.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "sass": "^1.64.2",
     "swiper": "^9.3.2"
   },
   "devDependencies": {

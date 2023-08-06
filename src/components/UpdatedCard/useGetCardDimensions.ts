@@ -1,9 +1,16 @@
 const useGetCardDimensions = (width: number) => {
-  const borderDimension = width * 0.05;
+  const borderThickness = width * 0.03;
   const imageHeight = width * (4 / 3);
-  const bottomBorderWidth = width - 2 * borderDimension;
+  const innerCardWidth = width - 2 * borderThickness;
 
-  return { borderDimension, bottomBorderWidth, imageHeight };
+  const combatCircleRadius = innerCardWidth / 4;
+
+  return {
+    borderThickness,
+    innerCardWidth,
+    combatCircleRadius,
+    imageHeight
+  };
 };
 
 export default useGetCardDimensions;
