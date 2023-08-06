@@ -28,7 +28,7 @@ const defaultCombatStat: CombatStat = {
   max: 0,
   current: 0
 };
-const UpdatedCard = ({ card, width = 255 }: OwnProps) => {
+const UpdatedCard = ({ card, width = 200 }: OwnProps) => {
   const {
     title,
     preReqs,
@@ -162,7 +162,11 @@ const UpdatedCard = ({ card, width = 255 }: OwnProps) => {
                   />
                 )}
               </div>
-              <div id="off-attack-defense" className="flex items-end relative">
+              <div
+                id="off-attack-defense"
+                className="flex items-end relative"
+                style={{ marginLeft: -combatCircleRadius / 8 }}
+              >
                 <div
                   className="bg-green-300 flex items-center justify-center overflow-hidden relative rounded-full z-[2]"
                   style={{
@@ -225,7 +229,7 @@ const UpdatedCard = ({ card, width = 255 }: OwnProps) => {
           </div>
         )}
       </div>
-      <div id="showcase-btn" className="hidden">
+      <div id="showcase-btn" className="">
         <div
           onClick={() =>
             setHp(prevStat => ({ ...prevStat, current: prevStat.current + 1 }))
