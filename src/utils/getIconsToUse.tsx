@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
 import { PreReq } from '~/models/Card';
-import createComponent from '~/utils/styles/createComponent';
+
 //Dynamic Import all Foundation Icons
 const EarthIcon = dynamic(() => import('~/icons/EarthFoundationIcon'));
 const OceanIcon = dynamic(() => import('~/icons/OceanFoundationIcon'));
@@ -14,6 +14,7 @@ const ThreeArmyIcon = dynamic(() => import('~/icons/ThreeArmyIcon'));
 
 const OneChampIcon = dynamic(() => import('~/icons/OneChampionIcon'));
 const TwoChampIcon = dynamic(() => import('~/icons/TwoChampionIcon'));
+
 export const getIconToUse = (preReq: PreReq | undefined, cardWidth: number) => {
   if (!preReq) return null;
 

@@ -1,10 +1,8 @@
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import AnimatedBackGround from '@/UpdatedCard/AnimatedBackGround';
-import EarthFoundationIcon from '~/icons/EarthFoundationIcon';
-import OneArmyIcon from '~/icons/OneArmyIcon';
 import { PreReq } from '~/models/Card';
-import getIconsToUse, { getIconToUse } from '~/utils/getIconsToUse';
+import getIconsToUse from '~/utils/getIconsToUse';
 import Chain from './Chain';
 
 type OwnProps = {
@@ -15,7 +13,6 @@ type OwnProps = {
 };
 
 const PreReqOverlay = ({ width, left, preReqs, unlocked }: OwnProps) => {
-  const totalCount = preReqs.length;
   const svgSquareDimensions = width / 3;
   const [startBurn, setBurn] = useState(false);
   const { IconOne, IconTwo, IconThree, IconFour, IconFive } = getIconsToUse(

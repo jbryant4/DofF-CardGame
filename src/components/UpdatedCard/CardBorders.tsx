@@ -10,13 +10,13 @@ const RightBorder = createComponent('div', {
 
 type OwnProps = {
   borderThickness: number;
-  hasBattleStats: boolean;
+  showBottomBorder: boolean;
   innerCardWidth: number;
 };
 
 const CardBorders = ({
   borderThickness,
-  hasBattleStats,
+  showBottomBorder,
   innerCardWidth
 }: OwnProps) => {
   return (
@@ -31,9 +31,9 @@ const CardBorders = ({
           width: borderThickness
         }}
       />
-      {hasBattleStats && (
+      {showBottomBorder && (
         <div
-          className="absolute bg-black bottom-0"
+          className="absolute bg-black bottom-0 z-[1]"
           style={{
             width: innerCardWidth,
             height: borderThickness,

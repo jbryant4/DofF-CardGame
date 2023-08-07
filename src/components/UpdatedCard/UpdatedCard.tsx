@@ -57,6 +57,7 @@ const UpdatedCard = ({ card, width = 255 }: OwnProps) => {
     blankUrl
   } = card;
   const hexIconKeys = getHexIconKeys(card);
+  const showPreReqOverlay = preReqs && preReqs.length > 0;
   const [combatHp, setHp] = useState(defaultCombatStat);
   const [combatDef, setDef] = useState(defaultCombatStat);
   const [combatAtk, setAtk] = useState(defaultCombatStat);
@@ -66,6 +67,7 @@ const UpdatedCard = ({ card, width = 255 }: OwnProps) => {
   const { borderThickness, innerCardWidth, combatCircleRadius, imageHeight } =
     useGetCardDimensions(width);
 
+  const showStatOverlay = Boolean((atk && def && hp) || effectText);
   const hasBattleStats = Boolean(atk && def && hp);
   const healthOrbs =
     combatHp.current > combatHp.max ? combatHp.current : combatHp.max;
@@ -132,11 +134,11 @@ const UpdatedCard = ({ card, width = 255 }: OwnProps) => {
         />
         <CardBorders
           borderThickness={borderThickness}
-          hasBattleStats
+          showBottomBorder={!hasBattleStats}
           innerCardWidth={innerCardWidth}
         />
 
-        {preReqs && (
+        {showPreReqOverlay && (
           <PreReqOverlay
             width={innerCardWidth}
             left={borderThickness}
@@ -144,7 +146,7 @@ const UpdatedCard = ({ card, width = 255 }: OwnProps) => {
             unlocked={unlocked}
           />
         )}
-        {hasBattleStats && (
+        {showStatOverlay && (
           <div
             className="absolute bg-gray-500/90 bottom-0 flex flex-col h-2/5"
             style={{
@@ -153,97 +155,106 @@ const UpdatedCard = ({ card, width = 255 }: OwnProps) => {
             }}
           >
             <div className="flex flex-grow overflow-y-hidden">
-              <div id="attack-defense" className="flex items-center relative">
-                <div
-                  className="flex items-center justify-center overflow-hidden relative rounded-full text-white z-[2]"
-                  style={{
-                    width: combatCircleRadius,
-                    height: combatCircleRadius,
-                    fontSize: Math.floor(combatCircleRadius) - 10
-                  }}
-                >
-                  {placement.includes('attack')
-                    ? combatAtk.current
-                    : combatDef.current}
-                </div>
-                {placement.includes('attack') ? (
-                  <AttackIcon
-                    className="absolute z-[1]"
-                    style={{ left: -combatCircleRadius / 2.6 }}
-                    size={combatCircleRadius * 1.8}
-                  />
-                ) : (
-                  <ShieldIcon
-                    className="absolute z-[1]"
-                    style={{ left: -combatCircleRadius / 2 }}
-                    size={combatCircleRadius * 2}
-                  />
-                )}
-              </div>
-              <div
-                id="off-attack-defense"
-                className="flex items-end relative"
-                style={{ marginLeft: -combatCircleRadius / 8 }}
-              >
-                <div
-                  className="flex items-center justify-center overflow-hidden relative rounded-full text-white z-[2]"
-                  style={{
-                    width: combatCircleRadius / 2,
-                    height: combatCircleRadius / 2,
-                    fontSize: Math.floor(combatCircleRadius / 2) - 10,
-                    marginBottom: combatCircleRadius / 4
-                  }}
-                >
-                  {placement.includes('attack')
-                    ? combatAtk.current
-                    : combatDef.current}
-                </div>
-                {placement.includes('attack') ? (
-                  <ShieldIcon
-                    className="absolute z-[1]"
-                    style={{
-                      left: -combatCircleRadius / 2 / 2.6
-                    }}
-                    size={(combatCircleRadius / 2) * 1.8}
-                  />
-                ) : (
-                  <AttackIcon
-                    className="absolute z-[1]"
-                    style={{
-                      left: -combatCircleRadius / 2 / 2
-                    }}
-                    size={(combatCircleRadius / 2) * 2}
-                  />
-                )}
-              </div>
+              {hasBattleStats && (
+                <>
+                  <div
+                    id="attack-defense"
+                    className="flex items-center relative"
+                  >
+                    <div
+                      className="flex items-center justify-center overflow-hidden relative rounded-full text-white z-[2]"
+                      style={{
+                        width: combatCircleRadius,
+                        height: combatCircleRadius,
+                        fontSize: Math.floor(combatCircleRadius) - 10
+                      }}
+                    >
+                      {placement.includes('attack')
+                        ? combatAtk.current
+                        : combatDef.current}
+                    </div>
+                    {placement.includes('attack') ? (
+                      <AttackIcon
+                        className="absolute z-[1]"
+                        style={{ left: -combatCircleRadius / 2.6 }}
+                        size={combatCircleRadius * 1.8}
+                      />
+                    ) : (
+                      <ShieldIcon
+                        className="absolute z-[1]"
+                        style={{ left: -combatCircleRadius / 2 }}
+                        size={combatCircleRadius * 2}
+                      />
+                    )}
+                  </div>
+                  <div
+                    id="off-attack-defense"
+                    className="flex items-end relative"
+                    style={{ marginLeft: -combatCircleRadius / 8 }}
+                  >
+                    <div
+                      className="flex items-center justify-center overflow-hidden relative rounded-full text-white z-[2]"
+                      style={{
+                        width: combatCircleRadius / 2,
+                        height: combatCircleRadius / 2,
+                        fontSize: Math.floor(combatCircleRadius / 2) - 10,
+                        marginBottom: combatCircleRadius / 4
+                      }}
+                    >
+                      {placement.includes('attack')
+                        ? combatAtk.current
+                        : combatDef.current}
+                    </div>
+                    {placement.includes('attack') ? (
+                      <ShieldIcon
+                        className="absolute z-[1]"
+                        style={{
+                          left: -combatCircleRadius / 2 / 2.6
+                        }}
+                        size={(combatCircleRadius / 2) * 1.8}
+                      />
+                    ) : (
+                      <AttackIcon
+                        className="absolute z-[1]"
+                        style={{
+                          left: -combatCircleRadius / 2 / 2
+                        }}
+                        size={(combatCircleRadius / 2) * 2}
+                      />
+                    )}
+                  </div>
+                </>
+              )}
               {effectText && (
-                <div className="flex h-full items-center overflow-y-auto p-8 text-12">
+                <div className="flex h-full items-center overflow-y-auto p-8 text-12 text-center">
                   {effectText}
                 </div>
               )}
             </div>
-            <div
-              id="health"
-              className="bg-black flex-shrink-0 pb-4 relative self-end w-full"
-            >
-              <div className="flex mx-auto w-fit">
-                {Array.from({ length: healthOrbs }).map((_, index) => (
-                  <div
-                    key={index}
-                    className={classNames(
-                      'health-circle',
-                      {
-                        empty:
-                          index <= combatHp.max && index >= combatHp.current
-                      },
-                      {
-                        'bonus-health': index + 1 > combatHp.max
-                      }
-                    )}
-                  />
-                ))}
+            {hasBattleStats && (
+              <div
+                id="health"
+                className="bg-black flex-shrink-0 pb-4 relative self-end w-full"
+              >
+                <div className="flex mx-auto w-fit">
+                  {Array.from({ length: healthOrbs }).map((_, index) => (
+                    <div
+                      key={index}
+                      className={classNames(
+                        'health-circle',
+                        {
+                          empty:
+                            index <= combatHp.max && index >= combatHp.current
+                        },
+                        {
+                          'bonus-health': index + 1 > combatHp.max
+                        }
+                      )}
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         )}
       </div>
