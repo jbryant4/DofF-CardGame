@@ -8,6 +8,23 @@ import Hex from '~/icons/Hex';
 import ShieldIcon from '~/icons/ShieldIcon';
 import useGetCardDimensions from './useGetCardDimensions';
 
+function getHexIconKeys(card: CardType) {
+  const { primaryClass, secondaryClass, class: traits } = card;
+  switch (card.type) {
+    case 'army':
+      return ['army'];
+    case 'foundation':
+      return card.foundation;
+    case 'champion':
+      return [
+        primaryClass ? primaryClass : traits ? traits[0] : undefined,
+        secondaryClass ? secondaryClass : traits ? traits[1] : undefined
+      ];
+    default:
+      return ['resource'];
+  }
+}
+
 type CardPlacement =
   | 'attacking'
   | 'defending'
@@ -28,19 +45,18 @@ const defaultCombatStat: CombatStat = {
   max: 0,
   current: 0
 };
-const UpdatedCard = ({ card, width = 200 }: OwnProps) => {
+const UpdatedCard = ({ card, width = 255 }: OwnProps) => {
   const {
     title,
     preReqs,
     effectText,
-    foundation,
+    foundation, // will be using for border color
     hp,
     def,
     atk,
-    class: traits,
-    blankUrl,
-    type
+    blankUrl
   } = card;
+  const hexIconKeys = getHexIconKeys(card);
   const [combatHp, setHp] = useState(defaultCombatStat);
   const [combatDef, setDef] = useState(defaultCombatStat);
   const [combatAtk, setAtk] = useState(defaultCombatStat);
@@ -78,27 +94,29 @@ const UpdatedCard = ({ card, width = 200 }: OwnProps) => {
         className="bg-black flex items-center overflow-ellipsis relative text-16 text-white w-full whitespace-nowrap"
         style={{ height: width * 0.25 * 0.4, paddingLeft: width / 8 + 4 }}
       >
-        <div
-          className="absolute flex flex-col items-center w-fit"
-          style={{
-            left: -(width / 8 - borderThickness / 2),
-            top: -(width * 0.25 * 0.3)
-          }}
-        >
-          <Hex
-            size={width * 0.25}
-            stroke="blue"
-            icon={traits}
-            className="z-20"
-          />
-          <Hex
-            size={width / 6}
-            className="z-20"
-            stroke="blue"
-            icon={traits}
-            style={{ marginTop: -(width * 0.25 * 0.06) }}
-          />
-        </div>
+        {hexIconKeys && (
+          <div
+            className="absolute flex flex-col items-center w-fit"
+            style={{
+              left: -(width / 8 - borderThickness / 2),
+              top: -(width * 0.25 * 0.3)
+            }}
+          >
+            <Hex
+              size={width * 0.25}
+              stroke="blue"
+              icon={hexIconKeys[0]}
+              className="z-20"
+            />
+            <Hex
+              size={width / 6}
+              className="z-20"
+              stroke="blue"
+              icon={hexIconKeys[1]}
+              style={{ marginTop: -(width * 0.25 * 0.06) }}
+            />
+          </div>
+        )}
         {title}
       </div>
 
@@ -137,7 +155,7 @@ const UpdatedCard = ({ card, width = 200 }: OwnProps) => {
             <div className="flex flex-grow overflow-y-hidden">
               <div id="attack-defense" className="flex items-center relative">
                 <div
-                  className="bg-green-300 flex items-center justify-center overflow-hidden relative rounded-full z-[2]"
+                  className="flex items-center justify-center overflow-hidden relative rounded-full text-white z-[2]"
                   style={{
                     width: combatCircleRadius,
                     height: combatCircleRadius,
@@ -168,7 +186,7 @@ const UpdatedCard = ({ card, width = 200 }: OwnProps) => {
                 style={{ marginLeft: -combatCircleRadius / 8 }}
               >
                 <div
-                  className="bg-green-300 flex items-center justify-center overflow-hidden relative rounded-full z-[2]"
+                  className="flex items-center justify-center overflow-hidden relative rounded-full text-white z-[2]"
                   style={{
                     width: combatCircleRadius / 2,
                     height: combatCircleRadius / 2,
@@ -229,7 +247,7 @@ const UpdatedCard = ({ card, width = 200 }: OwnProps) => {
           </div>
         )}
       </div>
-      <div id="showcase-btn" className="">
+      <div id="showcase-btn" className="hidden">
         <div
           onClick={() =>
             setHp(prevStat => ({ ...prevStat, current: prevStat.current + 1 }))

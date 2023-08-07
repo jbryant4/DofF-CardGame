@@ -17,7 +17,15 @@ const NobilityIcon = dynamic(() => import('./NobleIcon'));
 const ExplorerIcon = dynamic(() => import('./ExplorerIcon'));
 
 const getIconToUse = (icon: string) => {
-  if (!icon) return null;
+  if (typeof icon !== 'string') {
+    console.error(
+      'Invalid icon type, expected a string but got:',
+      typeof icon,
+      icon
+    );
+
+    return null;
+  }
 
   switch (icon.toLowerCase()) {
     case 'earth':
@@ -49,12 +57,14 @@ const getIconToUse = (icon: string) => {
 
 type OwnProps = React.SVGProps<SVGSVGElement> & {
   size?: number;
-  icon?: string[];
+  icon?: string;
 };
 
 const Hex = forwardRef<SVGSVGElement, OwnProps>(
   ({ size = 100, icon, ...props }, ref) => {
-    const iconToUse = icon ? getIconToUse(icon[0]) : null;
+    if (!icon) return null;
+
+    const iconToUse = getIconToUse(icon);
 
     return (
       <svg

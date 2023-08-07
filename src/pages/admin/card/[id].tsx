@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
-import Card from '@/Card';
 import UpdatedCard from '@/UpdatedCard';
 import { CardContext } from '~/context/CardContext';
 
@@ -12,7 +11,6 @@ const CardEditPage = () => {
 
   return card ? (
     <div className="flex h-full items-center justify-around w-full">
-      <Card card={card} />
       <UpdatedCard card={card} />
     </div>
   ) : (
