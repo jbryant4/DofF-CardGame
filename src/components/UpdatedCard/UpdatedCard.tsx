@@ -202,7 +202,7 @@ const UpdatedCard = ({ card, width = 255 }: OwnProps) => {
                       }}
                     >
                       {placement.includes('attack')
-                        ? combatAtk.current
+                        ? combatDef.current
                         : combatDef.current}
                     </div>
                     {placement.includes('attack') ? (
