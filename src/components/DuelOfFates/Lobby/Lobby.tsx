@@ -1,0 +1,25 @@
+import React, { useContext } from 'react';
+import { playerOne, playerTwo } from '@/DuelOfFates/testSubjects';
+import { GameContext } from '~/context/GameContext'; // Adjust the import path accordingly
+
+function Lobby() {
+  const { updatePlayerOne, updatePlayerTwo, setGameState } =
+    useContext(GameContext);
+
+  const startAdminGame = () => {
+    // Set test users to playerOne and playerTwo states
+    updatePlayerOne(prevState => ({ ...prevState, ...playerOne }));
+    updatePlayerTwo(prevState => ({ ...prevState, ...playerTwo }));
+
+    // Change the gameState to 'Battle'
+    setGameState('Battle');
+  };
+
+  return (
+    <div>
+      <button onClick={startAdminGame}>Start Admin Game</button>
+    </div>
+  );
+}
+
+export default Lobby;
