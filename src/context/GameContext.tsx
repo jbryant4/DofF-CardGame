@@ -20,9 +20,11 @@ const defaultDuelist = {
   deck: { title: '', cards: [''] },
   hitPoints: 10
 };
-
+type Players = '' | 'playerOne' | 'playerTwo';
 type BattleStage = 'plan' | 'place' | 'duel' | 'respite' | null;
 type GameContextType = {
+  localPlayer: Players;
+  setLocalPLayer: Dispatch<SetStateAction<Players>>;
   gameState: 'Lobby' | 'Battle' | 'Stats';
   setGameState: Dispatch<SetStateAction<'Lobby' | 'Battle' | 'Stats'>>;
   playerOne: Duelist;
@@ -31,12 +33,14 @@ type GameContextType = {
   updatePlayerTwo: Dispatch<SetStateAction<Duelist>>;
   battleStage: BattleStage;
   setBattleStage: Dispatch<SetStateAction<BattleStage>>;
-  battleTurn: 'player1' | 'player2' | null;
-  setBattleTurn: Dispatch<SetStateAction<'player1' | 'player2' | null>>;
-  victor: null | 'player1' | 'player2';
+  battleTurn: Players;
+  setBattleTurn: Dispatch<SetStateAction<Players>>;
+  victor: Players;
 };
 
 const defaultGameContext: GameContextType = {
+  localPlayer: '',
+  setLocalPLayer() {},
   gameState: 'Lobby',
   setGameState() {},
   playerOne: defaultDuelist,
@@ -45,9 +49,9 @@ const defaultGameContext: GameContextType = {
   updatePlayerTwo() {},
   battleStage: null,
   setBattleStage() {},
-  battleTurn: null,
+  battleTurn: '',
   setBattleTurn() {},
-  victor: null
+  victor: ''
 };
 
 export const GameContext = createContext<GameContextType>(defaultGameContext);
@@ -66,9 +70,12 @@ export function GameProvider({ gameId, children }: Props) {
   );
   const [battleTurn, setBattleTurn] = useState(defaultGameContext.battleTurn);
   const [victor, setVictor] = useState(defaultGameContext.victor);
+  const [localPlayer, setLocalPLayer] = useState<Players>('');
 
   const value = useMemo(
     () => ({
+      localPlayer,
+      setLocalPLayer,
       gameState,
       setGameState,
       playerOne,
@@ -81,7 +88,15 @@ export function GameProvider({ gameId, children }: Props) {
       setBattleTurn,
       victor
     }),
-    [battleStage, battleTurn, gameState, playerOne, playerTwo, victor]
+    [
+      battleStage,
+      battleTurn,
+      gameState,
+      localPlayer,
+      playerOne,
+      playerTwo,
+      victor
+    ]
   );
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;

@@ -1,6 +1,7 @@
 import React, { useCallback, useContext } from 'react';
-import { PlayerField } from '~/context/BoardContext';
+import { BoardContext, PlayerField } from '~/context/BoardContext';
 import { GameContext } from '~/context/GameContext';
+import { useDrawCards } from '~/hooks/BoardHooks/useDrawCards';
 import shuffleDeck from '~/utils/shuffleDeck';
 import { useMakeDuelingDeck } from './useMakeDuelingDeck';
 
@@ -21,9 +22,16 @@ export const useSetupBoard = (
   const makeDuelingDeck = useMakeDuelingDeck();
 
   const setupTheBoard = useCallback(() => {
-    // make each players' Deck
+    // convert deck id arrays to DuelingCardp[]
     const playerOneDeck = makeDuelingDeck(playerOneDeckIds, 'One');
     const playerTwoDeck = makeDuelingDeck(playerTwoDeckIds, 'Two');
+
+    //make foundation and main decks
+    console.log(
+      shuffleDeck(playerOneDeck.filter(card => card.type !== 'foundation')),
+      shuffleDeck(playerOneDeck.filter(card => card.type === 'foundation')),
+      'in use hook '
+    );
     // update the board state
     setPlayerOneBoard(prevState => ({
       ...prevState,
@@ -45,9 +53,9 @@ export const useSetupBoard = (
       )
     }));
 
-    //set battle state to start the game
+    // set battle state to start the game
     setBattleStage('plan');
-    setBattleTurn('player1');
+    setBattleTurn('playerOne');
   }, [
     makeDuelingDeck,
     playerOneDeckIds,

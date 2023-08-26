@@ -17,17 +17,14 @@ const getGameStateComponent = (state: string) => {
       return <div>Invalid game state</div>;
   }
 };
-const Container = createComponent('div', { className: '' });
-const Wrapper = createComponent('div', { className: '' });
+const Container = createComponent('div', {
+  className: 'w-full h-full overflow-hidden'
+});
 const DuelOfFates = () => {
   const { gameState } = useContext(GameContext);
   const ComponentToRender = getGameStateComponent(gameState);
 
-  return (
-    <Container>
-      <Wrapper>{ComponentToRender}</Wrapper>
-    </Container>
-  );
+  return <Container>{ComponentToRender}</Container>;
 };
 
 export default DuelOfFates;

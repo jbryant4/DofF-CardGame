@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import Card from '~/constants/CardType';
 import defaultCard from '~/constants/defaultCard';
+import { devCards } from '~/constants/developmentCards';
 import { CollectorContext } from '~/context/CollectorContext';
 import { CardDocument } from '~/models/Card';
 import { Deck } from '~/models/Collector';
@@ -106,8 +107,10 @@ export function CardProvider({ children }: Props) {
     (async () => {
       try {
         setIsLoading(true);
-        const data = await fetchCards();
-        setCards(data);
+        //TODO to save money atm make sure to recopy if you make changes
+        // const data = await fetchCards();
+        // @ts-ignore
+        setCards(devCards);
         setError(null);
       } catch (error: any) {
         setError(error as Error);

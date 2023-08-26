@@ -1,14 +1,15 @@
 import React, {
   createContext,
-  useCallback,
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState
 } from 'react';
-import DuelingCard, { desiredKeys } from '~/constants/DuelingCard';
+import DuelingCard from '~/constants/DuelingCard';
 import { GameContext } from '~/context/GameContext';
 import { useSetupBoard } from '~/hooks/BoardHooks';
+import { useDrawCards } from '~/hooks/BoardHooks/useDrawCards';
 
 export type PlayerField = {
   mainDeck: DuelingCard[];
@@ -17,9 +18,9 @@ export type PlayerField = {
   graveyard: DuelingCard[];
   board: {
     army: Array<DuelingCard | null>;
-    champion: Array<DuelingCard | null>;
-    foundation: Array<DuelingCard | null>;
-    resource: Array<DuelingCard | null>;
+    champions: Array<DuelingCard | null>;
+    foundations: Array<DuelingCard | null>;
+    resources: Array<DuelingCard | null>;
   };
 };
 
@@ -30,21 +31,26 @@ const defaultPlayerField = {
   graveyard: [],
   board: {
     army: [null, null, null],
-    champion: [null, null, null],
-    foundation: [null, null, null, null],
-    resource: [null, null]
+    champions: [null, null, null],
+    foundations: [null, null, null, null],
+    resources: [null, null]
   }
 };
 
-type BoardContextType = {
+export type BoardContextType = {
   playerOneBoard: PlayerField;
   playerTwoBoard: PlayerField;
+  setPlayerOneBoard: React.Dispatch<React.SetStateAction<PlayerField>>;
+  setPlayerTwoBoard: React.Dispatch<React.SetStateAction<PlayerField>>;
 };
 
 const defaultBoard: BoardContextType = {
   playerOneBoard: defaultPlayerField,
-  playerTwoBoard: defaultPlayerField
+  playerTwoBoard: defaultPlayerField,
+  setPlayerOneBoard() {},
+  setPlayerTwoBoard() {}
 };
+
 export const BoardContext = createContext<BoardContextType>(defaultBoard);
 
 type Props = {
@@ -59,21 +65,42 @@ export function BoardProvider({ children }: Props) {
   const [playerTwoBoard, setPlayerTwoBoard] = useState(
     defaultBoard.playerTwoBoard
   );
+  const [decksMade, setDecksMade] = useState(false);
 
   const setupTheBoard = useSetupBoard(setPlayerOneBoard, setPlayerTwoBoard);
+  const { playerTwoDraw, playerOneDraw } = useDrawCards({
+    playerOneBoard,
+    setPlayerOneBoard,
+    playerTwoBoard,
+    setPlayerTwoBoard
+  });
 
   const value = useMemo(
     () => ({
       playerOneBoard,
-      playerTwoBoard
+      playerTwoBoard,
+      setPlayerOneBoard,
+      setPlayerTwoBoard
     }),
-
     [playerOneBoard, playerTwoBoard]
   );
 
+  const decksDrawnRef = useRef(false);
+
+  useEffect(() => {
+    if (!decksMade || decksDrawnRef.current) return;
+    console.log('should draw');
+    playerOneDraw(5, 2);
+    playerTwoDraw(5, 2);
+    decksDrawnRef.current = true;
+  }, [decksMade, playerOneDraw, playerTwoDraw]);
+
   useEffect(() => {
     if (gameState !== 'Battle') return;
+    console.log('in useeffect');
+
     setupTheBoard();
+    setDecksMade(true);
   }, [gameState, setupTheBoard]);
 
   return (

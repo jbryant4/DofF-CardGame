@@ -3,7 +3,7 @@ import { playerOne, playerTwo } from '@/DuelOfFates/testSubjects';
 import { GameContext } from '~/context/GameContext'; // Adjust the import path accordingly
 
 function Lobby() {
-  const { updatePlayerOne, updatePlayerTwo, setGameState } =
+  const { updatePlayerOne, updatePlayerTwo, setGameState, setLocalPLayer } =
     useContext(GameContext);
 
   const startAdminGame = () => {
@@ -11,6 +11,8 @@ function Lobby() {
     updatePlayerOne(prevState => ({ ...prevState, ...playerOne }));
     updatePlayerTwo(prevState => ({ ...prevState, ...playerTwo }));
 
+    //set localPlayer
+    setLocalPLayer('playerOne');
     // Change the gameState to 'Battle'
     setGameState('Battle');
   };

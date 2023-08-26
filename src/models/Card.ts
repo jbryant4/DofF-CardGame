@@ -19,6 +19,7 @@ export type LessonType = {
 };
 
 export type Question = {
+  _id: string;
   prompt: string;
   options: string[];
   answer: string | string[];
@@ -30,6 +31,7 @@ export interface CardDocument extends Document {
   class?: Trait[];
   description?: string;
   effectText?: string;
+  gender?: string;
   fileName: string;
   foundation?: Foundation[];
   lesson?: LessonType;
@@ -53,7 +55,11 @@ function validateAnswer(value: string | string[]): boolean {
 const QuestionSchema = new Schema({
   prompt: { type: String },
   options: [{ type: String }],
-  answer: { type: Schema.Types.Mixed, validate: validateAnswer }
+  answer: { type: Schema.Types.Mixed, validate: validateAnswer },
+  _id: {
+    type: Schema.Types.ObjectId,
+    auto: true
+  }
 });
 
 const CardSchema = new mongoose.Schema({
@@ -67,6 +73,7 @@ const CardSchema = new mongoose.Schema({
   description: { type: String },
   effectText: { type: String },
   fileName: { type: String, required: true },
+  gender: { type: String },
   foundation: [{ type: String, enum: ['desert', 'earth', 'ocean'] }],
   lesson: {
     mediaLinks: [{ type: String }],

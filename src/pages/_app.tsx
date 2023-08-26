@@ -13,6 +13,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-coverflow';
 import '../styles/globals.css';
+import { useRouter } from 'next/router';
 
 const AppWrapper = createComponent('div', {
   className:
@@ -24,17 +25,22 @@ const ComponentWrapper = createComponent('div', {
 });
 
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+  const isGameRoute = router.pathname.includes('game');
+
   return (
     <CollectorProvider>
       <CardProvider>
         <GlobalProvider>
           <ModalProvider>
             <AppWrapper>
-              <Header />
+              {!isGameRoute && <Header />}
               <ComponentWrapper>
                 <Component {...pageProps} />
               </ComponentWrapper>
-              <div className="bg-blue-800 h-full max-h-[36px]" />
+              {!isGameRoute && (
+                <div className="bg-blue-800 h-full max-h-[36px]" />
+              )}
               <Modals />
             </AppWrapper>
           </ModalProvider>
