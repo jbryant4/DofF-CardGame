@@ -1,6 +1,6 @@
-import classNames from 'classnames';
 import { Fragment, useEffect, useRef, useState } from 'react';
-import DuelCard from '@/DuelOfFates/Battle/DuelCard';
+import GraveCards from '@/DuelOfFates/Battle/GraveCards';
+import HandCard from '@/DuelOfFates/Battle/HandCard';
 import BlueBtn from '@/Global/BlueBtn';
 import DuelingCard from '~/constants/DuelingCard';
 import styles from './BattleField.module.css';
@@ -11,20 +11,22 @@ type OwnProps = {
   hand: DuelingCard[];
   foundationDeck: DuelingCard[];
   mainDeck: DuelingCard[];
+  enemyBoard: boolean;
 };
 
 const ControlCenter = ({
   foundationDeck,
   graveyard,
   hand,
-  mainDeck
+  mainDeck,
+  enemyBoard
 }: OwnProps) => {
   const [viewDecks, setViewDecks] = useState(false);
   const [handWrapperWidth, setHandWrapperWidth] = useState(0);
 
   const handWrapperRef = useRef<HTMLDivElement>(null);
   const handCardSizeToUse =
-    handWrapperWidth / 4 > 255 ? 255 : handWrapperWidth / 4;
+    (handWrapperWidth - 40) / 4 > 255 ? 255 : (handWrapperWidth - 40) / 4;
 
   useEffect(() => {
     if (handWrapperRef.current) {
@@ -34,39 +36,45 @@ const ControlCenter = ({
 
   return (
     <div className={`${styles.controlCenter} bg-green-400`}>
-      <div className={styles.graveyard}>graveyard</div>
+      {!enemyBoard && (
+        <GraveCards cards={graveyard} cardWidth={handCardSizeToUse} />
+      )}
+
       <div className={`${styles.hand} relative`}>
         <div
           ref={handWrapperRef}
-          className="bg-green-600 h-full relative w-full z-[2]"
+          className="bg-green-600 flex h-full justify-center relative w-full z-[2]"
         >
           {hand.length > 0 &&
             hand.map((card, index) => (
-              <Fragment key={index}>
-                <DuelCard
+              <Fragment key={card.id}>
+                <HandCard
                   duelingCard={card}
-                  location="hand"
-                  layout="hand"
                   cardWidth={handCardSizeToUse}
                   index={index}
                 />
               </Fragment>
             ))}
         </div>
-        <Decks
-          foundationDeck={foundationDeck}
-          mainDeck={mainDeck}
-          viewDecks={viewDecks}
-        />
+        {!enemyBoard && (
+          <Decks
+            cardWidth={handCardSizeToUse}
+            foundationDeck={foundationDeck}
+            mainDeck={mainDeck}
+            viewDecks={viewDecks}
+          />
+        )}
       </div>
-      <div
-        className={`${styles.actions} flex-col flex items-center justify-around`}
-      >
-        actions
-        <BlueBtn onClick={() => setViewDecks(v => !v)}>
-          {viewDecks ? 'hide decks' : 'show decks'}
-        </BlueBtn>
-      </div>
+      {!enemyBoard && (
+        <div
+          className={`${styles.actions} flex-col flex items-center justify-around`}
+        >
+          actions
+          <BlueBtn onClick={() => setViewDecks(v => !v)}>
+            {viewDecks ? 'hide decks' : 'show decks'}
+          </BlueBtn>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,8 +1,11 @@
-import { useContext } from 'react';
+import { Fragment, useContext } from 'react';
 import ControlCenter from '@/DuelOfFates/Battle/ControlCenter';
+import Military from '@/DuelOfFates/Battle/Military';
+import ResourceCards from '@/DuelOfFates/Battle/ResourceCards';
 import { BoardContext } from '~/context/BoardContext';
 import { GameContext } from '~/context/GameContext';
 import styles from './BattleField.module.css';
+import FoundationCards from './FoundationCard';
 
 type OwnProps = { isEnemy?: boolean };
 
@@ -20,12 +23,14 @@ const CardLayout = ({ isEnemy = false }: OwnProps) => {
   };
 
   const boardToRender = boardToUse();
-  console.log(boardToRender);
   const {
     hand,
     mainDeck,
     foundationDeck,
-    board: { army, foundations, champions, resources },
+    army,
+    foundations,
+    champions,
+    resources,
     graveyard
   } = boardToRender;
   const graveYardsToShow =
@@ -35,23 +40,30 @@ const CardLayout = ({ isEnemy = false }: OwnProps) => {
   const foundationDeckToShow =
     foundationDeck.slice(0, 2).length > 0 ? foundationDeck.slice(0, 2) : [];
 
-  console.log(isLocalPlayerOne, foundationDeck, mainDeckToShow);
-
   return isEnemy ? (
-    <div className="font-bold mx-auto text-36 text-green-900">
-      hi keep it simple{' '}
+    <div className={styles.enemyLayout}>
+      <ResourceCards cards={resources} />
+      <FoundationCards cards={foundations} />
+      <Military champions={champions} army={army} />
+      <ControlCenter
+        graveyard={graveYardsToShow}
+        hand={hand}
+        foundationDeck={[]}
+        mainDeck={[]}
+        enemyBoard={isEnemy}
+      />
     </div>
   ) : (
     <div className={styles.layout}>
-      <div className={styles.resource}>resource</div>
-      <div className={styles.leftFoundation}>left Foundation</div>
-      <div className={styles.military}>military</div>
-      <div className={styles.rightFoundation}>right Foundation</div>
+      <ResourceCards cards={resources} />
+      <FoundationCards cards={foundations} />
+      <Military champions={champions} army={army} />
       <ControlCenter
         hand={hand}
         graveyard={graveYardsToShow}
         mainDeck={mainDeckToShow}
         foundationDeck={foundationDeckToShow}
+        enemyBoard={isEnemy}
       />
     </div>
   );

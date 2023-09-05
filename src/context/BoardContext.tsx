@@ -10,18 +10,17 @@ import DuelingCard from '~/constants/DuelingCard';
 import { GameContext } from '~/context/GameContext';
 import { useSetupBoard } from '~/hooks/BoardHooks';
 import { useDrawCards } from '~/hooks/BoardHooks/useDrawCards';
+import usePlaceCard from '~/hooks/BoardHooks/usePlaceCard';
 
 export type PlayerField = {
   mainDeck: DuelingCard[];
   foundationDeck: DuelingCard[];
   hand: DuelingCard[];
   graveyard: DuelingCard[];
-  board: {
-    army: Array<DuelingCard | null>;
-    champions: Array<DuelingCard | null>;
-    foundations: Array<DuelingCard | null>;
-    resources: Array<DuelingCard | null>;
-  };
+  army: Array<DuelingCard | null>;
+  champions: Array<DuelingCard | null>;
+  foundations: Array<DuelingCard | null>;
+  resources: Array<DuelingCard | null>;
 };
 
 const defaultPlayerField = {
@@ -29,26 +28,28 @@ const defaultPlayerField = {
   foundationDeck: [],
   hand: [],
   graveyard: [],
-  board: {
-    army: [null, null, null],
-    champions: [null, null, null],
-    foundations: [null, null, null, null],
-    resources: [null, null]
-  }
+  army: [null, null, null],
+  champions: [null, null, null],
+  foundations: [null, null, null, null],
+  resources: [null, null]
 };
+
+export type PlaceCardFunction = (card: DuelingCard) => void;
 
 export type BoardContextType = {
   playerOneBoard: PlayerField;
   playerTwoBoard: PlayerField;
   setPlayerOneBoard: React.Dispatch<React.SetStateAction<PlayerField>>;
   setPlayerTwoBoard: React.Dispatch<React.SetStateAction<PlayerField>>;
+  placeCard: PlaceCardFunction;
 };
 
 const defaultBoard: BoardContextType = {
   playerOneBoard: defaultPlayerField,
   playerTwoBoard: defaultPlayerField,
   setPlayerOneBoard() {},
-  setPlayerTwoBoard() {}
+  setPlayerTwoBoard() {},
+  placeCard() {}
 };
 
 export const BoardContext = createContext<BoardContextType>(defaultBoard);
@@ -58,7 +59,7 @@ type Props = {
 };
 
 export function BoardProvider({ children }: Props) {
-  const { gameState } = useContext(GameContext);
+  const { gameState, battleTurn } = useContext(GameContext);
   const [playerOneBoard, setPlayerOneBoard] = useState(
     defaultBoard.playerOneBoard
   );
@@ -68,6 +69,7 @@ export function BoardProvider({ children }: Props) {
   const [decksMade, setDecksMade] = useState(false);
 
   const setupTheBoard = useSetupBoard(setPlayerOneBoard, setPlayerTwoBoard);
+
   const { playerTwoDraw, playerOneDraw } = useDrawCards({
     playerOneBoard,
     setPlayerOneBoard,
@@ -75,14 +77,23 @@ export function BoardProvider({ children }: Props) {
     setPlayerTwoBoard
   });
 
+  const { place } = usePlaceCard({
+    playerOneBoard,
+    setPlayerOneBoard,
+    playerTwoBoard,
+    setPlayerTwoBoard,
+    playerTurn: battleTurn
+  });
+
   const value = useMemo(
     () => ({
       playerOneBoard,
       playerTwoBoard,
       setPlayerOneBoard,
-      setPlayerTwoBoard
+      setPlayerTwoBoard,
+      placeCard: place
     }),
-    [playerOneBoard, playerTwoBoard]
+    [place, playerOneBoard, playerTwoBoard]
   );
 
   const decksDrawnRef = useRef(false);
@@ -97,7 +108,6 @@ export function BoardProvider({ children }: Props) {
 
   useEffect(() => {
     if (gameState !== 'Battle') return;
-    console.log('in useeffect');
 
     setupTheBoard();
     setDecksMade(true);

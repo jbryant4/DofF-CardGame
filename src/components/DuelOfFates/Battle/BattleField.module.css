@@ -1,23 +1,49 @@
 /*top level grid*/
 .layout {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: 2fr auto repeat(4, 2fr);
   grid-template-rows: 3fr 1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 }
 
-.rightFoundation {
-  grid-area: 1 / 6 / 2 / 7;
+.enemyLayout {
+  display: grid;
+  grid-template-columns: 2fr auto repeat(4, 2fr);
+  grid-template-rows: 5vh auto;
 }
+
+.enemyLayout > .controlCenter {
+  grid-row: 1 / 2; /* Assigns it to the first row of .enemyLayout */
+  height: 5vh; /* Optional, ensures the height is 5vh */
+  transform: scaleY(-1);
+}
+
 .resource {
   grid-area: 1 / 1 / 2 / 2;
 }
-.leftFoundation {
+
+.enemyLayout > .resource {
+  grid-area: 2 / 1 / 3 / 2; /* Takes up second row, first column */
+  transform: scaleY(-1);
+}
+
+.foundation {
   grid-area: 1 / 2 / 2 / 3;
 }
+
+.enemyLayout > .foundation {
+  grid-area: 2 / 2 / 3 / 3; /* Takes up second row, second column */
+  transform: scaleY(-1);
+}
+
 .military {
-  grid-area: 1 / 3 / 2 / 6;
+  grid-area: 1 / 3 / 2 / 7;
+}
+
+.enemyLayout > .military {
+  grid-area: 2 / 3 / 3 / 7; /* Spans second row from third to seventh column */
+  transform: scaleY(-1);
 }
 
 /*control center layout*/

@@ -1,8 +1,5 @@
-import classNames from 'classnames';
-import { className } from 'postcss-selector-parser';
+import { useDraggable } from '@dnd-kit/core';
 import { useState } from 'react';
-import src from 'sift/src/index';
-import { transform } from 'sucrase';
 import DuelingCard from '~/constants/DuelingCard';
 
 type OwnProps = {
@@ -23,7 +20,9 @@ const DuelCard = ({
   cardWidth
 }: OwnProps) => {
   const cardHeight = cardWidth * (4 / 3);
-  const [hover, setHover] = useState(false);
+  if (location === 'graveyard') {
+    console.log(duelingCard);
+  }
   const CardSkeleton = () => (
     <div
       className="border border-black border-solid flex items-center justify-center rounded-sm"
@@ -53,31 +52,6 @@ const DuelCard = ({
             height: cardHeight,
             transform: `translateX(${index * 2}px)`,
             zIndex: 10 - index
-          }}
-        />
-      </div>
-    );
-  }
-
-  if (layout === 'hand') {
-    return (
-      <div
-        style={{
-          left: `${index * (cardWidth / 2)}px`, // Position each card half its width to the right of the previous
-          zIndex: hover ? 8 - index : 7 - index,
-          top: 10
-        }}
-        className="absolute duration-[800ms] hover:-translate-y-[75%] transition-all"
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-      >
-        <img
-          id={duelingCard.title}
-          src={duelingCard.blankUrl}
-          style={{
-            width: cardWidth,
-            height: cardHeight,
-            backgroundColor: 'black'
           }}
         />
       </div>

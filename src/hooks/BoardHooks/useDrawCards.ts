@@ -1,12 +1,14 @@
 import { useCallback, useContext } from 'react';
 import { BoardContext, BoardContextType } from '~/context/BoardContext';
 
+type OwnProps = Omit<BoardContextType, 'placeCard'>;
+
 export const useDrawCards = ({
   playerOneBoard,
   setPlayerOneBoard,
   playerTwoBoard,
   setPlayerTwoBoard
-}: BoardContextType) => {
+}: OwnProps) => {
   const drawCards = useCallback(
     (player: string, mdDraw: number, fdDraw: number) => {
       const currentPlayerBoard =

@@ -4,12 +4,18 @@ import DuelCard from '@/DuelOfFates/Battle/DuelCard';
 import DuelingCard from '~/constants/DuelingCard';
 
 type OwnProps = {
+  cardWidth: number;
   foundationDeck: DuelingCard[];
   mainDeck: DuelingCard[];
   viewDecks: boolean;
 };
 
-const Decks = ({ foundationDeck, mainDeck, viewDecks }: OwnProps) => {
+const Decks = ({
+  cardWidth,
+  foundationDeck,
+  mainDeck,
+  viewDecks
+}: OwnProps) => {
   useEffect(() => {}, []);
 
   return (
@@ -30,7 +36,7 @@ const Decks = ({ foundationDeck, mainDeck, viewDecks }: OwnProps) => {
               duelingCard={card}
               location="main-deck"
               layout={'pile'}
-              cardWidth={200}
+              cardWidth={cardWidth}
               index={index}
             />
           </Fragment>
@@ -44,7 +50,7 @@ const Decks = ({ foundationDeck, mainDeck, viewDecks }: OwnProps) => {
               duelingCard={card}
               location="foundation-deck"
               layout={'pile'}
-              cardWidth={200}
+              cardWidth={cardWidth}
               index={index}
             />
           </Fragment>

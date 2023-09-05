@@ -20,7 +20,7 @@ const defaultDuelist = {
   deck: { title: '', cards: [''] },
   hitPoints: 10
 };
-type Players = '' | 'playerOne' | 'playerTwo';
+export type Players = '' | 'playerOne' | 'playerTwo';
 type BattleStage = 'plan' | 'place' | 'duel' | 'respite' | null;
 type GameContextType = {
   localPlayer: Players;

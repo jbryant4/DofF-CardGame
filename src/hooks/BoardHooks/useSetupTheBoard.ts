@@ -26,12 +26,6 @@ export const useSetupBoard = (
     const playerOneDeck = makeDuelingDeck(playerOneDeckIds, 'One');
     const playerTwoDeck = makeDuelingDeck(playerTwoDeckIds, 'Two');
 
-    //make foundation and main decks
-    console.log(
-      shuffleDeck(playerOneDeck.filter(card => card.type !== 'foundation')),
-      shuffleDeck(playerOneDeck.filter(card => card.type === 'foundation')),
-      'in use hook '
-    );
     // update the board state
     setPlayerOneBoard(prevState => ({
       ...prevState,
