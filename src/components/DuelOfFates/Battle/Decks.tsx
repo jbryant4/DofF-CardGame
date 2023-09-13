@@ -37,9 +37,10 @@ const Decks = ({
   };
 
   useEffect(() => {
-    if (handDeckLength !== 7) return;
-    advanceBattleStage();
-  }, [viewDecks]);
+    if (handDeckLength === 7 && viewDecks) {
+      advanceBattleStage();
+    }
+  }, [advanceBattleStage, handDeckLength, viewDecks]);
 
   return (
     <div
