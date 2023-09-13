@@ -1,9 +1,7 @@
 import mongoose from 'mongoose';
 import { NextApiRequest, NextApiResponse } from 'next';
-import Collector, { CollectorDocument } from '~/models/Collector';
+import Collector from '~/models/Collector';
 import connectFateCollection from '~/utils/connectFateCollection';
-
-let cachedConnection: mongoose.Connection;
 
 export const createCollector = async (
   req: NextApiRequest,
@@ -45,7 +43,7 @@ export const updateCollector = async (
 ) => {
   try {
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    const { _id, ...update } = req.body;
+    const { _id } = req.body;
     const collector = await Collector.findByIdAndUpdate(
       new mongoose.Types.ObjectId(_id),
       req.body,
@@ -103,6 +101,5 @@ export default async function collectorHandler(
       break;
     default:
       return res.status(405).json({ error: 'Method not allowed' });
-      break;
   }
 }

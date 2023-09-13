@@ -1,7 +1,6 @@
 import React, { useCallback, useContext } from 'react';
-import { BoardContext, PlayerField } from '~/context/BoardContext';
+import { PlayerField } from '~/context/BoardContext';
 import { GameContext } from '~/context/GameContext';
-import { useDrawCards } from '~/hooks/BoardHooks/useDrawCards';
 import shuffleDeck from '~/utils/shuffleDeck';
 import { useMakeDuelingDeck } from './useMakeDuelingDeck';
 
@@ -21,7 +20,7 @@ export const useSetupBoard = (
   } = useContext(GameContext);
   const makeDuelingDeck = useMakeDuelingDeck();
 
-  const setupTheBoard = useCallback(() => {
+  return useCallback(() => {
     // convert deck id arrays to DuelingCardp[]
     const playerOneDeck = makeDuelingDeck(playerOneDeckIds, 'One');
     const playerTwoDeck = makeDuelingDeck(playerTwoDeckIds, 'Two');
@@ -59,6 +58,4 @@ export const useSetupBoard = (
     setPlayerOneBoard,
     setPlayerTwoBoard
   ]);
-
-  return setupTheBoard;
 };

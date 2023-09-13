@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import styles from './LoadingCard.module.css';
 type OwnProps = {};
 

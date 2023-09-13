@@ -1,4 +1,4 @@
-import {
+import React, {
   createContext,
   Dispatch,
   SetStateAction,
@@ -43,10 +43,12 @@ export function CollectorProvider({ children }: Props) {
   const [needCreation, setNeedCreation] = useState<boolean>(false);
   // const [isLoadingCollector, setLoadingCollector] = useState<boolean>(false);
   // const { user, isLoading } = useUser();
-  //TODO swap this state back to teuw when we want to use the sign in page
-  const [loadingHome, setLoadingHome] = useState(false);
+  //TODO swap this state back to true when we want to use the sign in page
+  const [loadingHome] = useState(false);
   // TODO add logic for grabbing user from auth0 and handling states dependant of if no user/ user is admin/ user is returned but we dont have them in our database (create user with default deck) (also if we create admin user pass 'all' into cards)
-  const createCollector = async (payload): Promise<void> => {
+  const createCollector = async (
+    payload: Partial<CollectorDocument>
+  ): Promise<void> => {
     const data = await newCollector(payload);
     setCollector(data);
     setIsLoggedIn(true);

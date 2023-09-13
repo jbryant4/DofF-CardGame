@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import { useState } from 'react';
 import { getIsEven } from '~/utils/getIsEven';
 
 type OwnProps = {

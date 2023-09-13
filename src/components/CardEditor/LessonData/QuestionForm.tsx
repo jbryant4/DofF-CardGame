@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import BlueBtn from '@/Global/BlueBtn';
 import { Question, CardDocument } from '~/models/Card';
 import QuestionTab from './QuestionTab';
@@ -16,13 +16,13 @@ const QuestionForm = ({ questions, setCardValues }: OwnProps) => {
   const enableBtn =
     newOptions.filter((_, index) => selectedOptions.includes(index)).length !==
     0;
-  const handleOptionChange = (index, value) => {
+  const handleOptionChange = (index: number, value: string) => {
     const updatedOptions = [...newOptions];
     updatedOptions[index] = value;
     setNewOptions(updatedOptions);
   };
 
-  const handleCheckboxChange = index => {
+  const handleCheckboxChange = (index: number) => {
     const updatedSelectedOptions = [...selectedOptions];
     if (updatedSelectedOptions.includes(index)) {
       // If the option is already selected, remove it from the array
@@ -40,7 +40,7 @@ const QuestionForm = ({ questions, setCardValues }: OwnProps) => {
       quiz: array
     }));
   };
-  const handleRemoveQuestion = index => {
+  const handleRemoveQuestion = (index: number) => {
     const updatedQuestions = questions.filter((_, i) => i !== index);
     setState(updatedQuestions);
   };

@@ -18,8 +18,6 @@ import { Container, Wrapper } from './IconLibrary.styles';
 type OwnProps = {};
 
 const IconLibrary = ({}: OwnProps) => {
-  const [value, setValue] = useState();
-
   return (
     <Container className="h-full overflow-hidden w-full">
       <Wrapper className="flex flex-row flex-wrap gap-24 h-full justify-evenly overflow-y-scroll pb-20">

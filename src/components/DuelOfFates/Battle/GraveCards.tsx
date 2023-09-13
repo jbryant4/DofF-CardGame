@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment } from 'react';
 import styles from '@/DuelOfFates/Battle/BattleField.module.css';
 import DuelingCard from '~/constants/DuelingCard';
 

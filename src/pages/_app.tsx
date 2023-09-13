@@ -10,6 +10,7 @@ import { ModalProvider } from '~/context/ModalContext';
 import createComponent from '~/utils/styles/createComponent';
 import 'swiper/css';
 import 'swiper/css/effect-flip';
+import 'swiper/css/effect-cards';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-coverflow';

@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import React from 'react';
 import { EffectCoverflow, EffectFlip, Pagination, Navigation } from 'swiper';
 import { Swiper } from 'swiper/react';
 
@@ -21,7 +21,7 @@ const CarouselConfig = ({
   return (
     <Swiper
       key={isMobile ? 'mobile' : 'desktop'}
-      centeredSlides={isMobile ? false : true}
+      centeredSlides={!isMobile}
       effect={isMobile ? 'flip' : 'coverflow'}
       grabCursor={true}
       slidesPerView={isMobile ? 1 : 'auto'}
@@ -47,7 +47,7 @@ const CarouselConfig = ({
             }
       }
       modules={effectsToUse}
-      navigation={isMobile ? false : true}
+      navigation={!isMobile}
       style={isMobile ? {} : { width: maxWidth }}
       className="bg-blue-400 mt-64 mx-auto pb-20 py-12 w-full md:h-fit md:py-24"
       onActiveIndexChange={swiper => setIndex(swiper.activeIndex)}

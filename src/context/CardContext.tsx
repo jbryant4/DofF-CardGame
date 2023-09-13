@@ -12,7 +12,6 @@ import { devCards } from '~/constants/developmentCards';
 import { CollectorContext } from '~/context/CollectorContext';
 import { CardDocument } from '~/models/Card';
 import { Deck } from '~/models/Collector';
-import { fetchCards } from '~/services/cardServices';
 
 type WholeDeck = {
   title: string;
@@ -34,7 +33,7 @@ type CardContextType = {
   setLocalCards: React.Dispatch<React.SetStateAction<CardDocument[]>>;
   setFetchTrigger: React.Dispatch<React.SetStateAction<number>>;
 };
-const maxDecks = 6;
+
 const defaultCardContext: CardContextType = {
   cards: [],
   localCards: [],
@@ -83,15 +82,23 @@ export function CardProvider({ children }: Props) {
   const [collection, setCollection] = useState<CardDocument[]>([]);
   const [decks, setDecks] = useState<WholeDeck[]>([]);
   const [fetchTrigger, setFetchTrigger] = useState(0);
-  const { collector, setCollector } = useContext(CollectorContext);
+  const { collector } = useContext(CollectorContext);
 
-  const unlockCard = useCallback(async (id: string): Promise<void> => {}, []);
-  const createDeck = useCallback(async (deck: Deck): Promise<void> => {}, []);
-  const editDeck = useCallback(async (deck: Deck): Promise<void> => {}, []);
-  const deleteDeck = useCallback(async (deck: Deck): Promise<void> => {}, []);
+  const unlockCard = useCallback(async (id: string): Promise<void> => {
+    console.log(id);
+  }, []);
+  const createDeck = useCallback(async (deck: Deck): Promise<void> => {
+    console.log(deck);
+  }, []);
+  const editDeck = useCallback(async (deck: Deck): Promise<void> => {
+    console.log(deck);
+  }, []);
+  const deleteDeck = useCallback(async (deck: Deck): Promise<void> => {
+    console.log(deck);
+  }, []);
 
   const getCard = useCallback(
-    (id): Card => {
+    (id: string): Card => {
       const data = cards.find(c => c._id === id);
 
       if (data) {

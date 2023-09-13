@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment, useContext, useEffect } from 'react';
 import DuelCard from '@/DuelOfFates/Battle/DuelCard';
 import BlueBtn from '@/Global/BlueBtn';
 import DuelingCard from '~/constants/DuelingCard';

@@ -1,6 +1,5 @@
 import { Africa } from '~/constants/starterDecks';
 import { Duelist } from '~/context/GameContext';
-import { Deck } from '~/models/Collector';
 
 export const playerOne: Partial<Duelist> = {
   id: '1',

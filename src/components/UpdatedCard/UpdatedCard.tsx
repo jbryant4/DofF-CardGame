@@ -50,7 +50,7 @@ const UpdatedCard = ({ card, width = 255 }: OwnProps) => {
     title,
     preReqs,
     effectText,
-    foundation, // will be using for border color
+    // foundation, // will be using for border color
     hp,
     def,
     atk,

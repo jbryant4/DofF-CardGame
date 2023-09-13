@@ -1,13 +1,11 @@
-import classNames from 'classnames';
 import { forwardRef } from 'react';
 
 type OwnProps = React.SVGProps<SVGSVGElement> & {
   size?: number;
-  def?: number;
 };
 
 const ShieldIcon = forwardRef<SVGSVGElement, OwnProps>(
-  ({ size = 100, def = 9, ...props }, ref) => (
+  ({ size = 100, ...props }, ref) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"

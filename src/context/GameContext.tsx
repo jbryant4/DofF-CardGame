@@ -65,6 +65,7 @@ type Props = {
 };
 
 export function GameProvider({ gameId, children }: Props) {
+  console.log(gameId);
   const [playerOne, updatePlayerOne] = useState(defaultGameContext.playerOne);
   const [playerTwo, updatePlayerTwo] = useState(defaultGameContext.playerTwo);
   const [gameState, setGameState] = useState(defaultGameContext.gameState);
@@ -72,7 +73,7 @@ export function GameProvider({ gameId, children }: Props) {
     defaultGameContext.battleStage
   );
   const [battleTurn, setBattleTurn] = useState(defaultGameContext.battleTurn);
-  const [victor, setVictor] = useState(defaultGameContext.victor);
+  const [victor] = useState(defaultGameContext.victor);
   const [localPlayer, setLocalPLayer] = useState<Players>('');
 
   const advanceBattleStage = useCallback(() => {

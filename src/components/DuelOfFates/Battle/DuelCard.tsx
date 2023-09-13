@@ -1,12 +1,9 @@
-import { useDraggable } from '@dnd-kit/core';
-import { useState } from 'react';
 import DuelingCard from '~/constants/DuelingCard';
 
 type OwnProps = {
   duelingCard: DuelingCard | null;
   location: string;
   index?: number;
-  inStack?: boolean;
   layout: 'pile' | 'horizontal' | 'vertical' | 'hand';
   cardWidth: number;
 };
@@ -15,7 +12,6 @@ const DuelCard = ({
   duelingCard,
   location,
   index = 0,
-  inStack = false,
   layout,
   cardWidth
 }: OwnProps) => {
@@ -53,6 +49,7 @@ const DuelCard = ({
             transform: `translateX(${index * 2}px)`,
             zIndex: 10 - index
           }}
+          alt="card"
         />
       </div>
     );

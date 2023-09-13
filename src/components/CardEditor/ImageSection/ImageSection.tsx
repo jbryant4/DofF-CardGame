@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { Container, ImageWrapper } from './ImageSection.styles';
 
 type OwnProps = {
@@ -17,13 +16,13 @@ const ImageSection = ({ blankUrl, cardUrl }: OwnProps) => {
       <div>
         Blank Img
         <ImageWrapper>
-          <img src={blankUrl} className="w-[180px]" />
+          <img src={blankUrl} className="w-[180px]" alt="blank img" />
         </ImageWrapper>
       </div>
       <div>
         Physical Card Img
         <ImageWrapper>
-          <img src={cardUrl} className="w-[180px]" />
+          <img src={cardUrl} className="w-[180px]" alt="physical card img" />
         </ImageWrapper>
       </div>
     </Container>

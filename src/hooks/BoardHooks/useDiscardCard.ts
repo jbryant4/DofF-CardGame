@@ -20,7 +20,7 @@ const useDiscardCard = ({
   setPlayerTwoBoard,
   playerTurn
 }: OwnProps) => {
-  const discard = useCallback(
+  const discard: DiscardCardFunction = useCallback(
     (
       cardId: string,
       source: 'resources' | 'army' | 'champions' | 'foundations'

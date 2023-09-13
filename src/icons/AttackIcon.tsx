@@ -1,9 +1,9 @@
-import { forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 
-type OwnProps = React.SVGProps<SVGSVGElement> & { size?: number; atk?: number };
+type OwnProps = React.SVGProps<SVGSVGElement> & { size?: number };
 
 const AttackIcon = forwardRef<SVGSVGElement, OwnProps>(
-  ({ size = 100, atk = 7, ...props }, ref) => (
+  ({ size = 100, ...props }, ref) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React from 'react';
 import {
   cardTypeArray,
   foundationArray,
@@ -6,7 +6,6 @@ import {
   traitArray
 } from '~/constants/cardEnumArrays';
 import { CardDocument } from '~/models/Card';
-import { Container, Wrapper } from './CardForm.styles';
 
 type OwnProps = {
   cardValues: Partial<CardDocument>;
@@ -16,10 +15,7 @@ type OwnProps = {
 const CardForm = ({ cardValues, setCardValues }: OwnProps) => {
   const handleChange = (
     e: React.ChangeEvent<
-      | HTMLInputElement
-      | HTMLSelectElement
-      | HTMLSelectElement
-      | HTMLTextAreaElement
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >
   ) => {
     setCardValues({

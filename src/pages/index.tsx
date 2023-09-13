@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router';
 import { useContext, useEffect } from 'react';
-import GateWay from '@/GateWay';
 import { CollectorContext } from '~/context/CollectorContext';
 
 export default function Home() {

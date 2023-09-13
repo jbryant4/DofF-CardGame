@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { GameContext } from '~/context/GameContext';
 
 type OwnProps = {};

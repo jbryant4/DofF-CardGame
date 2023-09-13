@@ -1,4 +1,3 @@
-import * as path from 'path';
 import React, { useEffect, useState } from 'react';
 
 type OwnProps = React.SVGProps<SVGSVGElement> & {
@@ -18,7 +17,7 @@ const Cog = ({
   const [rotation, setRotation] = useState(0);
 
   useEffect(() => {
-    let intervalId;
+    let intervalId: string | number | NodeJS.Timer | undefined;
 
     if (activate) {
       intervalId = setInterval(() => {

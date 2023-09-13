@@ -1,6 +1,5 @@
 import dynamic from 'next/dynamic';
-import { forwardRef, ReactNode } from 'react';
-import { CardType, PreReq } from '~/models/Card';
+import React, { forwardRef } from 'react';
 
 const EarthIcon = dynamic(() => import('./EarthFoundationIcon'));
 const OceanIcon = dynamic(() => import('./OceanFoundationIcon'));
@@ -17,16 +16,6 @@ const NobilityIcon = dynamic(() => import('./NobleIcon'));
 const ExplorerIcon = dynamic(() => import('./ExplorerIcon'));
 
 const getIconToUse = (icon: string) => {
-  if (typeof icon !== 'string') {
-    console.error(
-      'Invalid icon type, expected a string but got:',
-      typeof icon,
-      icon
-    );
-
-    return null;
-  }
-
   switch (icon.toLowerCase()) {
     case 'earth':
       return <EarthIcon size={70} x={15} y={15} />;

@@ -1,7 +1,6 @@
 import { Dialog } from '@headlessui/react';
 import dynamic from 'next/dynamic';
 import { useContext, useEffect, useState } from 'react';
-import BlueBtn from '@/Global/BlueBtn';
 import ModalEnum from '~/constants/modalEnum';
 import { ModalContext } from '~/context/ModalContext';
 

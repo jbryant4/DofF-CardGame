@@ -1,4 +1,4 @@
-import { Fragment, useContext } from 'react';
+import { useContext } from 'react';
 import ControlCenter from '@/DuelOfFates/Battle/ControlCenter';
 import Military from '@/DuelOfFates/Battle/Military';
 import ResourceCards from '@/DuelOfFates/Battle/ResourceCards';

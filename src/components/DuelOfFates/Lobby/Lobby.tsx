@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { playerOne, playerTwo } from '@/DuelOfFates/testSubjects';
-import { GameContext } from '~/context/GameContext'; // Adjust the import path accordingly
+import { GameContext } from '~/context/GameContext';
 
 function Lobby() {
   const { updatePlayerOne, updatePlayerTwo, setGameState, setLocalPLayer } =

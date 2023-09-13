@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import styles from '@/DuelOfFates/Battle/BattleField.module.css';
 import DuelingCard from '~/constants/DuelingCard';
 import { BoardContext } from '~/context/BoardContext';

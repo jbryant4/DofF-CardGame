@@ -96,7 +96,7 @@ export function BoardProvider({ children }: Props) {
     playerTurn: battleTurn
   });
 
-  const { discard, respiteDiscard } = useDiscardCard({
+  const { discard } = useDiscardCard({
     playerOneBoard,
     setPlayerOneBoard,
     playerTwoBoard,

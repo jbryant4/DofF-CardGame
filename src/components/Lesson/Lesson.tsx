@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import BlueBtn from '@/Global/BlueBtn';
 import Cog from '~/icons/Cog';
 import { LessonType } from '~/models/Card';
@@ -8,7 +8,7 @@ type OwnProps = {
   lesson: LessonType;
 };
 
-function editShortUrl(url) {
+function editShortUrl(url: string) {
   if (url.includes('youtube.com/shorts/')) {
     url = url.replace('youtube.com/shorts/', 'youtube.com/embed/');
   } else if (url.includes('youtu.be/shorts/')) {
@@ -45,13 +45,17 @@ const getVideoComponent = (url: string) => {
 const Lesson = ({ lesson }: OwnProps) => {
   const { mediaLinks, quickNotes } = lesson;
   const nothingToShow = mediaLinks.length === 0 && quickNotes.length === 0;
-  const [activate, setActivate] = useState(false);
+  const [activate, setActivate] = useState(true);
   const [mediaIndex, setMediaIndex] = useState(0);
 
   const numberArray = Array.from(
     { length: mediaLinks.length },
     (_, index) => index + 1
   );
+
+  useEffect(() => {
+    setTimeout(() => setActivate(false), 500);
+  }, []);
 
   return nothingToShow ? (
     <div>Nothing to Show</div>
@@ -73,7 +77,7 @@ const Lesson = ({ lesson }: OwnProps) => {
           <ul className="px-24 text-18">
             {quickNotes.map((note, index) => (
               <li key={index} className="flex gap-8 items-start">
-                <img src="/quill.png" className="w-24" />
+                <img src="/quill.png" className="w-24" alt="quill" />
                 <div>{note}</div>
               </li>
             ))}

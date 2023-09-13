@@ -1,8 +1,6 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import Card, { CardDocument } from '~/models/Card';
 import { CollectorDocument } from '~/models/Collector';
 
-export const newCollector = async collector => {
+export const newCollector = async (collector: Partial<CollectorDocument>) => {
   try {
     const response = await fetch(`/api/collector`, {
       method: 'POST',
@@ -23,7 +21,9 @@ export const newCollector = async collector => {
   }
 };
 
-export const updateCollector = async collectorData => {
+export const updateCollector = async (
+  collectorData: Partial<CollectorDocument>
+) => {
   try {
     const response = await fetch(`/api/collector`, {
       method: 'PUT',
@@ -46,7 +46,7 @@ export const updateCollector = async collectorData => {
   }
 };
 
-export const findCollectorByEmail = async email => {
+export const findCollectorByEmail = async (email: string) => {
   try {
     const response = await fetch(`/api/collector?email=${email}`, {
       method: 'GET',
@@ -71,7 +71,7 @@ export const findCollectorByEmail = async email => {
   }
 };
 
-export const findCollectorByUserName = async userName => {
+export const findCollectorByUserName = async (userName: string) => {
   try {
     const response = await fetch(`/api/collector?userName=${userName}`, {
       method: 'GET',

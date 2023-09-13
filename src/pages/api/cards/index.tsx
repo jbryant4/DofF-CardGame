@@ -3,12 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import Card from '~/models/Card';
 import connectFateCollection from '~/utils/connectFateCollection';
 
-let cachedConnection: mongoose.Connection;
-
-export const getAllCards = async (
-  req: NextApiRequest,
-  res: NextApiResponse
-) => {
+export const getAllCards = async (res: NextApiResponse) => {
   try {
     const cards = await Card.find();
 
@@ -85,7 +80,7 @@ export default async function cardHandler(
   // Connect to the database
   await connectFateCollection();
 
-  //TODO grab accessToken from local stoage to see if they are admin or not and pass that into functions
+  //TODO grab accessToken from local stage to see if they are admin or not and pass that into functions
 
   switch (req.method) {
     case 'POST':
@@ -98,10 +93,9 @@ export default async function cardHandler(
       await deleteCard(req, res);
       break;
     case 'GET':
-      await getAllCards(req, res);
+      await getAllCards(res);
       break;
     default:
       return res.status(405).json({ error: 'Method not allowed' });
-      break;
   }
 }
