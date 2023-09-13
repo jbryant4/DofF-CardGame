@@ -19,7 +19,7 @@ export type LessonType = {
 };
 
 export type Question = {
-  _id: string;
+  _id?: string;
   prompt: string;
   options: string[];
   answer: string | string[];
