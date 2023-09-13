@@ -1,5 +1,6 @@
 // import { UserProvider } from '@auth0/nextjs-auth0/client';
 import type { AppProps } from 'next/app';
+import { useRouter } from 'next/router';
 import Header from '@/Header/Header';
 import Modals from '@/Modals';
 import { CardProvider } from '~/context/CardContext';
@@ -13,7 +14,6 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-coverflow';
 import '../styles/globals.css';
-import { useRouter } from 'next/router';
 
 const AppWrapper = createComponent('div', {
   className:
