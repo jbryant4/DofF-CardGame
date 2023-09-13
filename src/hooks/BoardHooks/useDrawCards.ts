@@ -1,7 +1,13 @@
-import { useCallback, useContext } from 'react';
-import { BoardContext, BoardContextType } from '~/context/BoardContext';
+import { useCallback } from 'react';
+import { BoardContextType } from '~/context/BoardContext';
 
-type OwnProps = Omit<BoardContextType, 'placeCard'>;
+type OwnProps = Pick<
+  BoardContextType,
+  | 'playerOneBoard'
+  | 'setPlayerOneBoard'
+  | 'playerTwoBoard'
+  | 'setPlayerTwoBoard'
+>;
 
 export const useDrawCards = ({
   playerOneBoard,

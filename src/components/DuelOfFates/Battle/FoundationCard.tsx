@@ -1,6 +1,8 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useContext, useState } from 'react';
 import styles from '@/DuelOfFates/Battle/BattleField.module.css';
 import DuelingCard from '~/constants/DuelingCard';
+import { BoardContext } from '~/context/BoardContext';
+import { GameContext } from '~/context/GameContext';
 import DesertFoundationIcon from '~/icons/DesertFoundationIcon';
 import EarthFoundationIcon from '~/icons/EarthFoundationIcon';
 import OceanFoundationIcon from '~/icons/OceanFoundationIcon';
@@ -21,28 +23,75 @@ const iconToUse = (name: Foundation, size: number) => {
 };
 
 const FoundationCards = ({ cards }: OwnProps) => {
-  const [showCard, setShowCard] = useState<DuelingCard | null>(null);
   const iconWidth = (window.innerWidth / 14) * 0.65;
-  const imageWidth = window.innerWidth / 7;
+  const { localPlayer, battleTurn, battleStage } = useContext(GameContext);
+  const {
+    setPlayerOneBoard,
+    setPlayerTwoBoard,
+    playerOneBoard,
+    playerTwoBoard
+  } = useContext(BoardContext);
+
+  const boardToUse =
+    localPlayer === 'playerOne' ? playerOneBoard : playerTwoBoard;
+  const setBoardToUse =
+    localPlayer === 'playerOne' ? setPlayerOneBoard : setPlayerTwoBoard;
 
   return (
-    <div className={`${styles.foundation} grid grid-rows-4 px-8 relative`}>
-      {showCard && (
-        <img src={showCard.blankUrl} style={{ width: imageWidth }} />
-      )}
-      {cards.map((card, index) => (
-        <Fragment key={`foundation-${index}`}>
-          <div className="flex items-center justify-center">
-            {card && card.foundation ? (
-              <div onClick={() => setShowCard(card)}>
-                {iconToUse(card.foundation[0], iconWidth)}
-              </div>
-            ) : (
-              <div style={{ width: iconWidth }}>slot {index}</div>
-            )}
-          </div>
-        </Fragment>
-      ))}
+    <div
+      className={`${styles.foundation} grid grid-rows-4 px-8 relative items-center`}
+    >
+      {cards.map((card, index) => {
+        const cardShouldBeClickable =
+          !card?.faceUp &&
+          localPlayer === battleTurn &&
+          (battleStage === 'place' || battleStage === 'duel');
+
+        const handleFoundationCardFlip = () => {
+          if (!card) return;
+          const newFoundation: (DuelingCard | null)[] =
+            boardToUse.foundations.map(resource =>
+              resource && resource.id === card.id
+                ? { ...resource, faceUp: true }
+                : resource
+            );
+          setBoardToUse(prevState => ({
+            ...prevState,
+            foundations: newFoundation
+          }));
+        };
+
+        if (!card) {
+          return (
+            <div
+              key={`foundation-${index}`}
+              style={{ width: iconWidth, height: iconWidth }}
+              className="border border-black border-solid flex items-center justify-center rounded-full"
+            >
+              slot {index}
+            </div>
+          );
+        }
+
+        return (
+          <Fragment key={`foundation-${index}`}>
+            <div className="flex items-center justify-center">
+              {card.foundation && card.faceUp ? (
+                <div>{iconToUse(card.foundation[0], iconWidth)}</div>
+              ) : (
+                <img
+                  style={{ width: iconWidth, height: (iconWidth * 4) / 3 }}
+                  src="/card-back.png"
+                  onDoubleClick={() => {
+                    if (!cardShouldBeClickable) return;
+                    handleFoundationCardFlip();
+                  }}
+                />
+              )}
+            </div>
+          </Fragment>
+        );
+      })}
     </div>
   );
 };

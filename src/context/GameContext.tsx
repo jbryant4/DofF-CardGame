@@ -2,6 +2,7 @@ import React, {
   createContext,
   Dispatch,
   SetStateAction,
+  useCallback,
   useMemo,
   useState
 } from 'react';
@@ -23,6 +24,7 @@ const defaultDuelist = {
 export type Players = '' | 'playerOne' | 'playerTwo';
 type BattleStage = 'plan' | 'place' | 'duel' | 'respite' | null;
 type GameContextType = {
+  advanceBattleStage: () => void;
   localPlayer: Players;
   setLocalPLayer: Dispatch<SetStateAction<Players>>;
   gameState: 'Lobby' | 'Battle' | 'Stats';
@@ -39,6 +41,7 @@ type GameContextType = {
 };
 
 const defaultGameContext: GameContextType = {
+  advanceBattleStage() {},
   localPlayer: '',
   setLocalPLayer() {},
   gameState: 'Lobby',
@@ -72,8 +75,28 @@ export function GameProvider({ gameId, children }: Props) {
   const [victor, setVictor] = useState(defaultGameContext.victor);
   const [localPlayer, setLocalPLayer] = useState<Players>('');
 
+  const advanceBattleStage = useCallback(() => {
+    const stagesInOrder: BattleStage[] = ['plan', 'place', 'duel', 'respite'];
+    const currentIndex = stagesInOrder.indexOf(battleStage);
+
+    // If we're at the last stage ('respite'), swap the turn and reset stage to 'plan'.
+    if (currentIndex === stagesInOrder.length - 1) {
+      setBattleStage(stagesInOrder[0]);
+
+      if (battleTurn === 'playerOne') {
+        setBattleTurn('playerTwo');
+      } else if (battleTurn === 'playerTwo') {
+        setBattleTurn('playerOne');
+      }
+    } else {
+      // Otherwise, just move to the next stage.
+      setBattleStage(stagesInOrder[currentIndex + 1]);
+    }
+  }, [battleStage, battleTurn]);
+
   const value = useMemo(
     () => ({
+      advanceBattleStage,
       localPlayer,
       setLocalPLayer,
       gameState,
@@ -89,6 +112,7 @@ export function GameProvider({ gameId, children }: Props) {
       victor
     }),
     [
+      advanceBattleStage,
       battleStage,
       battleTurn,
       gameState,

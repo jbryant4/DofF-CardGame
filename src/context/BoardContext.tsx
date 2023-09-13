@@ -9,6 +9,7 @@ import React, {
 import DuelingCard from '~/constants/DuelingCard';
 import { GameContext } from '~/context/GameContext';
 import { useSetupBoard } from '~/hooks/BoardHooks';
+import useDiscardCard from '~/hooks/BoardHooks/useDiscardCard';
 import { useDrawCards } from '~/hooks/BoardHooks/useDrawCards';
 import usePlaceCard from '~/hooks/BoardHooks/usePlaceCard';
 
@@ -35,21 +36,31 @@ const defaultPlayerField = {
 };
 
 export type PlaceCardFunction = (card: DuelingCard) => void;
+export type DiscardCardFunction = (
+  cardId: string,
+  source: 'resources' | 'army' | 'champions' | 'foundations'
+) => void;
 
 export type BoardContextType = {
   playerOneBoard: PlayerField;
   playerTwoBoard: PlayerField;
+  playerOneDraw: (mdDraw: number, fdDraw: number) => void;
+  playerTwoDraw: (mdDraw: number, fdDraw: number) => void;
   setPlayerOneBoard: React.Dispatch<React.SetStateAction<PlayerField>>;
   setPlayerTwoBoard: React.Dispatch<React.SetStateAction<PlayerField>>;
   placeCard: PlaceCardFunction;
+  discardCard: DiscardCardFunction;
 };
 
 const defaultBoard: BoardContextType = {
   playerOneBoard: defaultPlayerField,
   playerTwoBoard: defaultPlayerField,
+  playerOneDraw() {},
+  playerTwoDraw() {},
   setPlayerOneBoard() {},
   setPlayerTwoBoard() {},
-  placeCard() {}
+  placeCard() {},
+  discardCard() {}
 };
 
 export const BoardContext = createContext<BoardContextType>(defaultBoard);
@@ -85,22 +96,39 @@ export function BoardProvider({ children }: Props) {
     playerTurn: battleTurn
   });
 
+  const { discard, respiteDiscard } = useDiscardCard({
+    playerOneBoard,
+    setPlayerOneBoard,
+    playerTwoBoard,
+    setPlayerTwoBoard,
+    playerTurn: battleTurn
+  });
+
   const value = useMemo(
     () => ({
       playerOneBoard,
       playerTwoBoard,
+      playerOneDraw,
+      playerTwoDraw,
       setPlayerOneBoard,
       setPlayerTwoBoard,
-      placeCard: place
+      placeCard: place,
+      discardCard: discard
     }),
-    [place, playerOneBoard, playerTwoBoard]
+    [
+      discard,
+      place,
+      playerOneBoard,
+      playerOneDraw,
+      playerTwoBoard,
+      playerTwoDraw
+    ]
   );
 
   const decksDrawnRef = useRef(false);
 
   useEffect(() => {
     if (!decksMade || decksDrawnRef.current) return;
-    console.log('should draw');
     playerOneDraw(5, 2);
     playerTwoDraw(5, 2);
     decksDrawnRef.current = true;

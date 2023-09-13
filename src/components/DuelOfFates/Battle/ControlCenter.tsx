@@ -1,8 +1,9 @@
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useContext, useEffect, useRef, useState } from 'react';
 import GraveCards from '@/DuelOfFates/Battle/GraveCards';
 import HandCard from '@/DuelOfFates/Battle/HandCard';
 import BlueBtn from '@/Global/BlueBtn';
 import DuelingCard from '~/constants/DuelingCard';
+import { GameContext } from '~/context/GameContext';
 import styles from './BattleField.module.css';
 import Decks from './Decks';
 
@@ -21,13 +22,15 @@ const ControlCenter = ({
   mainDeck,
   enemyBoard
 }: OwnProps) => {
-  const [viewDecks, setViewDecks] = useState(false);
   const [handWrapperWidth, setHandWrapperWidth] = useState(0);
 
+  const { advanceBattleStage, localPlayer, battleTurn, battleStage } =
+    useContext(GameContext);
   const handWrapperRef = useRef<HTMLDivElement>(null);
   const handCardSizeToUse =
     (handWrapperWidth - 40) / 4 > 255 ? 255 : (handWrapperWidth - 40) / 4;
 
+  const showDecks = localPlayer === battleTurn && battleStage === 'respite';
   useEffect(() => {
     if (handWrapperRef.current) {
       setHandWrapperWidth(handWrapperRef.current.offsetWidth);
@@ -52,6 +55,7 @@ const ControlCenter = ({
                   duelingCard={card}
                   cardWidth={handCardSizeToUse}
                   index={index}
+                  enemyHand={enemyBoard}
                 />
               </Fragment>
             ))}
@@ -61,7 +65,8 @@ const ControlCenter = ({
             cardWidth={handCardSizeToUse}
             foundationDeck={foundationDeck}
             mainDeck={mainDeck}
-            viewDecks={viewDecks}
+            viewDecks={showDecks}
+            handDeckLength={hand.length}
           />
         )}
       </div>
@@ -70,9 +75,7 @@ const ControlCenter = ({
           className={`${styles.actions} flex-col flex items-center justify-around`}
         >
           actions
-          <BlueBtn onClick={() => setViewDecks(v => !v)}>
-            {viewDecks ? 'hide decks' : 'show decks'}
-          </BlueBtn>
+          <BlueBtn onClick={() => advanceBattleStage()}>advance</BlueBtn>
         </div>
       )}
     </div>

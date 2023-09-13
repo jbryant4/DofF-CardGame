@@ -1,9 +1,13 @@
 import classNames from 'classnames';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useContext, useEffect, useState } from 'react';
 import DuelCard from '@/DuelOfFates/Battle/DuelCard';
+import BlueBtn from '@/Global/BlueBtn';
 import DuelingCard from '~/constants/DuelingCard';
+import { BoardContext } from '~/context/BoardContext';
+import { GameContext } from '~/context/GameContext';
 
 type OwnProps = {
+  handDeckLength: number;
   cardWidth: number;
   foundationDeck: DuelingCard[];
   mainDeck: DuelingCard[];
@@ -14,9 +18,28 @@ const Decks = ({
   cardWidth,
   foundationDeck,
   mainDeck,
-  viewDecks
+  viewDecks,
+  handDeckLength
 }: OwnProps) => {
-  useEffect(() => {}, []);
+  const { localPlayer, advanceBattleStage } = useContext(GameContext);
+  const { playerOneDraw, playerTwoDraw } = useContext(BoardContext);
+  const deckToDrawFrom =
+    localPlayer === 'playerOne' ? playerOneDraw : playerTwoDraw;
+  const handleDeckClick = (fromDeck: 'foundation' | 'main') => {
+    if (fromDeck === 'main') {
+      deckToDrawFrom(7 - handDeckLength, 0);
+    } else {
+      deckToDrawFrom(0, 1);
+    }
+    advanceBattleStage();
+
+    return;
+  };
+
+  useEffect(() => {
+    if (handDeckLength !== 7) return;
+    advanceBattleStage();
+  }, [viewDecks]);
 
   return (
     <div
@@ -41,6 +64,11 @@ const Decks = ({
             />
           </Fragment>
         ))}
+        {mainDeck.length !== 0 && (
+          <BlueBtn className="mt-8" onClick={() => handleDeckClick('main')}>
+            Fill Deck
+          </BlueBtn>
+        )}
       </div>
       <div className="flex flex-col flex-grow items-center">
         <div>Foundation Deck</div>
@@ -55,6 +83,14 @@ const Decks = ({
             />
           </Fragment>
         ))}
+        {foundationDeck.length !== 0 && (
+          <BlueBtn
+            className="mt-8"
+            onClick={() => handleDeckClick('foundation')}
+          >
+            Draw Foundation
+          </BlueBtn>
+        )}
       </div>
     </div>
   );

@@ -3,9 +3,16 @@ import DuelingCard from '~/constants/DuelingCard';
 import { BoardContextType, PlaceCardFunction } from '~/context/BoardContext';
 import { Players } from '~/context/GameContext';
 
-type OwnProps = Omit<BoardContextType, 'placeCard'> & {
+type OwnProps = Pick<
+  BoardContextType,
+  | 'playerOneBoard'
+  | 'setPlayerOneBoard'
+  | 'playerTwoBoard'
+  | 'setPlayerTwoBoard'
+> & {
   playerTurn: Players;
 };
+
 const usePlaceCard = ({
   playerOneBoard,
   playerTwoBoard,
@@ -13,6 +20,21 @@ const usePlaceCard = ({
   setPlayerTwoBoard,
   playerTurn
 }: OwnProps) => {
+  const placeCardInSlot = (
+    boardSection: (DuelingCard | null)[],
+    card: DuelingCard
+  ) => {
+    const slotIndex = boardSection.findIndex(slot => slot === null);
+    if (slotIndex !== -1) {
+      const updatedSection = [...boardSection];
+      updatedSection[slotIndex] = card;
+
+      return updatedSection;
+    }
+
+    return boardSection;
+  };
+
   const place: PlaceCardFunction = useCallback(
     (card: DuelingCard) => {
       const boardToUse =
@@ -24,57 +46,46 @@ const usePlaceCard = ({
         handCard => handCard.id !== card.id
       );
 
-      if (card.type === 'resource') {
-        const updatedResources = [...boardToUse.resources];
-        const slotIndex = updatedResources.findIndex(slot => slot === null);
-        if (slotIndex !== -1) {
-          updatedResources[slotIndex] = card;
+      let updatedSection: (DuelingCard | null)[] = [];
+      switch (card.type) {
+        case 'resource':
+          updatedSection = placeCardInSlot(boardToUse.resources, card);
           setBoardToUse(prevBoard => ({
             ...prevBoard,
-            resources: updatedResources,
+            resources: updatedSection,
             hand: updatedHand
           }));
-        }
-      }
+          break;
 
-      if (card.type === 'foundation') {
-        const updatedFoundation = [...boardToUse.foundations];
-        const slotIndex = updatedFoundation.findIndex(slot => slot === null);
-        if (slotIndex !== -1) {
-          updatedFoundation[slotIndex] = card;
+        case 'foundation':
+          updatedSection = placeCardInSlot(boardToUse.foundations, card);
           setBoardToUse(prevBoard => ({
             ...prevBoard,
-            foundations: updatedFoundation,
+            foundations: updatedSection,
             hand: updatedHand
           }));
-        }
-      }
+          break;
 
-      if (card.type === 'army') {
-        const updatedArmy = [...boardToUse.army];
-        const slotIndex = updatedArmy.findIndex(slot => slot === null);
-        if (slotIndex !== -1) {
-          updatedArmy[slotIndex] = card;
+        case 'army':
+          updatedSection = placeCardInSlot(boardToUse.army, card);
           setBoardToUse(prevBoard => ({
             ...prevBoard,
-            army: updatedArmy,
+            army: updatedSection,
             hand: updatedHand
           }));
-        }
-      }
+          break;
 
-      if (card.type === 'champion') {
-        const updatedChampion = [...boardToUse.champions];
-        const slotIndex = updatedChampion.findIndex(slot => slot === null);
-        console.log(slotIndex);
-        if (slotIndex !== -1) {
-          updatedChampion[slotIndex] = card;
+        case 'champion':
+          updatedSection = placeCardInSlot(boardToUse.champions, card);
           setBoardToUse(prevBoard => ({
             ...prevBoard,
-            champions: updatedChampion,
+            champions: updatedSection,
             hand: updatedHand
           }));
-        }
+          break;
+
+        default:
+          break;
       }
     },
     [

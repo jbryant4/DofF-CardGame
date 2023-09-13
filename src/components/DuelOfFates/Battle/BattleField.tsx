@@ -6,6 +6,7 @@ import {
 } from '@dnd-kit/core';
 import { useState } from 'react';
 import CardLayout from '@/DuelOfFates/Battle/CardLayout';
+import ScoreBoard from '@/DuelOfFates/Battle/ScoreBoard';
 import styles from './BattleField.module.css';
 import { Container, Wrapper } from './BattleField.styles';
 
@@ -31,7 +32,7 @@ const BattleField = ({}: OwnProps) => {
     >
       <Container className="bg-green-50 grid grid-rows-[1fr_10vh_50vh] h-full overflow-hidden w-full">
         <CardLayout isEnemy={true} />
-        <div>This will be where we know whos turn it is</div>
+        <ScoreBoard />
         <CardLayout />
       </Container>
     </DndContext>
