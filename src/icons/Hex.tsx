@@ -83,7 +83,7 @@ const Hex = forwardRef<SVGSVGElement, OwnProps>(
         {...props}
         ref={ref}
         viewBox="0 0 100 100"
-        className={`${strokeToUse} z-20`}
+        className={`${strokeToUse} `}
       >
         <path
           d="M 5 30 L 50 5 L 95 30 L 95 70 L 50 95 L 5 70 Z"

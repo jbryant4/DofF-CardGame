@@ -90,7 +90,7 @@ const FoundationCards = ({ cards }: OwnProps) => {
                 </div>
               ) : (
                 <img
-                  style={{ width: iconWidth, height: (iconWidth * 4) / 3 }}
+                  style={{ width: iconWidth * (3 / 4), height: iconWidth }}
                   src="/card-back.png"
                   onDoubleClick={() => {
                     if (!cardShouldBeClickable) return;

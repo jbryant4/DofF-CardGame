@@ -98,6 +98,7 @@ const HandCard = ({
           }}
           width={cardWidth}
           activePreReqs={activePreReqs}
+          inHand
         />
       </div>
     </div>

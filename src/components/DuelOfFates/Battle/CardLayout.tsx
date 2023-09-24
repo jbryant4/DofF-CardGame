@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import ControlCenter from '@/DuelOfFates/Battle/ControlCenter';
 import Military from '@/DuelOfFates/Battle/Military';
-import ResourceCards from '@/DuelOfFates/Battle/ResourceCards';
+import Resources from '@/DuelOfFates/Battle/Resources';
 import { BoardContext } from '~/context/BoardContext';
 import { GameContext } from '~/context/GameContext';
 import styles from './BattleField.module.css';
@@ -42,7 +42,7 @@ const CardLayout = ({ isEnemy = false }: OwnProps) => {
 
   return isEnemy ? (
     <div className={styles.enemyLayout}>
-      <ResourceCards cards={resources} />
+      <Resources cards={resources} />
       <FoundationCards cards={foundations} />
       <Military champions={champions} army={army} />
       <ControlCenter
@@ -55,7 +55,7 @@ const CardLayout = ({ isEnemy = false }: OwnProps) => {
     </div>
   ) : (
     <div className={styles.layout}>
-      <ResourceCards cards={resources} />
+      <Resources cards={resources} />
       <FoundationCards cards={foundations} />
       <Military champions={champions} army={army} />
       <ControlCenter

@@ -1,20 +1,14 @@
-import classNames from 'classnames';
 import { useEffect, useState } from 'react';
-import foundationCard from '@/DuelOfFates/Battle/FoundationCard';
 import CardBorders, { getBorderToUse } from '@/UpdatedCard/CardBorders';
 import CombatStats from '@/UpdatedCard/CombatStats';
 import HealthOrbs from '@/UpdatedCard/HealthOrbs';
 import PreReqOverlay from '@/UpdatedCard/PreReqOverlay';
-import UpdatedCard from '@/UpdatedCard/UpdatedCard';
-import CardType from '~/constants/CardType';
 import DuelingCard from '~/constants/DuelingCard';
-import AttackIcon from '~/icons/AttackIcon';
 import Hex from '~/icons/Hex';
-import ShieldIcon from '~/icons/ShieldIcon';
 import { PreReq } from '~/models/Card';
 import useGetCardDimensions from './useGetCardDimensions';
 
-function getHexIconKeys(card: CardType | DuelingCard) {
+function getHexIconKeys(card: DuelingCard) {
   const { primaryClass, secondaryClass, class: traits } = card;
   switch (card.type) {
     case 'army':
@@ -33,8 +27,9 @@ function getHexIconKeys(card: CardType | DuelingCard) {
 
 type OwnProps = {
   card: DuelingCard;
-  width?: number;
+  width: number;
   activePreReqs?: PreReq[];
+  inHand?: boolean;
 };
 
 export type CombatStat = {
@@ -48,7 +43,12 @@ const defaultCombatStat: CombatStat = {
 };
 
 // If it comes from any of the contexts wrapping the game it needs to be passed in as a prop
-const BattleCard = ({ card, width = 255, activePreReqs = [] }: OwnProps) => {
+const BattleCard = ({
+  card,
+  width = 255,
+  activePreReqs = [],
+  inHand = false
+}: OwnProps) => {
   const {
     title,
     preReqs,
@@ -61,14 +61,19 @@ const BattleCard = ({ card, width = 255, activePreReqs = [] }: OwnProps) => {
     position
   } = card;
   const hexIconKeys = getHexIconKeys(card);
-  const showPreReqOverlay = preReqs && preReqs.length > 0;
+  const showPreReqOverlay = preReqs && preReqs.length > 0 && inHand;
   const [combatHp, setHp] = useState(defaultCombatStat);
   const [combatDef, setDef] = useState(defaultCombatStat);
   const [combatAtk, setAtk] = useState(defaultCombatStat);
   const [unlocked, setUnlocked] = useState(false);
 
-  const { borderThickness, innerCardWidth, combatCircleRadius, imageHeight } =
-    useGetCardDimensions(width);
+  const {
+    borderThickness,
+    innerCardWidth,
+    combatCircleRadius,
+    cardWrapperWidth,
+    imageHeight
+  } = useGetCardDimensions(width);
 
   useEffect(() => {
     if (preReqs && preReqs.length > 0) return;
@@ -98,48 +103,56 @@ const BattleCard = ({ card, width = 255, activePreReqs = [] }: OwnProps) => {
 
   return (
     <div
+      id="container"
+      className="flex h-fit justify-end relative"
       style={{
         width: `${width}px`
       }}
     >
-      <div
-        id="title"
-        className={`${borderToUse} flex items-center overflow-ellipsis relative text-12 text-white w-full whitespace-nowrap lg:text-16`}
-        style={{ height: width * 0.25 * 0.4, paddingLeft: width / 8 + 4 }}
-      >
-        {hexIconKeys && (
-          <div
-            className="absolute flex flex-col items-center w-fit"
-            style={{
-              left: -(width / 8 - borderThickness / 2),
-              top: -(width * 0.25 * 0.3)
-            }}
-          >
-            <Hex
-              size={width * 0.25}
-              icon={hexIconKeys[0]}
-              canPlace={unlocked}
-              foundation={foundation}
-            />
-            <Hex
-              size={width / 6}
-              icon={hexIconKeys[1]}
-              style={{ marginTop: -(width * 0.25 * 0.06) }}
-              foundation={foundation}
-              canPlace={unlocked}
-            />
-          </div>
-        )}
-        {title}
-      </div>
+      {hexIconKeys && (
+        <div
+          className="absolute flex flex-col items-center w-fit"
+          style={{
+            left: 0,
+            top: -(width * 0.25 * 0.3),
+            zIndex: inHand ? 5 : 2
+          }}
+        >
+          <Hex
+            size={width * 0.25}
+            icon={hexIconKeys[0]}
+            canPlace={unlocked}
+            foundation={foundation}
+          />
+          <Hex
+            size={width / 6}
+            icon={hexIconKeys[1]}
+            style={{ marginTop: -(width * 0.25 * 0.06) }}
+            foundation={foundation}
+            canPlace={unlocked}
+          />
+        </div>
+      )}
 
-      <div className="overflow-hidden relative">
+      <div className="overflow-hidden relative w-fit">
+        <div
+          id="title"
+          className={`${borderToUse} flex items-center overflow-ellipsis relative text-white whitespace-nowrap lg:text-16`}
+          style={{
+            height: width * 0.25 * 0.4,
+            width: cardWrapperWidth,
+            paddingLeft: width / 8 + 4,
+            fontSize: width * 0.25 * 0.4 - 4
+          }}
+        >
+          {title}
+        </div>
         <img
           alt="card image"
           src={blankUrl}
           className="object-cover"
           style={{
-            width: width,
+            width: cardWrapperWidth,
             height: imageHeight
           }}
         />

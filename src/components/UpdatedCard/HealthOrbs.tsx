@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import { useState } from 'react';
 import { CombatStat } from '@/UpdatedCard/BattleCard';
 
 type OwnProps = {
@@ -7,7 +6,6 @@ type OwnProps = {
 };
 
 const HealthOrbs = ({ combatHp }: OwnProps) => {
-  const [value, setValue] = useState();
   const healthOrbs =
     combatHp.current > combatHp.max ? combatHp.current : combatHp.max;
 

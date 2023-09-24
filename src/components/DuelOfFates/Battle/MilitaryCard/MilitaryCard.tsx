@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import BattleCard from '@/UpdatedCard/BattleCard';
 import DuelingCard from '~/constants/DuelingCard';
 import { BoardContext } from '~/context/BoardContext';
 import { GameContext } from '~/context/GameContext';
@@ -14,7 +15,6 @@ const MilitaryCard = ({
 }) => {
   const { localPlayer, battleTurn, battleStage } = useContext(GameContext);
   const {
-    activePreReqs,
     setPlayerOneBoard,
     setPlayerTwoBoard,
     playerOneBoard,
@@ -27,9 +27,6 @@ const MilitaryCard = ({
     localPlayer === battleTurn &&
     (battleStage === 'place' || battleStage === 'duel');
 
-  if (battleTurn === localPlayer) {
-    console.log(activePreReqs);
-  }
   const boardToUse =
     localPlayer === 'playerOne' ? playerOneBoard : playerTwoBoard;
   const setBoardToUse =
@@ -58,30 +55,39 @@ const MilitaryCard = ({
     }
   };
 
-  return card ? (
-    <img
-      src={card.faceUp ? card.blankUrl : '/card-back.png'}
-      style={{ width: cardWidth, height: cardWidth * (4 / 3) }}
+  if (!card)
+    return (
+      <div
+        className={`${
+          type === 'champ' ? 'bg-cyan-400' : 'bg-cyan-200'
+        } border border-black ${type === 'army' ? 'self-end' : ''}`}
+        style={{ width: cardWidth, height: cardWidth * (4 / 3) }}
+      >
+        {type} slot {index}
+      </div>
+    );
+
+  return card.faceUp ? (
+    <div
       className={type === 'army' ? 'self-end' : ''}
       onClick={() => {
         if (battleStage === 'duel' && localPlayer === battleTurn) {
           discardCard(card.id, type === 'army' ? 'army' : 'champions');
         }
       }}
+    >
+      <BattleCard card={card} width={cardWidth} />
+    </div>
+  ) : (
+    <img
+      src="/card-back.png"
+      style={{ width: cardWidth, height: cardWidth * (4 / 3) }}
+      className={type === 'army' ? 'self-end' : ''}
       onDoubleClick={() => {
         if (!cardShouldBeClickable) return;
         handleMilitaryCardFlip();
       }}
     />
-  ) : (
-    <div
-      className={`${
-        type === 'champ' ? 'bg-cyan-400' : 'bg-cyan-200'
-      } border border-black ${type === 'army' ? 'self-end' : ''}`}
-      style={{ width: cardWidth, height: cardWidth * (4 / 3) }}
-    >
-      {type} slot {index}
-    </div>
   );
 };
 

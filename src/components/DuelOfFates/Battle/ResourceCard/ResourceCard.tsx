@@ -1,21 +1,15 @@
-import { CSSProperties, useContext, useState } from 'react';
-import styles from '@/DuelOfFates/Battle/BattleField.module.css';
+import { CSSProperties, useContext } from 'react';
+import BattleCard from '@/UpdatedCard/BattleCard';
 import DuelingCard from '~/constants/DuelingCard';
 import { BoardContext } from '~/context/BoardContext';
 import { GameContext } from '~/context/GameContext';
 
-type OwnProps = {
-  cards: (DuelingCard | null)[];
-};
-
-const Card = ({
+const ResourceCard = ({
   card,
-  position,
   isActive,
   onClick
 }: {
   card: DuelingCard | null;
-  position: string;
   isActive: boolean;
   onClick: () => void;
 }) => {
@@ -54,30 +48,26 @@ const Card = ({
   const cardHeight = (cardWidth * 4) / 3;
 
   const baseStyles: CSSProperties = {
-    position: 'absolute',
     width: cardWidth,
     height: cardHeight,
     zIndex: isActive ? 2 : 1,
     right: isActive ? 8 : 'unset',
-    left: !isActive ? 8 : 'unset'
+    left: !isActive ? 8 : 'unset',
+    bottom: isActive ? 8 : 'unset',
+    top: !isActive ? 8 : 'unset'
   };
 
   if (!card) {
     return (
       <div
-        className={`${position} bg-green-200 border-2 border-gray-600`}
+        className="absolute bg-green-200 border-2 border-gray-600"
         style={baseStyles}
       />
     );
   }
 
-  const cardImage = card.faceUp ? card.blankUrl : '/card-back.png';
-
-  return (
-    <img
-      src={cardImage}
-      className={`absolute ${position}`}
-      style={baseStyles}
+  return card.faceUp ? (
+    <div
       onClick={() => {
         if (battleStage === 'duel' && card.faceUp) {
           discardCard(card.id, 'resources');
@@ -85,6 +75,16 @@ const Card = ({
           onClick();
         }
       }}
+      className="absolute"
+      style={baseStyles}
+    >
+      <BattleCard card={card} width={cardWidth} />
+    </div>
+  ) : (
+    <img
+      src="/card-back.png"
+      className="absolute"
+      style={baseStyles}
       onDoubleClick={() => {
         if (!cardShouldBeClickable) return;
         handleResourceCardFlip();
@@ -93,25 +93,4 @@ const Card = ({
   );
 };
 
-const ResourceCards = ({ cards }: OwnProps) => {
-  const [topCard, setTopCard] = useState('cardOne');
-
-  return (
-    <div className={`${styles.resource} p-8 bg-amber-50 relative`}>
-      <Card
-        card={cards[0]}
-        position="top-8"
-        isActive={topCard === 'cardOne'}
-        onClick={() => setTopCard('cardOne')}
-      />
-      <Card
-        card={cards[1]}
-        position="bottom-8"
-        isActive={topCard !== 'cardOne'}
-        onClick={() => setTopCard('cardTwo')}
-      />
-    </div>
-  );
-};
-
-export default ResourceCards;
+export default ResourceCard;
