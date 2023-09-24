@@ -25,7 +25,7 @@ type Card = {
   atk?: number;
   def?: number;
   title: string;
-  type: CardType;
+  type: Omit<CardType, ''>;
   yearStart?: number;
   yearEnd?: number;
 };

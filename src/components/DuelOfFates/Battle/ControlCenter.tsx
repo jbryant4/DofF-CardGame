@@ -46,7 +46,7 @@ const ControlCenter = ({
       <div className={`${styles.hand} relative`}>
         <div
           ref={handWrapperRef}
-          className="bg-green-600 flex h-full justify-center relative w-full z-[2]"
+          className="bg-green-600 flex h-full justify-end relative w-full z-[2]"
         >
           {hand.length > 0 &&
             hand.map((card, index) => (

@@ -23,7 +23,8 @@ const Card = ({
     setPlayerOneBoard,
     setPlayerTwoBoard,
     playerOneBoard,
-    playerTwoBoard
+    playerTwoBoard,
+    discardCard
   } = useContext(BoardContext);
   const { localPlayer, battleTurn, battleStage } = useContext(GameContext);
   const cardShouldBeClickable =
@@ -77,7 +78,13 @@ const Card = ({
       src={cardImage}
       className={`absolute ${position}`}
       style={baseStyles}
-      onClick={onClick}
+      onClick={() => {
+        if (battleStage === 'duel' && card.faceUp) {
+          discardCard(card.id, 'resources');
+        } else {
+          onClick();
+        }
+      }}
       onDoubleClick={() => {
         if (!cardShouldBeClickable) return;
         handleResourceCardFlip();

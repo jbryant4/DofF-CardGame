@@ -1,18 +1,27 @@
 import classNames from 'classnames';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import AnimatedBackGround from '@/UpdatedCard/AnimatedBackGround';
 import { PreReq } from '~/models/Card';
 import getIconsToUse from '~/utils/getIconsToUse';
 import Chain from './Chain';
 
 type OwnProps = {
+  activePreReqs?: PreReq[];
   width: number;
   left: number;
   preReqs: PreReq[];
   unlocked: boolean;
+  setUnlocked: Dispatch<SetStateAction<boolean>>;
 };
 
-const PreReqOverlay = ({ width, left, preReqs, unlocked }: OwnProps) => {
+const PreReqOverlay = ({
+  activePreReqs,
+  width,
+  left,
+  preReqs,
+  unlocked,
+  setUnlocked
+}: OwnProps) => {
   const svgSquareDimensions = width / 3;
   const [startBurn, setBurn] = useState(false);
   const { IconOne, IconTwo, IconThree, IconFour, IconFive } = getIconsToUse(
@@ -33,6 +42,16 @@ const PreReqOverlay = ({ width, left, preReqs, unlocked }: OwnProps) => {
 
     return () => clearTimeout(timeoutId);
   }, [unlocked]);
+
+  useEffect(() => {
+    const allPreReqsMet = preReqs.every(prerequisite =>
+      activePreReqs?.includes(prerequisite)
+    );
+
+    if (allPreReqsMet) {
+      setUnlocked(true);
+    }
+  }, [preReqs, activePreReqs, setUnlocked]);
 
   return (
     <div
@@ -55,8 +74,8 @@ const PreReqOverlay = ({ width, left, preReqs, unlocked }: OwnProps) => {
             <div
               className={classNames(
                 'duration-[1s] flex items-center justify-center rounded-full transition-all',
-                { 'bg-red-500/70': unlocked },
-                { 'bg-black/20': !unlocked }
+                { 'bg-red-500/70': activePreReqs?.includes(preReqs[2]) },
+                { 'bg-black/20': !activePreReqs?.includes(preReqs[2]) }
               )}
               style={{
                 width: svgSquareDimensions,
@@ -73,8 +92,8 @@ const PreReqOverlay = ({ width, left, preReqs, unlocked }: OwnProps) => {
               <div
                 className={classNames(
                   'duration-[1s] flex items-center justify-center rounded-full transition-all',
-                  { 'bg-red-500/70': unlocked },
-                  { 'bg-black/20': !unlocked }
+                  { 'bg-red-500/70': activePreReqs?.includes(preReqs[0]) },
+                  { 'bg-black/20': !activePreReqs?.includes(preReqs[0]) }
                 )}
                 style={{
                   width: svgSquareDimensions,
@@ -90,8 +109,9 @@ const PreReqOverlay = ({ width, left, preReqs, unlocked }: OwnProps) => {
               <div
                 className={classNames(
                   'duration-[1s] flex items-center justify-center rounded-full transition-all',
-                  { 'bg-red-500/70': unlocked },
-                  { 'bg-black/20': !unlocked }
+                  { 'bg-red-500/70': activePreReqs?.includes(preReqs[1]) },
+
+                  { 'bg-black/20': !activePreReqs?.includes(preReqs[1]) }
                 )}
                 style={{
                   width: svgSquareDimensions,
@@ -114,8 +134,8 @@ const PreReqOverlay = ({ width, left, preReqs, unlocked }: OwnProps) => {
             <div
               className={classNames(
                 'duration-[1s] flex items-center justify-center rounded-full transition-all',
-                { 'bg-red-500/70': unlocked },
-                { 'bg-black/20': !unlocked }
+                { 'bg-red-500/70': activePreReqs?.includes(preReqs[3]) },
+                { 'bg-black/20': !activePreReqs?.includes(preReqs[3]) }
               )}
               style={{
                 width: svgSquareDimensions,
@@ -129,8 +149,8 @@ const PreReqOverlay = ({ width, left, preReqs, unlocked }: OwnProps) => {
             <div
               className={classNames(
                 'duration-[1s] flex items-center justify-center rounded-full transition-all',
-                { 'bg-red-500/70': unlocked },
-                { 'bg-black/20': !unlocked }
+                { 'bg-red-500/70': activePreReqs?.includes(preReqs[4]) },
+                { 'bg-black/20': !activePreReqs?.includes(preReqs[4]) }
               )}
               style={{
                 width: svgSquareDimensions,

@@ -11,7 +11,10 @@ import { GameContext } from '~/context/GameContext';
 import { useSetupBoard } from '~/hooks/BoardHooks';
 import useDiscardCard from '~/hooks/BoardHooks/useDiscardCard';
 import { useDrawCards } from '~/hooks/BoardHooks/useDrawCards';
+import useGetActivePreReqs from '~/hooks/BoardHooks/useGetActivePreReqs';
+import useGetIsCardSlotsFull from '~/hooks/BoardHooks/useGetIsCardSlotsFull';
 import usePlaceCard from '~/hooks/BoardHooks/usePlaceCard';
+import { PreReq } from '~/models/Card';
 
 export type PlayerField = {
   mainDeck: DuelingCard[];
@@ -42,6 +45,7 @@ export type DiscardCardFunction = (
 ) => void;
 
 export type BoardContextType = {
+  activePreReqs: PreReq[];
   playerOneBoard: PlayerField;
   playerTwoBoard: PlayerField;
   playerOneDraw: (mdDraw: number, fdDraw: number) => void;
@@ -50,9 +54,11 @@ export type BoardContextType = {
   setPlayerTwoBoard: React.Dispatch<React.SetStateAction<PlayerField>>;
   placeCard: PlaceCardFunction;
   discardCard: DiscardCardFunction;
+  getIsBoardSlotFull: (card: DuelingCard) => Boolean;
 };
 
 const defaultBoard: BoardContextType = {
+  activePreReqs: [],
   playerOneBoard: defaultPlayerField,
   playerTwoBoard: defaultPlayerField,
   playerOneDraw() {},
@@ -60,7 +66,10 @@ const defaultBoard: BoardContextType = {
   setPlayerOneBoard() {},
   setPlayerTwoBoard() {},
   placeCard() {},
-  discardCard() {}
+  discardCard() {},
+  getIsBoardSlotFull(_card) {
+    return false;
+  }
 };
 
 export const BoardContext = createContext<BoardContextType>(defaultBoard);
@@ -70,7 +79,8 @@ type Props = {
 };
 
 export function BoardProvider({ children }: Props) {
-  const { gameState, battleTurn } = useContext(GameContext);
+  const { gameState, battleTurn, localPlayer } = useContext(GameContext);
+  const [activePreReqs, setActivePreReqs] = useState<PreReq[]>([]);
   const [playerOneBoard, setPlayerOneBoard] = useState(
     defaultBoard.playerOneBoard
   );
@@ -104,8 +114,20 @@ export function BoardProvider({ children }: Props) {
     playerTurn: battleTurn
   });
 
+  const { getIsBoardSlotFull } = useGetIsCardSlotsFull({
+    playerOneBoard,
+    playerTwoBoard,
+    localPlayer
+  });
+
+  useGetActivePreReqs({
+    playerBoard: localPlayer === 'playerOne' ? playerOneBoard : playerTwoBoard,
+    setActivePreReqs
+  });
+
   const value = useMemo(
     () => ({
+      activePreReqs,
       playerOneBoard,
       playerTwoBoard,
       playerOneDraw,
@@ -113,10 +135,13 @@ export function BoardProvider({ children }: Props) {
       setPlayerOneBoard,
       setPlayerTwoBoard,
       placeCard: place,
-      discardCard: discard
+      discardCard: discard,
+      getIsBoardSlotFull
     }),
     [
+      activePreReqs,
       discard,
+      getIsBoardSlotFull,
       place,
       playerOneBoard,
       playerOneDraw,

@@ -1,3 +1,4 @@
+import CardType from '~/constants/CardType';
 import { CardDocument } from '~/models/Card';
 
 type CardFieldsToKeep =
@@ -14,7 +15,7 @@ type CardFieldsToKeep =
   | 'title'
   | 'type';
 
-interface DuelingCard extends Pick<CardDocument, CardFieldsToKeep> {
+interface DuelingCard extends Pick<CardType, CardFieldsToKeep> {
   id: string;
   faceUp: boolean;
   position: 'attack' | 'defense';

@@ -1,7 +1,7 @@
 /*top level grid*/
 .layout {
   display: grid;
-  grid-template-columns: 2fr auto repeat(4, 2fr);
+  grid-template-columns: 1.7fr auto repeat(4, 2fr);
   grid-template-rows: 1fr 10vh;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
@@ -9,7 +9,7 @@
 
 .enemyLayout {
   display: grid;
-  grid-template-columns: 2fr auto repeat(4, 2fr);
+  grid-template-columns: 1.7fr auto repeat(4, 2fr);
   grid-template-rows: 5vh auto;
 }
 

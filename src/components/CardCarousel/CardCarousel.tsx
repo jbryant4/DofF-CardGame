@@ -72,7 +72,7 @@ const CardCarousel = () => {
                 />
                 <div className="swiper-lazy-preloader"></div>
               </div>
-              <div className="absolute bg-black/75 bottom-32 font-bold mx-auto px-24 px-32 py-8 text-white w-fit">
+              <div className="absolute bg-black/75 bg-ocean bottom-32 font-bold mx-auto px-24 px-32 py-8 text-white w-fit">
                 {card.title}
               </div>
             </SwiperSlide>

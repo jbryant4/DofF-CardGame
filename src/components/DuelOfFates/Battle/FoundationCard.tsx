@@ -1,6 +1,7 @@
 import { Fragment, useContext } from 'react';
 import styles from '@/DuelOfFates/Battle/BattleField.module.css';
 import DuelingCard from '~/constants/DuelingCard';
+import duelingCard from '~/constants/DuelingCard';
 import { BoardContext } from '~/context/BoardContext';
 import { GameContext } from '~/context/GameContext';
 import DesertFoundationIcon from '~/icons/DesertFoundationIcon';
@@ -26,6 +27,7 @@ const FoundationCards = ({ cards }: OwnProps) => {
   const iconWidth = (window.innerWidth / 14) * 0.65;
   const { localPlayer, battleTurn, battleStage } = useContext(GameContext);
   const {
+    discardCard,
     setPlayerOneBoard,
     setPlayerTwoBoard,
     playerOneBoard,
@@ -77,7 +79,15 @@ const FoundationCards = ({ cards }: OwnProps) => {
           <Fragment key={`foundation-${index}`}>
             <div className="flex items-center justify-center">
               {card.foundation && card.faceUp ? (
-                <div>{iconToUse(card.foundation[0], iconWidth)}</div>
+                <div
+                  onClick={() => {
+                    if (battleStage === 'duel' && card.faceUp) {
+                      discardCard(card.id, 'foundations');
+                    }
+                  }}
+                >
+                  {iconToUse(card.foundation[0], iconWidth)}
+                </div>
               ) : (
                 <img
                   style={{ width: iconWidth, height: (iconWidth * 4) / 3 }}

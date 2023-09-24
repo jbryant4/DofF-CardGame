@@ -3,12 +3,14 @@ import { useEffect, useState } from 'react';
 import CardBorders from '@/UpdatedCard/CardBorders';
 import PreReqOverlay from '@/UpdatedCard/PreReqOverlay';
 import CardType from '~/constants/CardType';
+import DuelingCard from '~/constants/DuelingCard';
 import AttackIcon from '~/icons/AttackIcon';
 import Hex from '~/icons/Hex';
 import ShieldIcon from '~/icons/ShieldIcon';
+import { PreReq } from '~/models/Card';
 import useGetCardDimensions from './useGetCardDimensions';
 
-function getHexIconKeys(card: CardType) {
+function getHexIconKeys(card: CardType | DuelingCard) {
   const { primaryClass, secondaryClass, class: traits } = card;
   switch (card.type) {
     case 'army':
@@ -144,6 +146,7 @@ const UpdatedCard = ({ card, width = 255 }: OwnProps) => {
             left={borderThickness}
             preReqs={preReqs}
             unlocked={unlocked}
+            setUnlocked={setUnlocked}
           />
         )}
         {showStatOverlay && (
@@ -226,7 +229,7 @@ const UpdatedCard = ({ card, width = 255 }: OwnProps) => {
                 </>
               )}
               {effectText && (
-                <div className="flex h-full items-center overflow-y-auto p-8 text-12 text-center">
+                <div className="h-full overflow-y-auto pl-4 py-4 text-[10px] text-center lg:text-12">
                   {effectText}
                 </div>
               )}
@@ -234,7 +237,7 @@ const UpdatedCard = ({ card, width = 255 }: OwnProps) => {
             {hasBattleStats && (
               <div
                 id="health"
-                className="bg-black flex-shrink-0 pb-4 relative self-end w-full"
+                className="bg-black flex-shrink-0 relative self-end w-full"
               >
                 <div className="flex mx-auto w-fit">
                   {Array.from({ length: healthOrbs }).map((_, index) => (

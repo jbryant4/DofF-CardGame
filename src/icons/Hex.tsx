@@ -1,5 +1,6 @@
 import dynamic from 'next/dynamic';
 import React, { forwardRef } from 'react';
+import { Foundation } from '~/models/Card';
 
 const EarthIcon = dynamic(() => import('./EarthFoundationIcon'));
 const OceanIcon = dynamic(() => import('./OceanFoundationIcon'));
@@ -47,13 +48,32 @@ const getIconToUse = (icon: string) => {
 type OwnProps = React.SVGProps<SVGSVGElement> & {
   size?: number;
   icon?: string;
+  foundation?: Foundation[];
+  canPlace: boolean;
+};
+
+export const getStrokeToUse = (canPlace: boolean, foundation: Foundation) => {
+  switch (true) {
+    case foundation === 'desert':
+      return canPlace ? 'stroke-desert' : 'stroke-desert-light';
+    case foundation === 'ocean':
+      return canPlace ? 'stroke-ocean' : 'stroke-ocean-light';
+    case foundation === 'earth':
+      return canPlace ? 'stroke-earth' : 'stroke-earth-light';
+    default:
+      return 'stroke-red';
+  }
 };
 
 const Hex = forwardRef<SVGSVGElement, OwnProps>(
-  ({ size = 100, icon, ...props }, ref) => {
+  ({ size = 100, icon, foundation, canPlace, ...props }, ref) => {
     if (!icon) return null;
 
     const iconToUse = getIconToUse(icon);
+    const strokeToUse =
+      foundation && foundation.length > 0
+        ? getStrokeToUse(canPlace, foundation[0])
+        : 'stroke-black';
 
     return (
       <svg
@@ -63,6 +83,7 @@ const Hex = forwardRef<SVGSVGElement, OwnProps>(
         {...props}
         ref={ref}
         viewBox="0 0 100 100"
+        className={`${strokeToUse} z-20`}
       >
         <path
           d="M 5 30 L 50 5 L 95 30 L 95 70 L 50 95 L 5 70 Z"
