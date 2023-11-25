@@ -1,25 +1,36 @@
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import DuelOfFates from '@/DuelOfFates';
-import { BoardProvider } from '~/context/BoardContext';
-import { GameProvider } from '~/context/GameContext';
-// import { EffectProvider } from '../../contexts/EffectContext';
+import { useGameContext } from '~/context/GameContext';
+import { useSocket } from '~/context/SocketContext';
 
-function GamePage() {
+export default function GamePage() {
   const router = useRouter();
-  const { id = '' } = router.query; // Get game id from URL
+  const { id = '', isAdmin } = router.query;
+  const socket = useSocket();
+  const adminGame = isAdmin === 'true';
+  const { localPlayer, playerOne, playerTwo } = useGameContext();
 
-  if (typeof id !== 'string') {
-    // Handle the unexpected case, perhaps return an error component or redirect the user.
-    return <div>Invalid game Id: {id}</div>;
-  }
+  useEffect(() => {
+    if (!localPlayer) {
+      router.push('/game').catch(error => console.log(error));
+    }
+  }, [localPlayer, router]);
 
-  return (
-    <GameProvider gameId={id}>
-      <BoardProvider>
-        <DuelOfFates />
-      </BoardProvider>
-    </GameProvider>
-  );
+  const playerIdToUse =
+    localPlayer === 'playerOne' ? playerOne.id : playerTwo.id;
+
+  useEffect(() => {
+    if (adminGame || !socket) return;
+
+    // Join the room when the component mounts
+    socket.emit('player-ready', id, playerIdToUse);
+
+    // Cleanup function to leave the room when the component unmounts
+    return () => {
+      socket.emit('leave-room', id, playerIdToUse);
+    };
+  }, [adminGame, id, playerIdToUse, socket]);
+
+  return <DuelOfFates isAdmin={adminGame} />;
 }
-
-export default GamePage;

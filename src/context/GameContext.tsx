@@ -3,32 +3,26 @@ import React, {
   Dispatch,
   SetStateAction,
   useCallback,
+  useEffect,
   useMemo,
   useState
 } from 'react';
-import { Deck } from '~/models/Collector';
+import {
+  BattleStage,
+  defaultDuelist,
+  Duelist,
+  Players
+} from '~/constants/common/gameTypes';
+import { useSocket } from '~/context/SocketContext';
 
-export type Duelist = {
-  id: string;
-  userName: string;
-  deck: Deck;
-  hitPoints: number;
-};
-
-const defaultDuelist = {
-  id: '',
-  userName: '',
-  deck: { title: '', cards: [''] },
-  hitPoints: 10
-};
-export type Players = '' | 'playerOne' | 'playerTwo';
-type BattleStage = 'plan' | 'place' | 'duel' | 'respite' | null;
 type GameContextType = {
   advanceBattleStage: () => void;
   localPlayer: Players;
   setLocalPLayer: Dispatch<SetStateAction<Players>>;
-  gameState: 'Lobby' | 'Battle' | 'Stats';
-  setGameState: Dispatch<SetStateAction<'Lobby' | 'Battle' | 'Stats'>>;
+  gameState: 'AdminLobby' | 'Lobby' | 'Battle' | 'Stats' | 'PreLobby';
+  setGameState: Dispatch<
+    SetStateAction<'AdminLobby' | 'Lobby' | 'Battle' | 'Stats' | 'PreLobby'>
+  >;
   playerOne: Duelist;
   updatePlayerOne: Dispatch<SetStateAction<Duelist>>;
   playerTwo: Duelist;
@@ -44,7 +38,7 @@ const defaultGameContext: GameContextType = {
   advanceBattleStage() {},
   localPlayer: '',
   setLocalPLayer() {},
-  gameState: 'Lobby',
+  gameState: 'PreLobby',
   setGameState() {},
   playerOne: defaultDuelist,
   updatePlayerOne() {},
@@ -65,7 +59,7 @@ type Props = {
 };
 
 export function GameProvider({ gameId, children }: Props) {
-  console.log(gameId);
+  // console.log(gameId);
   const [playerOne, updatePlayerOne] = useState(defaultGameContext.playerOne);
   const [playerTwo, updatePlayerTwo] = useState(defaultGameContext.playerTwo);
   const [gameState, setGameState] = useState(defaultGameContext.gameState);
@@ -75,6 +69,25 @@ export function GameProvider({ gameId, children }: Props) {
   const [battleTurn, setBattleTurn] = useState(defaultGameContext.battleTurn);
   const [victor] = useState(defaultGameContext.victor);
   const [localPlayer, setLocalPLayer] = useState<Players>('');
+  const socket = useSocket();
+
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleStartGame = () => {
+      console.log('in start game');
+      // Custom logic when the 'start-game' event is received
+      setGameState('Lobby');
+    };
+
+    // Subscribe to the event
+    socket.on('start-game', handleStartGame);
+
+    // Cleanup function to unsubscribe when the component unmounts
+    return () => {
+      socket.off('start-game', handleStartGame);
+    };
+  }, [socket]);
 
   const advanceBattleStage = useCallback(() => {
     const stagesInOrder: BattleStage[] = ['plan', 'place', 'duel', 'respite'];
@@ -125,4 +138,8 @@ export function GameProvider({ gameId, children }: Props) {
   );
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
+}
+
+export function useGameContext() {
+  return React.useContext(GameContext);
 }

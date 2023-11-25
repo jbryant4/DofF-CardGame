@@ -1,9 +1,11 @@
 import classnames from 'classnames';
-import { HTMLProps } from 'react';
-type OwnProps = { active?: boolean };
+import React, { HTMLProps } from 'react';
 
-type BlueBtnProps = OwnProps & HTMLProps<HTMLDivElement>;
-const BlueBtn = ({
+interface BlueBtnProps extends HTMLProps<HTMLDivElement> {
+  active?: boolean;
+}
+
+const BlueBtn: React.FC<BlueBtnProps> = ({
   active = false,
   children,
   className: tailWindStyle = '',

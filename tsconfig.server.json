@@ -1,0 +1,15 @@
+{
+  "extends": "@tsconfig/node18/tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "baseUrl": ".",
+    "lib": ["dom", "esnext"],
+    "outDir": "build",
+    "paths": {
+      "~/*": ["src/*"],
+      "@/": ["src/components/*"]
+    },
+    "target": "ES6"
+  },
+  "include": ["server/*"]
+}

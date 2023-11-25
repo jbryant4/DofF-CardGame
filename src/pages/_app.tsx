@@ -1,12 +1,13 @@
-// import { UserProvider } from '@auth0/nextjs-auth0/client';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import Header from '@/Header/Header';
 import Modals from '@/Modals';
 import { CardProvider } from '~/context/CardContext';
 import { CollectorProvider } from '~/context/CollectorContext';
+import GameProviders from '~/context/GameProviders';
 import { GlobalProvider } from '~/context/GlobalContext';
 import { ModalProvider } from '~/context/ModalContext';
+import { SocketProvider } from '~/context/SocketContext';
 import createComponent from '~/utils/styles/createComponent';
 import 'swiper/css';
 import 'swiper/css/effect-flip';
@@ -28,6 +29,7 @@ const ComponentWrapper = createComponent('div', {
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const isGameRoute = router.pathname.includes('game');
+  const { id = '' } = router.query;
 
   return (
     <CollectorProvider>
@@ -36,9 +38,17 @@ export default function App({ Component, pageProps }: AppProps) {
           <ModalProvider>
             <AppWrapper>
               {!isGameRoute && <Header />}
-              <ComponentWrapper>
-                <Component {...pageProps} />
-              </ComponentWrapper>
+              {isGameRoute ? (
+                <GameProviders gameId={id}>
+                  <ComponentWrapper>
+                    <Component {...pageProps} />
+                  </ComponentWrapper>
+                </GameProviders>
+              ) : (
+                <ComponentWrapper>
+                  <Component {...pageProps} />
+                </ComponentWrapper>
+              )}
               {!isGameRoute && (
                 <div className="bg-blue-800 h-full max-h-[36px]" />
               )}

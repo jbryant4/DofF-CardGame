@@ -1,5 +1,5 @@
 import React, { useCallback, useContext } from 'react';
-import { PlayerField } from '~/context/BoardContext';
+import { PlayerField } from '~/constants/common/gameTypes';
 import { GameContext } from '~/context/GameContext';
 import shuffleDeck from '~/utils/shuffleDeck';
 import { useMakeDuelingDeck } from './useMakeDuelingDeck';

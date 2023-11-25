@@ -136,13 +136,6 @@ export function CardProvider({ children }: Props) {
     setDecks(madeDecks);
   }, [cards, collector]);
 
-  useEffect(() => {
-    if (!cards) return;
-    const preReqsLengths = cards.find(card => card?.preReqs?.length === 4);
-    // Find and return the maximum length
-    console.log(preReqsLengths?._id);
-  }, [cards]);
-
   const value = useMemo(
     () => ({
       cards,

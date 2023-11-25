@@ -6,6 +6,7 @@ import React, {
   useRef,
   useState
 } from 'react';
+import { defaultPlayerField, PlayerField } from '~/constants/common/gameTypes';
 import DuelingCard from '~/constants/DuelingCard';
 import { GameContext } from '~/context/GameContext';
 import { useSetupBoard } from '~/hooks/BoardHooks';
@@ -15,28 +16,6 @@ import useGetActivePreReqs from '~/hooks/BoardHooks/useGetActivePreReqs';
 import useGetIsCardSlotsFull from '~/hooks/BoardHooks/useGetIsCardSlotsFull';
 import usePlaceCard from '~/hooks/BoardHooks/usePlaceCard';
 import { PreReq } from '~/models/Card';
-
-export type PlayerField = {
-  mainDeck: DuelingCard[];
-  foundationDeck: DuelingCard[];
-  hand: DuelingCard[];
-  graveyard: DuelingCard[];
-  army: Array<DuelingCard | null>;
-  champions: Array<DuelingCard | null>;
-  foundations: Array<DuelingCard | null>;
-  resources: Array<DuelingCard | null>;
-};
-
-const defaultPlayerField = {
-  mainDeck: [],
-  foundationDeck: [],
-  hand: [],
-  graveyard: [],
-  army: [null, null, null],
-  champions: [null, null, null],
-  foundations: [null, null, null, null],
-  resources: [null, null]
-};
 
 export type PlaceCardFunction = (card: DuelingCard) => void;
 export type DiscardCardFunction = (
