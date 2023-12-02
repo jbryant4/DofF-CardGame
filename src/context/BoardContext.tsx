@@ -17,6 +17,7 @@ import useGetActivePreReqs from '~/hooks/BoardHooks/useGetActivePreReqs';
 import useGetIsCardSlotsFull from '~/hooks/BoardHooks/useGetIsCardSlotsFull';
 import usePlaceCard from '~/hooks/BoardHooks/usePlaceCard';
 import { PreReq } from '~/models/Card';
+import { BoardMessages } from '../../server/boardHandlers/boardHandlers';
 import { PreGameMessages } from '../../server/preGameHandlers/preGameHandlers';
 import { GameRoom } from '../../server/room';
 
@@ -61,7 +62,7 @@ type Props = {
 };
 
 export function BoardProvider({ children }: Props) {
-  const { gameState, battleTurn, localPlayer } = useContext(GameContext);
+  const { battleTurn, localPlayer, setGameState } = useContext(GameContext);
   const [activePreReqs, setActivePreReqs] = useState<PreReq[]>([]);
   const [playerOneBoard, setPlayerOneBoard] = useState(
     defaultBoard.playerOneBoard
@@ -69,10 +70,7 @@ export function BoardProvider({ children }: Props) {
   const [playerTwoBoard, setPlayerTwoBoard] = useState(
     defaultBoard.playerTwoBoard
   );
-  const [decksMade, setDecksMade] = useState(false);
   const socket = useSocket();
-
-  const setupTheBoard = useSetupBoard(setPlayerOneBoard, setPlayerTwoBoard);
 
   const { playerTwoDraw, playerOneDraw } = useDrawCards({
     playerOneBoard,
@@ -133,36 +131,17 @@ export function BoardProvider({ children }: Props) {
     ]
   );
 
-  const decksDrawnRef = useRef(false);
-
   useEffect(() => {
-    if (!decksMade || decksDrawnRef.current) return;
-    playerOneDraw(5, 2);
-    playerTwoDraw(5, 2);
-    decksDrawnRef.current = true;
-  }, [decksMade, playerOneDraw, playerTwoDraw]);
+    if (!socket) return;
 
-  useEffect(() => {
-    if (gameState !== 'Battle') return;
-
-    setupTheBoard();
-    setDecksMade(true);
-  }, [gameState, setupTheBoard]);
-
-  // useEffect(() => {
-  //   if (!socket) return;
-  //
-  //   // Subscribe to the event
-  //   socket.on(PreGameMessages.StartDuel, (data: GameRoom) => {
-  //     setPlayerOneBoard({ ...data.playerOneBoard });
-  //     setPlayerTwoBoard({ ...data.playerTwoBoard });
-  //   });
-  //
-  //   // Cleanup function to unsubscribe when the component unmounts
-  //   return () => {
-  //     socket.off(PreGameMessages.StartDuel, () => {});
-  //   };
-  // }, [socket]);
+    // Subscribe to the event
+    socket.on(BoardMessages.BoardSetUp, (data: GameRoom) => {
+      console.log(data);
+      setPlayerOneBoard({ ...data.playerOneBoard });
+      setPlayerTwoBoard({ ...data.playerTwoBoard });
+      setGameState(data.gameState);
+    });
+  }, [setGameState, socket]);
 
   return (
     <BoardContext.Provider value={value}>{children}</BoardContext.Provider>

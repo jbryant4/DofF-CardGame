@@ -79,7 +79,9 @@ export function GameProvider({ gameId, children }: Props) {
     if (!socket) return;
 
     // Subscribe to the event
-    socket.on(PreGameMessages.RPSShoot, () => setGameState('Lobby'));
+    socket.on(PreGameMessages.RPSShoot, () => {
+      setGameState('Lobby');
+    });
 
     socket.on(PreGameMessages.StartDuel, (data: GameRoom) => {
       updatePlayerOne({ ...data.player1 });

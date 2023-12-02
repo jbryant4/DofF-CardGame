@@ -32,8 +32,8 @@ export type GameRoom = {
 const defaultRoom: GameRoom = {
   player1: { ...defaultDuelist, active: false },
   player2: { ...defaultDuelist, active: false },
-  playerOneBoard: defaultPlayerField,
-  playerTwoBoard: defaultPlayerField,
+  playerOneBoard: { ...defaultPlayerField },
+  playerTwoBoard: { ...defaultPlayerField },
   gameState: 'Lobby',
   battleStage: null,
   battleTurn: '',

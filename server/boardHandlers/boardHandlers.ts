@@ -1,5 +1,4 @@
 import { Server, Socket } from 'socket.io';
-import setUpHandler from './setUpHandler';
 import { GameRoom } from '../room';
 
 export enum BoardMessages {

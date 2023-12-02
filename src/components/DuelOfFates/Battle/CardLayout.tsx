@@ -15,10 +15,10 @@ const CardLayout = ({ isEnemy = false }: OwnProps) => {
   const { playerOneBoard, playerTwoBoard } = useContext(BoardContext);
   const boardToUse = () => {
     switch (true) {
-      case isLocalPlayerOne && isEnemy:
-        return playerTwoBoard;
+      case isEnemy:
+        return isLocalPlayerOne ? playerTwoBoard : playerOneBoard;
       default:
-        return playerOneBoard;
+        return isLocalPlayerOne ? playerOneBoard : playerTwoBoard;
     }
   };
 

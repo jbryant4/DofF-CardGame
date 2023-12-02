@@ -115,7 +115,7 @@ export default function Home() {
         </div>
 
         <div>
-          <button type="submit">
+          <button type="submit" disabled={!deck || !name}>
             {gameId.trim().length > 0 ? 'Join Game' : 'Create Game'}
           </button>
         </div>

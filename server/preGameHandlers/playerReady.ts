@@ -8,7 +8,6 @@ export default (
   io: Server
 ) => {
   socket.on(PreGameMessages.PlayerReady, (roomId: string, playerId: string) => {
-    console.log('in player ready', roomId, playerId);
     const room = rooms[roomId];
     if (room) {
       // Mark the player as ready
