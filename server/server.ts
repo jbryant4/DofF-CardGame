@@ -19,21 +19,21 @@ const io = new Server(httpServer, {
 });
 
 // Import and use your event handling modules here
-import createGameHandler from './eventHandlers/createGame';
-import joinGameHandler from './eventHandlers/joinGame';
-import playerReadyHandler from './eventHandlers/playerReady';
+import boardHandlers from './boardHandlers';
+import preGameHandlers from './preGameHandlers';
 import { GameRoom } from './room';
-
 const rooms: Record<string, GameRoom> = {}; // Object to store game rooms
 
 io.on('connection', socket => {
-  console.log('a user connected', socket.id);
+  console.log('a user connected');
 
-  // Use your event handling modules here
-  createGameHandler(socket, rooms);
-  joinGameHandler(socket, rooms);
-  playerReadyHandler(socket, rooms, io);
-  // verify function run on landing /id
+  // Disconnect and Reconnect Handlers
+  preGameHandlers(socket, rooms, io);
+
+  // GAME Handlers
+  boardHandlers(socket, rooms, io);
+
+  //Effect Handlers
 
   socket.on('disconnect', () => {
     console.log('user disconnected');

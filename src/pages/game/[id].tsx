@@ -1,36 +1,37 @@
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import DuelOfFates from '@/DuelOfFates';
 import { useGameContext } from '~/context/GameContext';
 import { useSocket } from '~/context/SocketContext';
+import { PreGameMessages } from '../../../server/preGameHandlers/preGameHandlers';
 
 export default function GamePage() {
   const router = useRouter();
-  const { id = '', isAdmin } = router.query;
+  const { id = '' } = router.query;
   const socket = useSocket();
-  const adminGame = isAdmin === 'true';
   const { localPlayer, playerOne, playerTwo } = useGameContext();
+  const { setGameState } = useGameContext();
 
   useEffect(() => {
     if (!localPlayer) {
       router.push('/game').catch(error => console.log(error));
     }
-  }, [localPlayer, router]);
+  }, [localPlayer, router, setGameState]);
 
   const playerIdToUse =
     localPlayer === 'playerOne' ? playerOne.id : playerTwo.id;
 
   useEffect(() => {
-    if (adminGame || !socket) return;
+    if (!socket) return;
 
     // Join the room when the component mounts
-    socket.emit('player-ready', id, playerIdToUse);
+    socket.emit(PreGameMessages.PlayerReady, id, playerIdToUse);
 
     // Cleanup function to leave the room when the component unmounts
     return () => {
       socket.emit('leave-room', id, playerIdToUse);
     };
-  }, [adminGame, id, playerIdToUse, socket]);
+  }, [id, playerIdToUse, socket]);
 
-  return <DuelOfFates isAdmin={adminGame} />;
+  return <DuelOfFates />;
 }

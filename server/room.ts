@@ -11,15 +11,22 @@ export type Player = Duelist & {
   active: boolean;
 };
 
+export type MiniGame = {
+  winner: Players[];
+  playerOneSelection: string;
+  playerTwoSelection: string;
+};
+
 export type GameRoom = {
   player1: Player;
   player2: Player;
   playerOneBoard: PlayerField;
   playerTwoBoard: PlayerField;
-  gameState: 'AdminLobby' | 'Lobby' | 'Battle' | 'Stats';
+  gameState: 'Lobby' | 'SetUp' | 'Battle' | 'Stats';
   battleStage: BattleStage;
   battleTurn: Players;
   victor: Players;
+  miniGame: MiniGame;
 };
 
 const defaultRoom: GameRoom = {
@@ -30,7 +37,12 @@ const defaultRoom: GameRoom = {
   gameState: 'Lobby',
   battleStage: null,
   battleTurn: '',
-  victor: ''
+  victor: '',
+  miniGame: {
+    winner: [],
+    playerOneSelection: '',
+    playerTwoSelection: ''
+  }
 };
 
 export default defaultRoom;

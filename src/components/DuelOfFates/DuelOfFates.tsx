@@ -4,14 +4,15 @@ import Stats from '@/DuelOfFates/Stats';
 import RockPaperScissors from '@/RockPaperScissors';
 import { GameContext } from '~/context/GameContext';
 import createComponent from '~/utils/styles/createComponent';
-import Lobby from './Lobby';
+import LoadingPage from './LoadingPage';
 
 const getGameStateComponent = (state: string) => {
   switch (state) {
     case 'Lobby':
       return <RockPaperScissors />;
-    case 'AdminLobby':
-      return <Lobby />;
+    // TODO Need Loading PageHere
+    case 'SetUp':
+      return <LoadingPage />;
     case 'Battle':
       return <BattleField />;
     case 'Stats':
@@ -25,15 +26,10 @@ const Container = createComponent('div', {
   className: 'w-full h-full overflow-hidden'
 });
 
-type OwnProps = {
-  isAdmin?: boolean;
-};
-
-const DuelOfFates = ({ isAdmin = false }: OwnProps) => {
+const DuelOfFates = () => {
   const { gameState } = useContext(GameContext);
-  const ComponentToRender = getGameStateComponent(
-    isAdmin ? 'AdminLobby' : gameState
-  );
+  console.log(gameState);
+  const ComponentToRender = getGameStateComponent(gameState);
 
   return <Container>{ComponentToRender}</Container>;
 };

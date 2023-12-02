@@ -7,10 +7,9 @@ export const useMakeDuelingDeck = () => {
   const { cards } = useContext(CardContext);
 
   return useCallback(
-    (cardIds: string[], player: 'One' | 'Two'): DuelingCard[] => {
+    (cardIds: string[]): DuelingCard[] => {
       // Use a Set for O(1) lookup times
       const idSet = new Set(cardIds);
-      let counter = 1; // counter for generating new IDs
 
       // Filter the cards array directly and then map to desired structure
       return cards
@@ -25,7 +24,7 @@ export const useMakeDuelingDeck = () => {
             return result;
           }, {} as DuelingCard);
 
-          newCard.id = `player${player}Card-${counter++}`; // Assign new ID format
+          newCard.id = card._id; // Assign new ID format
 
           // Set default values for faceUp and position if they aren't provided
           newCard.faceUp = false;

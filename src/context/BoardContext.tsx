@@ -9,6 +9,7 @@ import React, {
 import { defaultPlayerField, PlayerField } from '~/constants/common/gameTypes';
 import DuelingCard from '~/constants/DuelingCard';
 import { GameContext } from '~/context/GameContext';
+import { useSocket } from '~/context/SocketContext';
 import { useSetupBoard } from '~/hooks/BoardHooks';
 import useDiscardCard from '~/hooks/BoardHooks/useDiscardCard';
 import { useDrawCards } from '~/hooks/BoardHooks/useDrawCards';
@@ -16,6 +17,8 @@ import useGetActivePreReqs from '~/hooks/BoardHooks/useGetActivePreReqs';
 import useGetIsCardSlotsFull from '~/hooks/BoardHooks/useGetIsCardSlotsFull';
 import usePlaceCard from '~/hooks/BoardHooks/usePlaceCard';
 import { PreReq } from '~/models/Card';
+import { PreGameMessages } from '../../server/preGameHandlers/preGameHandlers';
+import { GameRoom } from '../../server/room';
 
 export type PlaceCardFunction = (card: DuelingCard) => void;
 export type DiscardCardFunction = (
@@ -67,6 +70,7 @@ export function BoardProvider({ children }: Props) {
     defaultBoard.playerTwoBoard
   );
   const [decksMade, setDecksMade] = useState(false);
+  const socket = useSocket();
 
   const setupTheBoard = useSetupBoard(setPlayerOneBoard, setPlayerTwoBoard);
 
@@ -144,6 +148,21 @@ export function BoardProvider({ children }: Props) {
     setupTheBoard();
     setDecksMade(true);
   }, [gameState, setupTheBoard]);
+
+  // useEffect(() => {
+  //   if (!socket) return;
+  //
+  //   // Subscribe to the event
+  //   socket.on(PreGameMessages.StartDuel, (data: GameRoom) => {
+  //     setPlayerOneBoard({ ...data.playerOneBoard });
+  //     setPlayerTwoBoard({ ...data.playerTwoBoard });
+  //   });
+  //
+  //   // Cleanup function to unsubscribe when the component unmounts
+  //   return () => {
+  //     socket.off(PreGameMessages.StartDuel, () => {});
+  //   };
+  // }, [socket]);
 
   return (
     <BoardContext.Provider value={value}>{children}</BoardContext.Provider>

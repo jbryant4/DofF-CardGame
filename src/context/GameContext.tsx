@@ -14,14 +14,17 @@ import {
   Players
 } from '~/constants/common/gameTypes';
 import { useSocket } from '~/context/SocketContext';
+import { PreGameMessages } from '../../server/preGameHandlers/preGameHandlers';
+import { GameRoom } from '../../server/room';
 
 type GameContextType = {
   advanceBattleStage: () => void;
   localPlayer: Players;
   setLocalPLayer: Dispatch<SetStateAction<Players>>;
-  gameState: 'AdminLobby' | 'Lobby' | 'Battle' | 'Stats' | 'PreLobby';
+  gameState: 'Lobby' | 'SetUp' | 'Battle' | 'Stats' | 'PreLobby';
+  gameId: string;
   setGameState: Dispatch<
-    SetStateAction<'AdminLobby' | 'Lobby' | 'Battle' | 'Stats' | 'PreLobby'>
+    SetStateAction<'Lobby' | 'SetUp' | 'Battle' | 'Stats' | 'PreLobby'>
   >;
   playerOne: Duelist;
   updatePlayerOne: Dispatch<SetStateAction<Duelist>>;
@@ -39,6 +42,7 @@ const defaultGameContext: GameContextType = {
   localPlayer: '',
   setLocalPLayer() {},
   gameState: 'PreLobby',
+  gameId: '',
   setGameState() {},
   playerOne: defaultDuelist,
   updatePlayerOne() {},
@@ -74,19 +78,17 @@ export function GameProvider({ gameId, children }: Props) {
   useEffect(() => {
     if (!socket) return;
 
-    const handleStartGame = () => {
-      console.log('in start game');
-      // Custom logic when the 'start-game' event is received
-      setGameState('Lobby');
-    };
-
     // Subscribe to the event
-    socket.on('start-game', handleStartGame);
+    socket.on(PreGameMessages.RPSShoot, () => setGameState('Lobby'));
 
+    socket.on(PreGameMessages.StartDuel, (data: GameRoom) => {
+      updatePlayerOne({ ...data.player1 });
+      updatePlayerTwo({ ...data.player2 });
+      setBattleTurn(data.battleTurn);
+      setGameState(data.gameState);
+      setBattleStage(data.battleStage);
+    });
     // Cleanup function to unsubscribe when the component unmounts
-    return () => {
-      socket.off('start-game', handleStartGame);
-    };
   }, [socket]);
 
   const advanceBattleStage = useCallback(() => {
@@ -114,6 +116,7 @@ export function GameProvider({ gameId, children }: Props) {
       localPlayer,
       setLocalPLayer,
       gameState,
+      gameId,
       setGameState,
       playerOne,
       updatePlayerOne,
@@ -129,6 +132,7 @@ export function GameProvider({ gameId, children }: Props) {
       advanceBattleStage,
       battleStage,
       battleTurn,
+      gameId,
       gameState,
       localPlayer,
       playerOne,

@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router';
-import { useContext, useState } from 'react';
-import BlueBtn from '@/Global/BlueBtn';
+import { useState } from 'react';
 import { Duelist } from '~/constants/common/gameTypes';
 import { Africa, Americas } from '~/constants/starterDecks';
 import { useGameContext } from '~/context/GameContext';
 import { useSocket } from '~/context/SocketContext';
+import { PreGameMessages } from '../../../server/preGameHandlers/preGameHandlers';
 
 export default function Home() {
   const [name, setName] = useState('');
@@ -12,9 +12,9 @@ export default function Home() {
   const [gameId, setGameId] = useState('');
   const socket = useSocket();
   const router = useRouter();
-  const { updatePlayerOne, updatePlayerTwo, setLocalPLayer } = useGameContext();
+  const { setLocalPLayer, updatePlayerTwo, updatePlayerOne } = useGameContext();
   const deckToUse = deck === 'Africa' ? Africa : Americas;
-  const payload: Duelist = {
+  const duelist: Duelist = {
     id: name,
     userName: name,
     deck: deckToUse,
@@ -29,18 +29,17 @@ export default function Home() {
     }
 
     // Emit a 'join-game' event to the server with the provided game ID
-    socket.emit('join-game', gameId, payload);
+    socket.emit(PreGameMessages.JoinRoom, gameId, duelist);
 
     // Handle the response from the server
-    socket.on('join-game-failed', error => {
+    socket.on(PreGameMessages.JoinFailed, error => {
       // Handle the error scenario, e.g., display an error message
       console.log(`Join game failed: ${error}`);
     });
 
-    socket.on('joining-game', () => {
-      updatePlayerTwo({ ...payload });
+    socket.on(PreGameMessages.JoinSuccess, () => {
+      updatePlayerTwo({ ...duelist });
       setLocalPLayer('playerTwo');
-      console.log(`Game created with ID: ${gameId}`);
 
       router
         .push(`/game/${gameId}`)
@@ -55,24 +54,21 @@ export default function Home() {
       return;
     }
 
-    socket.emit('create-game', payload);
+    socket.emit(PreGameMessages.NewRoom, duelist);
 
-    socket.on('game-created', data => {
-      updatePlayerOne({ ...payload });
+    socket.on(PreGameMessages.RoomCreated, data => {
+      updatePlayerOne({ ...duelist });
+
       setLocalPLayer('playerOne');
       const roomId = data.roomId;
       console.log(`Game created with ID: ${roomId}`);
 
       router
         .push(`/game/${roomId}`)
-        .catch(err => console.log('Navigation Error /game create function'));
+        .catch(err =>
+          console.log('Navigation Error /game create function', err)
+        );
     });
-  };
-
-  const handleAdminGame = () => {
-    const id = Math.floor(Math.random() * 10000); // Replace with a better ID generator
-    console.log(`Admin game: ${id}`);
-    window.location.href = `/game/${id}?isAdmin=true`;
   };
 
   const functionToUse =
@@ -124,7 +120,6 @@ export default function Home() {
           </button>
         </div>
       </form>
-      <BlueBtn onClick={handleAdminGame}>Admin Game</BlueBtn>
     </div>
   );
 }

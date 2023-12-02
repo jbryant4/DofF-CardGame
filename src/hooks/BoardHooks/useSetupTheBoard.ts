@@ -22,8 +22,8 @@ export const useSetupBoard = (
 
   return useCallback(() => {
     // convert deck id arrays to DuelingCardp[]
-    const playerOneDeck = makeDuelingDeck(playerOneDeckIds, 'One');
-    const playerTwoDeck = makeDuelingDeck(playerTwoDeckIds, 'Two');
+    const playerOneDeck = makeDuelingDeck(playerOneDeckIds);
+    const playerTwoDeck = makeDuelingDeck(playerTwoDeckIds);
 
     // update the board state
     setPlayerOneBoard(prevState => ({
