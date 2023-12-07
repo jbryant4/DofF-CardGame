@@ -111,6 +111,7 @@ const UpdatedCard = ({ card, width = 255 }: OwnProps) => {
               stroke="blue"
               icon={hexIconKeys[0]}
               className="z-20"
+              canPlace
             />
             <Hex
               size={width / 6}
@@ -118,6 +119,7 @@ const UpdatedCard = ({ card, width = 255 }: OwnProps) => {
               stroke="blue"
               icon={hexIconKeys[1]}
               style={{ marginTop: -(width * 0.25 * 0.06) }}
+              canPlace
             />
           </div>
         )}

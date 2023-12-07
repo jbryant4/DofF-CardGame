@@ -4,8 +4,10 @@ import HandCard from '@/DuelOfFates/Battle/HandCard';
 import BlueBtn from '@/Global/BlueBtn';
 import DuelingCard from '~/constants/DuelingCard';
 import { GameContext } from '~/context/GameContext';
+import { useSocket } from '~/context/SocketContext';
 import styles from './BattleField.module.css';
 import Decks from './Decks';
+import { GameMessages } from '../../../../server/gameHandlers/gameHandlers';
 
 type OwnProps = {
   graveyard: DuelingCard[];
@@ -23,19 +25,31 @@ const ControlCenter = ({
   enemyBoard
 }: OwnProps) => {
   const [handWrapperWidth, setHandWrapperWidth] = useState(0);
-
-  const { advanceBattleStage, localPlayer, battleTurn, battleStage } =
+  //Currently Need this to determine card width and if not here throws errors
+  const [loaded, setLoaded] = useState(false);
+  const { advanceBattleStage, localPlayer, battleTurn, battleStage, roomId } =
     useContext(GameContext);
   const handWrapperRef = useRef<HTMLDivElement>(null);
   const handCardSizeToUse =
     (handWrapperWidth - 40) / 4 > 255 ? 255 : (handWrapperWidth - 40) / 4;
-
+  const socket = useSocket();
   const showDecks = localPlayer === battleTurn && battleStage === 'respite';
   useEffect(() => {
     if (handWrapperRef.current) {
       setHandWrapperWidth(handWrapperRef.current.offsetWidth);
     }
+    setLoaded(true);
   }, []);
+
+  const showControls = !enemyBoard && localPlayer === battleTurn;
+  // TODO start following the patern of if socket send message if not use the local stuff for deving atm
+  const handleAdvance = () => {
+    if (socket) {
+      socket.emit(GameMessages.AdvanceStage, roomId);
+    } else {
+      advanceBattleStage();
+    }
+  };
 
   return (
     <div className={`${styles.controlCenter} bg-green-400`}>
@@ -49,6 +63,7 @@ const ControlCenter = ({
           className="bg-green-600 flex h-full justify-end relative w-full z-[2]"
         >
           {hand.length > 0 &&
+            loaded &&
             hand.map((card, index) => (
               <Fragment key={card.id}>
                 <HandCard
@@ -70,12 +85,12 @@ const ControlCenter = ({
           />
         )}
       </div>
-      {!enemyBoard && (
+      {showControls && (
         <div
           className={`${styles.actions} flex-col flex items-center justify-around`}
         >
           actions
-          <BlueBtn onClick={() => advanceBattleStage()}>advance</BlueBtn>
+          <BlueBtn onClick={() => handleAdvance()}>advance</BlueBtn>
         </div>
       )}
     </div>

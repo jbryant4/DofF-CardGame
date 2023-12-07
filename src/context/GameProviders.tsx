@@ -5,17 +5,11 @@ import { GameProvider } from './GameContext';
 
 type OwnProps = {
   children: React.ReactNode;
-  gameId: string | string[];
 };
-const GameProviders = ({ children, gameId }: OwnProps) => {
-  if (typeof gameId !== 'string') {
-    // Handle the unexpected case, perhaps return an error component or redirect the user.
-    return <div>Invalid game Id: {gameId}</div>;
-  }
-
+const GameProviders = ({ children }: OwnProps) => {
   return (
     <SocketProvider>
-      <GameProvider gameId={gameId}>
+      <GameProvider>
         <BoardProvider>{children}</BoardProvider>
       </GameProvider>
     </SocketProvider>

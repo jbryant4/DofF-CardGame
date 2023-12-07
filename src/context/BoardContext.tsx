@@ -136,10 +136,14 @@ export function BoardProvider({ children }: Props) {
 
     // Subscribe to the event
     socket.on(BoardMessages.BoardSetUp, (data: GameRoom) => {
-      console.log(data);
       setPlayerOneBoard({ ...data.playerOneBoard });
       setPlayerTwoBoard({ ...data.playerTwoBoard });
       setGameState(data.gameState);
+    });
+
+    socket.on(BoardMessages.Update, data => {
+      setPlayerOneBoard({ ...data.playerOneBoard });
+      setPlayerTwoBoard({ ...data.playerTwoBoard });
     });
   }, [setGameState, socket]);
 

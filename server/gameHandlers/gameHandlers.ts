@@ -1,11 +1,9 @@
 import { Server, Socket } from 'socket.io';
-import placeHandler from './placeHandler';
+import advanceStageHandler from './advanceStageHandler';
 import { GameRoom } from '../room';
-
-export enum BoardMessages {
-  BoardSetUp = 'board-setup',
-  Update = 'board-update',
-  Place = 'place-card'
+export enum GameMessages {
+  AdvanceStage = 'advance-stage',
+  AdvanceCompete = 'advance-complete'
 }
 
 export default (
@@ -13,8 +11,7 @@ export default (
   rooms: Record<string, GameRoom>,
   io: Server
 ) => {
-  placeHandler(socket, rooms, io);
-  //drawHandler
+  advanceStageHandler(socket, rooms, io);
   //attackHandler
   //discardHandler
   //shuffleHandler

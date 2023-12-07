@@ -27,7 +27,7 @@ function getHexIconKeys(card: DuelingCard) {
 
 type OwnProps = {
   card: DuelingCard;
-  width: number;
+  width?: number;
   activePreReqs?: PreReq[];
   inHand?: boolean;
 };

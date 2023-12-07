@@ -7,10 +7,9 @@ import { PreGameMessages } from '../../../server/preGameHandlers/preGameHandlers
 
 export default function GamePage() {
   const router = useRouter();
-  const { id = '' } = router.query;
   const socket = useSocket();
-  const { localPlayer, playerOne, playerTwo } = useGameContext();
-  const { setGameState } = useGameContext();
+  const { localPlayer, playerOne, playerTwo, roomId, setGameState } =
+    useGameContext();
 
   useEffect(() => {
     if (!localPlayer) {
@@ -25,13 +24,13 @@ export default function GamePage() {
     if (!socket) return;
 
     // Join the room when the component mounts
-    socket.emit(PreGameMessages.PlayerReady, id, playerIdToUse);
+    socket.emit(PreGameMessages.PlayerReady, roomId, playerIdToUse);
 
     // Cleanup function to leave the room when the component unmounts
     return () => {
-      socket.emit('leave-room', id, playerIdToUse);
+      socket.emit('leave-room', roomId, playerIdToUse);
     };
-  }, [id, playerIdToUse, socket]);
+  }, [roomId, playerIdToUse, socket]);
 
   return <DuelOfFates />;
 }

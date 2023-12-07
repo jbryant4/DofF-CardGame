@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Duelist } from '~/constants/common/gameTypes';
 import { Africa, Americas } from '~/constants/starterDecks';
-import { useGameContext } from '~/context/GameContext';
+import { GameContext, useGameContext } from '~/context/GameContext';
 import { useSocket } from '~/context/SocketContext';
 import { PreGameMessages } from '../../../server/preGameHandlers/preGameHandlers';
 
@@ -13,6 +13,7 @@ export default function Home() {
   const socket = useSocket();
   const router = useRouter();
   const { setLocalPLayer, updatePlayerTwo, updatePlayerOne } = useGameContext();
+  const { setRoomId } = useContext(GameContext);
   const deckToUse = deck === 'Africa' ? Africa : Americas;
   const duelist: Duelist = {
     id: name,
@@ -37,12 +38,13 @@ export default function Home() {
       console.log(`Join game failed: ${error}`);
     });
 
-    socket.on(PreGameMessages.JoinSuccess, () => {
+    socket.on(PreGameMessages.JoinSuccess, data => {
       updatePlayerTwo({ ...duelist });
       setLocalPLayer('playerTwo');
-
+      console.log(data);
+      setRoomId(data);
       router
-        .push(`/game/${gameId}`)
+        .push(`/game/${data}`)
         .catch(err => console.log('Navigation Error /game join function'));
     });
   };
@@ -61,7 +63,7 @@ export default function Home() {
 
       setLocalPLayer('playerOne');
       const roomId = data.roomId;
-      console.log(`Game created with ID: ${roomId}`);
+      setRoomId(roomId);
 
       router
         .push(`/game/${roomId}`)

@@ -29,7 +29,6 @@ const ComponentWrapper = createComponent('div', {
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const isGameRoute = router.pathname.includes('game');
-  const { id = '' } = router.query;
 
   return (
     <CollectorProvider>
@@ -39,7 +38,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <AppWrapper>
               {!isGameRoute && <Header />}
               {isGameRoute ? (
-                <GameProviders gameId={id}>
+                <GameProviders>
                   <ComponentWrapper>
                     <Component {...pageProps} />
                   </ComponentWrapper>

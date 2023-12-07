@@ -14,6 +14,7 @@ import {
   Players
 } from '~/constants/common/gameTypes';
 import { useSocket } from '~/context/SocketContext';
+import { GameMessages } from '../../server/gameHandlers/gameHandlers';
 import { PreGameMessages } from '../../server/preGameHandlers/preGameHandlers';
 import { GameRoom } from '../../server/room';
 
@@ -22,7 +23,6 @@ type GameContextType = {
   localPlayer: Players;
   setLocalPLayer: Dispatch<SetStateAction<Players>>;
   gameState: 'Lobby' | 'SetUp' | 'Battle' | 'Stats' | 'PreLobby';
-  gameId: string;
   setGameState: Dispatch<
     SetStateAction<'Lobby' | 'SetUp' | 'Battle' | 'Stats' | 'PreLobby'>
   >;
@@ -35,6 +35,8 @@ type GameContextType = {
   battleTurn: Players;
   setBattleTurn: Dispatch<SetStateAction<Players>>;
   victor: Players;
+  roomId: string;
+  setRoomId: Dispatch<SetStateAction<string>>;
 };
 
 const defaultGameContext: GameContextType = {
@@ -42,7 +44,6 @@ const defaultGameContext: GameContextType = {
   localPlayer: '',
   setLocalPLayer() {},
   gameState: 'PreLobby',
-  gameId: '',
   setGameState() {},
   playerOne: defaultDuelist,
   updatePlayerOne() {},
@@ -52,17 +53,18 @@ const defaultGameContext: GameContextType = {
   setBattleStage() {},
   battleTurn: '',
   setBattleTurn() {},
-  victor: ''
+  victor: '',
+  roomId: '',
+  setRoomId() {}
 };
 
 export const GameContext = createContext<GameContextType>(defaultGameContext);
 
 type Props = {
-  gameId: string;
   children: React.ReactNode;
 };
 
-export function GameProvider({ gameId, children }: Props) {
+export function GameProvider({ children }: Props) {
   // console.log(gameId);
   const [playerOne, updatePlayerOne] = useState(defaultGameContext.playerOne);
   const [playerTwo, updatePlayerTwo] = useState(defaultGameContext.playerTwo);
@@ -74,6 +76,7 @@ export function GameProvider({ gameId, children }: Props) {
   const [victor] = useState(defaultGameContext.victor);
   const [localPlayer, setLocalPLayer] = useState<Players>('');
   const socket = useSocket();
+  const [roomId, setRoomId] = useState(defaultGameContext.roomId);
 
   useEffect(() => {
     if (!socket) return;
@@ -89,6 +92,11 @@ export function GameProvider({ gameId, children }: Props) {
       setBattleTurn(data.battleTurn);
       setGameState(data.gameState);
       setBattleStage(data.battleStage);
+    });
+
+    socket.on(GameMessages.AdvanceCompete, data => {
+      setBattleStage(data.battleStage);
+      setBattleTurn(data.battleTurn);
     });
     // Cleanup function to unsubscribe when the component unmounts
   }, [socket]);
@@ -118,7 +126,6 @@ export function GameProvider({ gameId, children }: Props) {
       localPlayer,
       setLocalPLayer,
       gameState,
-      gameId,
       setGameState,
       playerOne,
       updatePlayerOne,
@@ -128,17 +135,19 @@ export function GameProvider({ gameId, children }: Props) {
       setBattleStage,
       battleTurn,
       setBattleTurn,
-      victor
+      victor,
+      roomId,
+      setRoomId
     }),
     [
       advanceBattleStage,
       battleStage,
       battleTurn,
-      gameId,
       gameState,
       localPlayer,
       playerOne,
       playerTwo,
+      roomId,
       victor
     ]
   );

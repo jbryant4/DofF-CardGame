@@ -13,7 +13,7 @@ const RockPaperScissors = () => {
   const [selectedOption, setSelectedOption] = useState('');
   const [roundResult, setRoundResult] = useState<Players[]>([]);
   const socket = useSocket();
-  const { localPlayer, gameId } = useGameContext();
+  const { localPlayer, roomId } = useGameContext();
 
   const handleTimerEnd = () => {
     if (!socket) return;
@@ -22,7 +22,7 @@ const RockPaperScissors = () => {
     setWaiting(true);
     socket.emit(
       PreGameMessages.PlayerSelection,
-      gameId,
+      roomId,
       localPlayer,
       selectedOption
     );

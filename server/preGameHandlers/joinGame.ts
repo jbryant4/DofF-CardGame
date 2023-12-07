@@ -17,7 +17,7 @@ export default (socket: Socket, rooms: Record<string, GameRoom>) => {
 
       socket.join(roomId);
       // Notify both players that the game is starting
-      socket.emit(PreGameMessages.JoinSuccess);
+      socket.emit(PreGameMessages.JoinSuccess, roomId);
     }
   });
 };
