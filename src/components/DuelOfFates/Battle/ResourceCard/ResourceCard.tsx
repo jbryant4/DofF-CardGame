@@ -25,7 +25,6 @@ const ResourceCard = ({
     !card?.faceUp &&
     localPlayer === battleTurn &&
     (battleStage === 'place' || battleStage === 'duel');
-  console.log(cardShouldBeClickable);
   const boardToUse =
     localPlayer === 'playerOne' ? playerOneBoard : playerTwoBoard;
   const setBoardToUse =

@@ -1,5 +1,5 @@
 export * from './useMakeDuelingDeck';
-export * from './useSetupTheBoard';
+export * from './useSetupAdminBoard';
 export * from './usePlaceCard';
 export * from './useDiscardCard';
 export * from './useDrawCards';

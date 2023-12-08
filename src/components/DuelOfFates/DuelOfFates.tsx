@@ -28,7 +28,6 @@ const Container = createComponent('div', {
 
 const DuelOfFates = () => {
   const { gameState } = useContext(GameContext);
-  console.log(gameState);
   const ComponentToRender = getGameStateComponent(gameState);
 
   return <Container>{ComponentToRender}</Container>;

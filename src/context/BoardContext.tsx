@@ -3,14 +3,12 @@ import React, {
   useContext,
   useEffect,
   useMemo,
-  useRef,
   useState
 } from 'react';
 import { defaultPlayerField, PlayerField } from '~/constants/common/gameTypes';
 import DuelingCard from '~/constants/DuelingCard';
 import { GameContext } from '~/context/GameContext';
 import { useSocket } from '~/context/SocketContext';
-import { useSetupBoard } from '~/hooks/BoardHooks';
 import useDiscardCard from '~/hooks/BoardHooks/useDiscardCard';
 import { useDrawCards } from '~/hooks/BoardHooks/useDrawCards';
 import useGetActivePreReqs from '~/hooks/BoardHooks/useGetActivePreReqs';
@@ -18,7 +16,6 @@ import useGetIsCardSlotsFull from '~/hooks/BoardHooks/useGetIsCardSlotsFull';
 import usePlaceCard from '~/hooks/BoardHooks/usePlaceCard';
 import { PreReq } from '~/models/Card';
 import { BoardMessages } from '../../server/boardHandlers/boardHandlers';
-import { PreGameMessages } from '../../server/preGameHandlers/preGameHandlers';
 import { GameRoom } from '../../server/room';
 
 export type PlaceCardFunction = (card: DuelingCard) => void;
@@ -150,4 +147,8 @@ export function BoardProvider({ children }: Props) {
   return (
     <BoardContext.Provider value={value}>{children}</BoardContext.Provider>
   );
+}
+
+export function useBoardContext() {
+  return React.useContext(BoardContext);
 }

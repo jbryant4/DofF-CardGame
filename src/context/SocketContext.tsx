@@ -13,16 +13,16 @@ type OwnProps = {
 
 export const SocketProvider = ({ children }: OwnProps) => {
   const [socket, setSocket] = useState<Socket | null>(null);
-
-  useEffect(() => {
-    const newSocket = io('http://localhost:3001');
-    setSocket(newSocket);
-
-    // Clean up the socket on component unmount
-    return () => {
-      newSocket.disconnect();
-    };
-  }, []);
+  console.log('Dont Forget To Reconnect Socket');
+  // useEffect(() => {
+  //   const newSocket = io('http://localhost:3001');
+  //   setSocket(newSocket);
+  //
+  //   // Clean up the socket on component unmount
+  //   return () => {
+  //     newSocket.disconnect();
+  //   };
+  // }, []);
 
   return (
     <SocketContext.Provider value={{ socket }}>

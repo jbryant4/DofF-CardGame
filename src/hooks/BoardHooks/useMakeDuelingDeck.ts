@@ -5,11 +5,14 @@ import { CardContext } from '~/context/CardContext';
 
 export const useMakeDuelingDeck = () => {
   const { cards } = useContext(CardContext);
+  console.log('out out of return', cards.length);
 
   return useCallback(
     (cardIds: string[]): DuelingCard[] => {
+      if (cards.length === 0) return [];
       // Use a Set for O(1) lookup times
       const idSet = new Set(cardIds);
+      console.log(cards.length, idSet);
 
       // Filter the cards array directly and then map to desired structure
       return cards
