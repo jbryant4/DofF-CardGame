@@ -21,15 +21,68 @@
  *
  * It is a helpful tool when you employ CSS utility classes because it hides the
  * styling and lets you work with sanely named components.
+ *
+ * You can also pass in a function as the second argument to createComponent.
+ * The function will be called with the props passed to the component. These
+ * props may be defined using a generic type parameter. To preserve the default
+ * HTMLElement behavior, you should use the `ElementWithProps` type to wrap your
+ * prop definition.
+ *
+ * For example:
+ * ```
+ * type OwnProps = ElementWithProps<{ show: boolean }>;
+ *
+ * const Button = createComponent<OwnProps>('button', props => ({
+ *   className: props.show ? undefined : 'hidden'
+ * }));
+ * ```
+ * or more concisely:
+ * ```
+ * const Button = createComponent<
+ *   ElementWithProps<{ show: boolean }>
+ * >('button', props => ({
+ *   className: props.show ? undefined : 'hidden'
+ * }));
+ * ```
+ *
+ * If you need to specify the type of the element, you can use the second
+ * type parameter of ElementWithProps.
+ *
+ * For example:
+ * ```
+ * const Button = createComponent<
+ *   ElementWithProps<{ show: boolean }, HTMLButtonElement>
+ * >('button', props => ({
+ *   className: props.show ? undefined : 'hidden'
+ * }));
+ * ```
+ *
+ * If you are using an SVG, you should wrap your type definition in
+ * React.PropsWithoutRef to avoid a type error with the ref.
+ *
+ * For example:
+ * ```
+ * type OwnProps = React.PropsWithoutRef<React.SVGProps<SVGSVGElement>>;
+ *
+ * const Svg = createComponent<OwnProps>('svg', {
+ *   className: 'text-blue-2'
+ * });
+ *
+ * const Icon = forwardRef<SVGSVGElement, OwnProps>((props, ref) => (
+ *   <Svg ref={ref} {...props}>
+ *     ...
+ *   </Svg>
+ * ));
+ * ```
  */
 
 import isPropValid from '@emotion/is-prop-valid';
 import React, { createElement } from 'react';
 
-const getDisplayName = (
+function getDisplayName(
   tag: React.ElementType,
   defaultDisplayName = String(tag)
-) => {
+) {
   if (typeof tag === 'object') {
     const { displayName = '', name = '' } = tag;
 
@@ -37,7 +90,9 @@ const getDisplayName = (
   }
 
   return defaultDisplayName;
-};
+}
+
+const isFunction = (v: unknown): v is Function => typeof v === 'function';
 
 type OwnProps = {
   className?: string;
@@ -50,10 +105,13 @@ type Statics = {
   propTypes?: {};
 };
 
-const isFunction = (v): v is Function => typeof v === 'function';
+export type ElementWithProps<
+  Props extends Record<string, any> = {},
+  Element extends HTMLElement = HTMLElement
+> = React.PropsWithRef<React.HTMLProps<Element>> & Props;
 
-const createComponent = <
-  Instance = React.PropsWithRef<React.HTMLProps<HTMLElement>>,
+export default function createComponent<
+  Instance = ElementWithProps,
   Base = Instance
 >(
   Element: React.ElementType,
@@ -61,38 +119,38 @@ const createComponent = <
     | (OwnProps & Base)
     | ((_: OwnProps & Instance) => OwnProps),
   statics: Statics = { displayName: getDisplayName(Element) }
-) => {
-  const Component = React.forwardRef<HTMLElement, OwnProps & Instance>(
-    (props, ref) => {
-      const { className: instanceClassName = '', ...instanceProps } = props;
-      const { className: baseClassName = '', ...baseProps } = isFunction(
-        basePropsOrFunction
-      )
-        ? basePropsOrFunction(props)
-        : basePropsOrFunction;
+) {
+  const Component = React.forwardRef<
+    HTMLElement | SVGSVGElement,
+    OwnProps & Instance
+  >((props, ref) => {
+    const { className: instanceClassName = '', ...instanceProps } = props;
+    const { className: baseClassName = '', ...baseProps } = isFunction(
+      basePropsOrFunction
+    )
+      ? basePropsOrFunction(props)
+      : basePropsOrFunction;
 
-      const propsForElement = {
-        ...baseProps,
-        ...instanceProps
-      };
+    const propsToCheck = {
+      ...baseProps,
+      ...instanceProps
+    };
 
-      if (typeof Element === 'string') {
-        Object.keys(propsForElement).forEach(key => {
-          if (!isPropValid(key)) {
-            delete propsForElement[key];
-          }
-        });
-      }
+    const propsForElement =
+      typeof Element === 'string'
+        ? Object.entries(propsToCheck).reduce((acc, [key, value]) => {
+            if (isPropValid(key)) acc[key] = value;
 
-      return createElement(Element, {
-        ...propsForElement,
-        className: `${baseClassName} ${instanceClassName}`.trim(),
-        ref
-      });
-    }
-  );
+            return acc;
+          }, {} as Record<string, any>)
+        : propsToCheck;
+
+    return createElement(Element, {
+      ...propsForElement,
+      className: `${baseClassName} ${instanceClassName}`.trim(),
+      ref
+    });
+  });
 
   return Object.assign(Component, statics);
-};
-
-export default createComponent;
+}

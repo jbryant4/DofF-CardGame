@@ -5,12 +5,13 @@ import MilitaryCard from './MilitaryCard';
 type OwnProps = {
   army: (DuelingCard | null)[];
   champions: (DuelingCard | null)[];
+  isEnemy?: boolean;
 };
 
-const Military = ({ army, champions }: OwnProps) => {
+const Military = ({ army, champions, isEnemy = false }: OwnProps) => {
   return (
     <div
-      className={`${styles.military} grid grid-cols-6 justify-items-center py-8`}
+      className={`${styles.military} grid grid-cols-6 justify-items-center py-16`}
     >
       {champions.map((champ, index) => (
         <MilitaryCard
@@ -18,6 +19,7 @@ const Military = ({ army, champions }: OwnProps) => {
           card={champ}
           index={index}
           type="champ"
+          isEnemy={isEnemy}
         />
       ))}
 
@@ -27,6 +29,7 @@ const Military = ({ army, champions }: OwnProps) => {
           card={soldier}
           index={index}
           type="army"
+          isEnemy={isEnemy}
         />
       ))}
     </div>
