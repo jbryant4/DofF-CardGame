@@ -2,6 +2,7 @@ import cx from 'classnames';
 import { useContext } from 'react';
 import BattleCard from '@/UpdatedCard/BattleCard';
 import DuelingCard from '~/constants/DuelingCard';
+import ModalEnum from '~/constants/modalEnum';
 import { BoardContext } from '~/context/BoardContext';
 import { GameContext } from '~/context/GameContext';
 import { useModalContext } from '~/context/ModalContext';
@@ -21,7 +22,7 @@ const MilitaryCard = ({
   type: 'champ' | 'army';
   isEnemy?: boolean;
 }) => {
-  const { setModalCard } = useModalContext();
+  const { setModalCard, setOpenModal } = useModalContext();
   const cardWidth = innerWidth / 8 - 10;
   const cardHeight = cardWidth * (4 / 3);
 
@@ -50,6 +51,7 @@ const MilitaryCard = ({
       onClick={() => {
         if (!cardShouldBeClickable) return;
         setModalCard({ ...card, isEnemy });
+        setOpenModal(ModalEnum.BattleCard);
       }}
     >
       {card.faceUp ? (

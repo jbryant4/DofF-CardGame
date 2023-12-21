@@ -98,6 +98,17 @@ export function GameProvider({ children }: Props) {
       setBattleStage(data.battleStage);
       setBattleTurn(data.battleTurn);
     });
+
+    socket.on(GameMessages.HealthUpdate, data => {
+      updatePlayerOne(prevState => ({
+        ...prevState,
+        hitPoints: data.player1Health
+      }));
+      updatePlayerTwo(prevState => ({
+        ...prevState,
+        hitPoints: data.player2Health
+      }));
+    });
     // Cleanup function to unsubscribe when the component unmounts
   }, [socket]);
 

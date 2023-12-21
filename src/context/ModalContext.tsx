@@ -3,7 +3,7 @@ import DuelingCard from '~/constants/DuelingCard';
 import ModalEnum from '~/constants/modalEnum';
 import { GameContext } from '~/context/GameContext';
 
-type ModalCard = DuelingCard & { isEnemy: boolean };
+export type ModalCard = DuelingCard & { isEnemy: boolean };
 type ModalContextType = {
   openModal: ModalEnum;
   isModalOverlayOpen: boolean;
@@ -30,12 +30,10 @@ export const ModalProvider = ({ children }) => {
   const [openModal, setOpenModal] = useState(defaultModalContext.openModal);
   const [modalCard, setModalCard] = useState(defaultModalContext.modalCard);
 
-  useEffect(() => {
-    if (!modalCard) return;
-    setOpenModal(ModalEnum.BattleCard);
-  }, [modalCard]);
   // On Every Modal state change check if a modal should be open
-  useEffect(() => setOverlayOpen(openModal !== ModalEnum.None), [openModal]);
+  useEffect(() => {
+    setOverlayOpen(openModal !== ModalEnum.None);
+  }, [openModal]);
 
   return (
     <ModalContext.Provider

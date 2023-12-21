@@ -14,7 +14,7 @@ const devDuelingCards = devCards.map(card => {
   newCard.id = card._id; // Assign new ID format
 
   // Set default values for faceUp and position if they aren't provided
-  newCard.faceUp = true;
+  newCard.faceUp = false;
   newCard.position = 'attack';
 
   return newCard;

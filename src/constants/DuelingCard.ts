@@ -1,5 +1,4 @@
 import CardType from '~/constants/CardType';
-import { CardDocument } from '~/models/Card';
 
 type CardFieldsToKeep =
   | 'blankUrl'
@@ -20,6 +19,21 @@ interface DuelingCard extends Pick<CardType, CardFieldsToKeep> {
   faceUp: boolean;
   position: 'attack' | 'defense';
 }
+// TODO update types
+// ts
+// type NonCombatCard = {
+//   id: string;
+//   // other non-combat related properties...
+// };
+//
+// type CombatCard = NonCombatCard & {
+//   atk: number;
+//   def: number;
+//   hp: number;
+//   // other combat related properties...
+// };
+//
+// type Card = NonCombatCard | CombatCard;
 
 export const desiredKeys: (keyof DuelingCard)[] = [
   'blankUrl',

@@ -1,5 +1,6 @@
 import BattleCard from '@/UpdatedCard/BattleCard';
 import DuelingCard from '~/constants/DuelingCard';
+import ModalEnum from '~/constants/modalEnum';
 import { useModalContext } from '~/context/ModalContext';
 import { ResourceCardWrapper } from './ResourceCard.styles';
 
@@ -12,7 +13,7 @@ const ResourceCard = ({
   isTopCard?: boolean;
   isEnemy?: boolean;
 }) => {
-  const { setModalCard } = useModalContext();
+  const { setModalCard, setOpenModal } = useModalContext();
 
   const cardWidth = innerWidth / 7 - 20;
   const cardHeight = (cardWidth * 4) / 3;
@@ -38,6 +39,7 @@ const ResourceCard = ({
       onClick={() => {
         if (!cardShouldBeClickable) return;
         setModalCard({ ...card, isEnemy });
+        setOpenModal(ModalEnum.BattleCard);
       }}
     >
       {card.faceUp ? (

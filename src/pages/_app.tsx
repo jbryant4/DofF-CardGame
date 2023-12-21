@@ -41,17 +41,18 @@ export default function App({ Component, pageProps }: AppProps) {
                 <GameProviders>
                   <ComponentWrapper>
                     <Component {...pageProps} />
+                    <Modals />
                   </ComponentWrapper>
                 </GameProviders>
               ) : (
                 <ComponentWrapper>
                   <Component {...pageProps} />
+                  <Modals />
                 </ComponentWrapper>
               )}
               {!isGameRoute && (
                 <div className="bg-blue-800 h-full max-h-[36px]" />
               )}
-              <Modals />
             </AppWrapper>
           </ModalProvider>
         </GlobalProvider>

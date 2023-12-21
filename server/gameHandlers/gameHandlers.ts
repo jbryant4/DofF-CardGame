@@ -1,9 +1,14 @@
 import { Server, Socket } from 'socket.io';
 import advanceStageHandler from './advanceStageHandler';
+import directHitHandler from './directHitHandler';
 import { GameRoom } from '../room';
+
 export enum GameMessages {
   AdvanceStage = 'advance-stage',
-  AdvanceCompete = 'advance-complete'
+  AdvanceCompete = 'advance-complete',
+  DirectHit = 'direct-hit',
+  GameOver = 'game-over',
+  HealthUpdate = 'health-update'
 }
 
 export default (
@@ -12,6 +17,7 @@ export default (
   io: Server
 ) => {
   advanceStageHandler(socket, rooms, io);
+  directHitHandler(socket, rooms, io);
   //attackHandler
   //discardHandler
   //shuffleHandler

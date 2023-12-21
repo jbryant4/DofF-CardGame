@@ -26,6 +26,8 @@ export type DiscardCardFunction = (
 
 export type BoardContextType = {
   activePreReqs: PreReq[];
+  enemyBoard: PlayerField;
+  localBoard: PlayerField;
   playerOneBoard: PlayerField;
   playerTwoBoard: PlayerField;
   playerOneDraw: (mdDraw: number, fdDraw: number) => void;
@@ -39,8 +41,10 @@ export type BoardContextType = {
 
 const defaultBoard: BoardContextType = {
   activePreReqs: [],
-  playerOneBoard: defaultPlayerField,
-  playerTwoBoard: defaultPlayerField,
+  enemyBoard: { ...defaultPlayerField },
+  localBoard: { ...defaultPlayerField },
+  playerOneBoard: { ...defaultPlayerField },
+  playerTwoBoard: { ...defaultPlayerField },
   playerOneDraw() {},
   playerTwoDraw() {},
   setPlayerOneBoard() {},
@@ -67,6 +71,13 @@ export function BoardProvider({ children }: Props) {
   const [playerTwoBoard, setPlayerTwoBoard] = useState(
     defaultBoard.playerTwoBoard
   );
+  const [enemyBoard, setEnemyBoard] = useState<PlayerField>(
+    defaultBoard.enemyBoard
+  );
+  const [localBoard, setLocalBoard] = useState<PlayerField>(
+    defaultBoard.localBoard
+  );
+
   const socket = useSocket();
 
   const { playerTwoDraw, playerOneDraw } = useDrawCards({
@@ -106,6 +117,8 @@ export function BoardProvider({ children }: Props) {
   const value = useMemo(
     () => ({
       activePreReqs,
+      enemyBoard,
+      localBoard,
       playerOneBoard,
       playerTwoBoard,
       playerOneDraw,
@@ -119,7 +132,9 @@ export function BoardProvider({ children }: Props) {
     [
       activePreReqs,
       discard,
+      enemyBoard,
       getIsBoardSlotFull,
+      localBoard,
       place,
       playerOneBoard,
       playerOneDraw,
@@ -143,6 +158,20 @@ export function BoardProvider({ children }: Props) {
       setPlayerTwoBoard({ ...data.playerTwoBoard });
     });
   }, [setGameState, socket]);
+
+  useEffect(() => {
+    if (!localPlayer) return;
+    setLocalBoard(prevBoard =>
+      localPlayer === 'playerOne'
+        ? { ...prevBoard, ...playerOneBoard }
+        : { ...prevBoard, ...playerTwoBoard }
+    );
+    setEnemyBoard(prevBoard =>
+      localPlayer === 'playerOne'
+        ? { ...prevBoard, ...playerTwoBoard }
+        : { ...prevBoard, ...playerOneBoard }
+    );
+  }, [localPlayer, playerOneBoard, playerTwoBoard]);
 
   return (
     <BoardContext.Provider value={value}>{children}</BoardContext.Provider>

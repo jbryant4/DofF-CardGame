@@ -37,10 +37,10 @@ export const useSetupAdminBoard = () => {
       mainDeck: mainDeck.slice(5),
       foundationDeck: foundationDeck.slice(2),
       hand: [
-        ...adminDeck.filter(card => card.type === 'army').slice(0, 2),
+        ...adminDeck.filter(card => card.type === 'army').slice(0, 3),
         ...adminDeck.filter(card => card.type === 'champion').slice(4, 6),
         mainDeck[0],
-        ...foundationDeck.slice(1, 4)
+        ...foundationDeck.slice(2, 4)
       ]
     });
 

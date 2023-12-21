@@ -17,8 +17,8 @@ const Modals = () => {
     if (openModal === ModalEnum.Quiz) {
       setConfirm(true);
     } else if (openModal === ModalEnum.BattleCard) {
-      setOpenModal(ModalEnum.None);
       setModalCard(null);
+      setOpenModal(ModalEnum.None);
     } else {
       setOpenModal(ModalEnum.None);
     }

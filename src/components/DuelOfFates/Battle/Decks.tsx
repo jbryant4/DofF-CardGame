@@ -1,10 +1,13 @@
 import classNames from 'classnames';
-import { Fragment, useContext, useEffect } from 'react';
+import { Fragment, useContext, useEffect, useState } from 'react';
 import DuelCard from '@/DuelOfFates/Battle/DuelCard';
 import BlueBtn from '@/Global/BlueBtn';
 import DuelingCard from '~/constants/DuelingCard';
 import { BoardContext } from '~/context/BoardContext';
 import { GameContext } from '~/context/GameContext';
+import { useSocket } from '~/context/SocketContext';
+import { BoardMessages } from '../../../../server/boardHandlers/boardHandlers';
+import { GameMessages } from '../../../../server/gameHandlers/gameHandlers';
 
 type OwnProps = {
   handDeckLength: number;
@@ -21,26 +24,42 @@ const Decks = ({
   viewDecks,
   handDeckLength
 }: OwnProps) => {
-  const { localPlayer, advanceBattleStage } = useContext(GameContext);
+  const socket = useSocket();
+  const [showUi, setShowUi] = useState(false);
+  const { localPlayer, roomId, advanceBattleStage } = useContext(GameContext);
   const { playerOneDraw, playerTwoDraw } = useContext(BoardContext);
   const deckToDrawFrom =
     localPlayer === 'playerOne' ? playerOneDraw : playerTwoDraw;
   const handleDeckClick = (fromDeck: 'foundation' | 'main') => {
-    if (fromDeck === 'main') {
-      deckToDrawFrom(7 - handDeckLength, 0);
+    if (socket) {
+      socket.emit(BoardMessages.Draw, roomId, localPlayer, fromDeck);
     } else {
-      deckToDrawFrom(0, 1);
-    }
-    advanceBattleStage();
+      if (fromDeck === 'main') {
+        deckToDrawFrom(7 - handDeckLength, 0);
+      } else {
+        deckToDrawFrom(0, 1);
+      }
+      advanceBattleStage();
 
-    return;
+      return;
+    }
   };
 
   useEffect(() => {
-    if (handDeckLength === 7 && viewDecks) {
-      advanceBattleStage();
+    if (handDeckLength >= 7 && viewDecks) {
+      if (socket) {
+        socket.emit(GameMessages.AdvanceStage, roomId);
+      } else {
+        advanceBattleStage();
+      }
+
+      return;
+    } else if (viewDecks) {
+      setShowUi(true);
+    } else {
+      setShowUi(false);
     }
-  }, [advanceBattleStage, handDeckLength, viewDecks]);
+  }, [advanceBattleStage, handDeckLength, roomId, socket, viewDecks]);
 
   return (
     <div
@@ -48,7 +67,7 @@ const Decks = ({
       className={classNames(
         'absolute bg-red-200 duration-[800ms] ease-in-out flex gap-28 pb-16 pt-8 px-20 right-0 top-[0] transition-all z-[1]',
         {
-          '-translate-y-[100%]': viewDecks
+          '-translate-y-[100%]': showUi
         }
       )}
     >
