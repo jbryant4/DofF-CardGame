@@ -22,7 +22,7 @@ const MilitaryCard = ({
   type: 'champ' | 'army';
   isEnemy?: boolean;
 }) => {
-  const { setModalCard, setOpenModal } = useModalContext();
+  const { setModalInfo, setOpenModal } = useModalContext();
   const cardWidth = innerWidth / 8 - 10;
   const cardHeight = cardWidth * (4 / 3);
 
@@ -50,7 +50,7 @@ const MilitaryCard = ({
       isEnemy={isEnemy}
       onClick={() => {
         if (!cardShouldBeClickable) return;
-        setModalCard({ ...card, isEnemy });
+        setModalInfo({ id: card.id, type: card.type, isEnemy });
         setOpenModal(ModalEnum.BattleCard);
       }}
     >

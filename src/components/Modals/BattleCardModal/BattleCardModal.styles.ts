@@ -9,7 +9,7 @@ export const Wrapper = createComponent('div', { className: '' });
 
 export const ActionBtn = createComponent<
   ElementWithProps & { disabled: boolean }
->('div', props => ({
+>('button', props => ({
   className: cx(
     'bg-blue-500 capitalize font-bold px-4 py-2 rounded text-center text-white',
     { 'opacity-50 cursor-not-allowed': props.disabled },

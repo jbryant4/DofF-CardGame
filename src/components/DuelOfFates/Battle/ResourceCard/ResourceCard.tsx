@@ -13,7 +13,7 @@ const ResourceCard = ({
   isTopCard?: boolean;
   isEnemy?: boolean;
 }) => {
-  const { setModalCard, setOpenModal } = useModalContext();
+  const { setModalInfo, setOpenModal } = useModalContext();
 
   const cardWidth = innerWidth / 7 - 20;
   const cardHeight = (cardWidth * 4) / 3;
@@ -38,7 +38,7 @@ const ResourceCard = ({
       w={cardWidth}
       onClick={() => {
         if (!cardShouldBeClickable) return;
-        setModalCard({ ...card, isEnemy });
+        setModalInfo({ id: card.id, type: card.type, isEnemy });
         setOpenModal(ModalEnum.BattleCard);
       }}
     >

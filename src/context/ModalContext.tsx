@@ -1,23 +1,35 @@
 import React, { createContext, useEffect, useState } from 'react';
 import DuelingCard from '~/constants/DuelingCard';
 import ModalEnum from '~/constants/modalEnum';
-import { GameContext } from '~/context/GameContext';
+import { CardType } from '~/models/Card';
+
+export type ModalInfo = {
+  id: string;
+  type: Omit<CardType, ''>;
+  isEnemy: boolean;
+};
+
+export const defaultModalInfo: ModalInfo = {
+  id: '',
+  type: 'army',
+  isEnemy: false
+};
 
 export type ModalCard = DuelingCard & { isEnemy: boolean };
 type ModalContextType = {
   openModal: ModalEnum;
   isModalOverlayOpen: boolean;
   setOpenModal: React.Dispatch<React.SetStateAction<ModalEnum>>;
-  modalCard: ModalCard | null;
-  setModalCard: React.Dispatch<React.SetStateAction<ModalCard | null>>;
+  modalInfo: ModalInfo;
+  setModalInfo: React.Dispatch<React.SetStateAction<ModalInfo>>;
 };
 
 const defaultModalContext: ModalContextType = {
   openModal: ModalEnum.None,
   isModalOverlayOpen: false,
   setOpenModal: _value => {},
-  modalCard: null,
-  setModalCard() {}
+  modalInfo: { ...defaultModalInfo },
+  setModalInfo() {}
 };
 export const ModalContext =
   createContext<ModalContextType>(defaultModalContext);
@@ -28,7 +40,7 @@ export const ModalProvider = ({ children }) => {
     defaultModalContext.isModalOverlayOpen
   );
   const [openModal, setOpenModal] = useState(defaultModalContext.openModal);
-  const [modalCard, setModalCard] = useState(defaultModalContext.modalCard);
+  const [modalInfo, setModalInfo] = useState(defaultModalContext.modalInfo);
 
   // On Every Modal state change check if a modal should be open
   useEffect(() => {
@@ -41,8 +53,8 @@ export const ModalProvider = ({ children }) => {
         isModalOverlayOpen,
         openModal,
         setOpenModal,
-        modalCard,
-        setModalCard
+        modalInfo,
+        setModalInfo
       }}
     >
       {children}

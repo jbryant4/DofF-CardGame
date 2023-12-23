@@ -26,12 +26,16 @@ export type DiscardCardFunction = (
 
 export type BoardContextType = {
   activePreReqs: PreReq[];
+  attackedThisRound: string[];
+  directHitThisRound: boolean;
   enemyBoard: PlayerField;
   localBoard: PlayerField;
   playerOneBoard: PlayerField;
   playerTwoBoard: PlayerField;
   playerOneDraw: (mdDraw: number, fdDraw: number) => void;
   playerTwoDraw: (mdDraw: number, fdDraw: number) => void;
+  setAttackedThisRound: React.Dispatch<React.SetStateAction<string[]>>;
+  setDirectHitThisRound: React.Dispatch<React.SetStateAction<boolean>>;
   setPlayerOneBoard: React.Dispatch<React.SetStateAction<PlayerField>>;
   setPlayerTwoBoard: React.Dispatch<React.SetStateAction<PlayerField>>;
   placeCard: PlaceCardFunction;
@@ -41,12 +45,16 @@ export type BoardContextType = {
 
 const defaultBoard: BoardContextType = {
   activePreReqs: [],
+  attackedThisRound: [],
+  directHitThisRound: false,
   enemyBoard: { ...defaultPlayerField },
   localBoard: { ...defaultPlayerField },
   playerOneBoard: { ...defaultPlayerField },
   playerTwoBoard: { ...defaultPlayerField },
   playerOneDraw() {},
   playerTwoDraw() {},
+  setAttackedThisRound() {},
+  setDirectHitThisRound() {},
   setPlayerOneBoard() {},
   setPlayerTwoBoard() {},
   placeCard() {},
@@ -76,6 +84,12 @@ export function BoardProvider({ children }: Props) {
   );
   const [localBoard, setLocalBoard] = useState<PlayerField>(
     defaultBoard.localBoard
+  );
+  const [attackedThisRound, setAttackedThisRound] = useState(
+    defaultBoard.attackedThisRound
+  );
+  const [directHitThisRound, setDirectHitThisRound] = useState(
+    defaultBoard.directHitThisRound
   );
 
   const socket = useSocket();
@@ -117,12 +131,16 @@ export function BoardProvider({ children }: Props) {
   const value = useMemo(
     () => ({
       activePreReqs,
+      attackedThisRound,
+      directHitThisRound,
       enemyBoard,
       localBoard,
       playerOneBoard,
       playerTwoBoard,
       playerOneDraw,
       playerTwoDraw,
+      setAttackedThisRound,
+      setDirectHitThisRound,
       setPlayerOneBoard,
       setPlayerTwoBoard,
       placeCard: place,
@@ -131,6 +149,8 @@ export function BoardProvider({ children }: Props) {
     }),
     [
       activePreReqs,
+      attackedThisRound,
+      directHitThisRound,
       discard,
       enemyBoard,
       getIsBoardSlotFull,
@@ -158,6 +178,11 @@ export function BoardProvider({ children }: Props) {
       setPlayerTwoBoard({ ...data.playerTwoBoard });
     });
   }, [setGameState, socket]);
+
+  useEffect(() => {
+    setAttackedThisRound([]);
+    setDirectHitThisRound(false);
+  }, [battleTurn]);
 
   useEffect(() => {
     if (!localPlayer) return;

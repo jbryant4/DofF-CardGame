@@ -1,16 +1,14 @@
 import { useMemo } from 'react';
 import DuelingCard from '~/constants/DuelingCard';
 import { useBoardContext } from '~/context/BoardContext';
-import { ModalCard } from '~/context/ModalContext';
+import { ModalInfo } from '~/context/ModalContext';
 import { CardType } from '~/models/Card';
 
 function getBoardKey(cardType: Omit<CardType, ''>): string {
   return cardType === 'army' ? `${cardType}` : `${cardType}s`;
 }
 
-export default function useGetCardOnBoard(
-  card: ModalCard | null
-): DuelingCard | null {
+export default function useGetCardOnBoard(card: ModalInfo): DuelingCard | null {
   const { localBoard, enemyBoard } = useBoardContext();
   const boardToUse = card?.isEnemy ? enemyBoard : localBoard;
 

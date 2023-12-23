@@ -1,14 +1,12 @@
 import { useCallback } from 'react';
 import { getBoardKey } from '@/Modals/BattleCardModal/modalUtils';
-import cardType from '~/constants/CardType';
 import DuelingCard from '~/constants/DuelingCard';
 import { useBoardContext } from '~/context/BoardContext';
 import { useGameContext } from '~/context/GameContext';
-import { ModalCard } from '~/context/ModalContext';
 import { useSocket } from '~/context/SocketContext';
 import { BoardMessages } from '../../../../../server/boardHandlers/boardHandlers';
 
-export default function useHandleSwitchStance(card: ModalCard | null) {
+export default function useHandleSwitchStance(card: DuelingCard | null) {
   const socket = useSocket();
   const { localBoard, setPlayerTwoBoard, setPlayerOneBoard } =
     useBoardContext();

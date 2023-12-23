@@ -1,13 +1,12 @@
 import { useCallback } from 'react';
 import { getBoardKey } from '@/Modals/BattleCardModal/modalUtils';
+import DuelingCard from '~/constants/DuelingCard';
 import { useBoardContext } from '~/context/BoardContext';
 import { useGameContext } from '~/context/GameContext';
-import { ModalCard } from '~/context/ModalContext';
 import { useSocket } from '~/context/SocketContext';
-import { CardType } from '~/models/Card';
 import { BoardMessages } from '../../../../../server/boardHandlers/boardHandlers';
 
-export default function useHandleFlipCard(card: ModalCard | null) {
+export default function useHandleFlipCard(card: DuelingCard | null) {
   const socket = useSocket();
   const { localBoard, setPlayerTwoBoard, setPlayerOneBoard } =
     useBoardContext();

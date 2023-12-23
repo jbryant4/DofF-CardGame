@@ -43,7 +43,7 @@ const CardLayout = ({ isEnemy = false }: OwnProps) => {
   return isEnemy ? (
     <div className={styles.enemyLayout}>
       <Resources cards={resources} isEnemy={isEnemy} />
-      <FoundationCards cards={foundations} />
+      <FoundationCards cards={foundations} isEnemy={isEnemy} />
       <Military champions={champions} army={army} isEnemy={isEnemy} />
       <ControlCenter
         graveyard={graveYardsToShow}

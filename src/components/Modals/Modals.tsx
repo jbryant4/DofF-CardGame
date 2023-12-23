@@ -2,7 +2,7 @@ import { Dialog } from '@headlessui/react';
 import dynamic from 'next/dynamic';
 import { useContext, useEffect, useState } from 'react';
 import ModalEnum from '~/constants/modalEnum';
-import { ModalContext } from '~/context/ModalContext';
+import { defaultModalInfo, ModalContext } from '~/context/ModalContext';
 
 const BreakDownModal = dynamic(() => import('./BreakDownModal'));
 const UnlockModal = dynamic(() => import('./UnlockModal'));
@@ -10,14 +10,14 @@ const QuizModal = dynamic(() => import('./QuizModal'));
 const BattleCardModal = dynamic(() => import('./BattleCardModal'));
 
 const Modals = () => {
-  const { isModalOverlayOpen, openModal, setOpenModal, setModalCard } =
+  const { isModalOverlayOpen, openModal, setOpenModal, setModalInfo } =
     useContext(ModalContext);
   const [confirmClose, setConfirm] = useState(false);
   const handleClose = () => {
     if (openModal === ModalEnum.Quiz) {
       setConfirm(true);
     } else if (openModal === ModalEnum.BattleCard) {
-      setModalCard(null);
+      setModalInfo({ ...defaultModalInfo });
       setOpenModal(ModalEnum.None);
     } else {
       setOpenModal(ModalEnum.None);

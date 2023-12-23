@@ -1,6 +1,6 @@
 import { Dialog } from '@headlessui/react';
+import cx from 'classnames';
 import { useState } from 'react';
-import BlueBtn from '@/Global/BlueBtn';
 import {
   useGetBattleDetails,
   useGetCardOnBoard,
@@ -10,15 +10,15 @@ import {
 } from '@/Modals/BattleCardModal/hooks';
 import useHandleDirectHit from '@/Modals/BattleCardModal/hooks/useHandleDirectHit';
 import BattleCard from '@/UpdatedCard/BattleCard';
-import DuelingCard from '~/constants/DuelingCard';
+import { useBoardContext } from '~/context/BoardContext';
 import { useModalContext } from '~/context/ModalContext';
 import { ActionBtn, Container } from './BattleCardModal.styles';
 
 export default function BattleCardModal() {
-  const { modalCard } = useModalContext();
+  const { modalInfo } = useModalContext();
   const [showCardsToAttack, setShow] = useState(false);
-  const [cardBeingAttacked, setCard] = useState<DuelingCard | null>(null);
-  const cardToUse = useGetCardOnBoard(modalCard);
+  const [hideButtons, setHideButtons] = useState(false);
+  const cardToUse = useGetCardOnBoard(modalInfo);
   const {
     canFlip,
     canAttack,
@@ -27,25 +27,24 @@ export default function BattleCardModal() {
     cardsToAttack,
     showActions,
     hasDetailsToShow
-  } = useGetBattleDetails(modalCard);
-  const handleFlipCard = useHandleFlipCard(modalCard);
-  const handleSwitchStance = useHandleSwitchStance(modalCard);
+  } = useGetBattleDetails(cardToUse, modalInfo.isEnemy);
+  const handleFlipCard = useHandleFlipCard(cardToUse);
+  const handleSwitchStance = useHandleSwitchStance(cardToUse);
   const handleDirectHit = useHandleDirectHit();
   const handleAttack = useHandleCardAttack();
   const [switchedThisOpen, setSwitchedThisTurn] = useState(false);
+  const { setDirectHitThisRound, setAttackedThisRound } = useBoardContext();
 
   const handleSwitch = () => {
-    if (!canSwitch || switchedThisOpen) return;
     handleSwitchStance();
     setSwitchedThisTurn(true);
   };
   const handleFlip = () => {
-    if (!canFlip) return;
     handleFlipCard();
   };
   const handleDirect = () => {
-    if (!canAttackPlayer) return;
     handleDirectHit();
+    setDirectHitThisRound(true);
   };
 
   return cardToUse ? (
@@ -74,26 +73,30 @@ export default function BattleCardModal() {
           </div>
         )}
 
-        <Dialog.Description className="flex flex-col my-16">
+        <Dialog.Description as="div" className="flex flex-col my-16">
           <BattleCard card={cardToUse} />
         </Dialog.Description>
 
-        {showCardsToAttack && !cardBeingAttacked && (
+        {showCardsToAttack && (
           <Dialog.Description as="div" className="flex gap-16 items-center">
             {cardsToAttack.map(card =>
               card ? (
                 <div key={card.id} className="flex flex-col gap-8 items-center">
                   <BattleCard card={card} width={200} />
                   <ActionBtn
-                    disabled={(card?.hp ?? 99) <= 0}
-                    className="w-fit"
+                    disabled={(card?.hp ?? 99) <= 0 || hideButtons}
+                    className={cx('w-fit', { invisible: hideButtons })}
                     onClick={() => {
-                      setCard(card);
+                      setHideButtons(true);
                       handleAttack(
                         cardToUse.id,
                         card.id,
                         cardToUse.type === 'champ'
                       );
+                      setAttackedThisRound(prevState => [
+                        ...prevState,
+                        cardToUse.id
+                      ]);
                     }}
                   >
                     this guy
@@ -101,12 +104,6 @@ export default function BattleCardModal() {
                 </div>
               ) : null
             )}
-          </Dialog.Description>
-        )}
-
-        {cardBeingAttacked && (
-          <Dialog.Description as="div" className="flex gap-8 items-center">
-            <BattleCard card={cardBeingAttacked} width={200} />
           </Dialog.Description>
         )}
       </Dialog.Panel>
