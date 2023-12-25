@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import { Fragment, useContext, useEffect, useState } from 'react';
 import DuelCard from '@/DuelOfFates/Battle/DuelCard';
 import BlueBtn from '@/Global/BlueBtn';
+import { ActionBtn } from '@/Modals/BattleCardModal/BattleCardModal.styles';
 import DuelingCard from '~/constants/DuelingCard';
 import { BoardContext } from '~/context/BoardContext';
 import { GameContext } from '~/context/GameContext';
@@ -10,24 +11,23 @@ import { BoardMessages } from '../../../../server/boardHandlers/boardHandlers';
 import { GameMessages } from '../../../../server/gameHandlers/gameHandlers';
 
 type OwnProps = {
-  handDeckLength: number;
   cardWidth: number;
-  foundationDeck: DuelingCard[];
-  mainDeck: DuelingCard[];
-  viewDecks: boolean;
 };
 
-const Decks = ({
-  cardWidth,
-  foundationDeck,
-  mainDeck,
-  viewDecks,
-  handDeckLength
-}: OwnProps) => {
+const Decks = ({ cardWidth }: OwnProps) => {
   const socket = useSocket();
   const [showUi, setShowUi] = useState(false);
-  const { localPlayer, roomId, advanceBattleStage } = useContext(GameContext);
-  const { playerOneDraw, playerTwoDraw } = useContext(BoardContext);
+  const { localPlayer, roomId, advanceBattleStage, battleTurn, battleStage } =
+    useContext(GameContext);
+
+  const viewDecks = localPlayer === battleTurn && battleStage === 'draw';
+  const { playerOneDraw, playerTwoDraw, localBoard } = useContext(BoardContext);
+  const { mainDeck, foundationDeck, hand } = localBoard;
+  const mainDeckToShow =
+    mainDeck.slice(0, 5).length > 0 ? mainDeck.slice(0, 5) : [];
+  const foundationDeckToShow =
+    foundationDeck.slice(0, 2).length > 0 ? foundationDeck.slice(0, 2) : [];
+
   const deckToDrawFrom =
     localPlayer === 'playerOne' ? playerOneDraw : playerTwoDraw;
   const handleDeckClick = (fromDeck: 'foundation' | 'main') => {
@@ -35,7 +35,7 @@ const Decks = ({
       socket.emit(BoardMessages.Draw, roomId, localPlayer, fromDeck);
     } else {
       if (fromDeck === 'main') {
-        deckToDrawFrom(7 - handDeckLength, 0);
+        deckToDrawFrom(7 - hand.length, 0);
       } else {
         deckToDrawFrom(0, 1);
       }
@@ -46,8 +46,7 @@ const Decks = ({
   };
 
   useEffect(() => {
-    if (handDeckLength >= 7 && viewDecks) {
-      console.log(handDeckLength);
+    if (hand.length >= 7 && viewDecks) {
       if (socket) {
         socket.emit(GameMessages.AdvanceStage, roomId);
       } else {
@@ -60,7 +59,7 @@ const Decks = ({
     } else {
       setShowUi(false);
     }
-  }, [advanceBattleStage, handDeckLength, roomId, socket, viewDecks]);
+  }, [advanceBattleStage, hand.length, roomId, socket, viewDecks]);
 
   return (
     <div
@@ -74,7 +73,7 @@ const Decks = ({
     >
       <div className="flex flex-col flex-grow items-center">
         <div>Main Deck</div>
-        {mainDeck.map((card, index) => (
+        {mainDeckToShow.map((card, index) => (
           <Fragment key={card.id}>
             <DuelCard
               duelingCard={card}
@@ -85,15 +84,16 @@ const Decks = ({
             />
           </Fragment>
         ))}
-        {mainDeck.length !== 0 && (
-          <BlueBtn className="mt-8" onClick={() => handleDeckClick('main')}>
-            Fill Deck
-          </BlueBtn>
-        )}
+        <ActionBtn
+          disabled={mainDeckToShow.length === 0}
+          onClick={() => handleDeckClick('main')}
+        >
+          Fill Deck
+        </ActionBtn>
       </div>
       <div className="flex flex-col flex-grow items-center">
         <div>Foundation Deck</div>
-        {foundationDeck.map((card, index) => (
+        {foundationDeckToShow.map((card, index) => (
           <Fragment key={card.id}>
             <DuelCard
               duelingCard={card}
@@ -104,14 +104,12 @@ const Decks = ({
             />
           </Fragment>
         ))}
-        {foundationDeck.length !== 0 && (
-          <BlueBtn
-            className="mt-8"
-            onClick={() => handleDeckClick('foundation')}
-          >
-            Draw Foundation
-          </BlueBtn>
-        )}
+        <ActionBtn
+          disabled={foundationDeckToShow.length === 0}
+          onClick={() => handleDeckClick('foundation')}
+        >
+          Draw Foundation
+        </ActionBtn>
       </div>
     </div>
   );

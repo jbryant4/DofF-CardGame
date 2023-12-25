@@ -36,6 +36,18 @@ export const defaultPlayerField = {
   foundations: [null, null, null, null],
   resources: [null, null]
 };
+export function createDefaultPlayerField(): PlayerField {
+  return {
+    mainDeck: [],
+    foundationDeck: [],
+    hand: [],
+    graveyard: [],
+    army: [null, null, null],
+    champions: [null, null, null],
+    foundations: [null, null, null, null],
+    resources: [null, null]
+  };
+}
 
 export type Players = '' | 'playerOne' | 'playerTwo';
 export type BattleStage = 'plan' | 'place' | 'duel' | 'respite' | 'draw' | null;

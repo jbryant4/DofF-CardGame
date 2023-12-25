@@ -18,7 +18,6 @@ export default function advanceGameStage(
   from: string
 ): void {
   const currentStageIndex = stagesInOrder.indexOf(room.battleStage);
-  console.log('in server advance stage', room.battleStage, from);
 
   if (currentStageIndex === stagesInOrder.length - 1) {
     room.battleTurn =

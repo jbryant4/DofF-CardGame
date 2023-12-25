@@ -1,7 +1,6 @@
-import { Fragment, useContext } from 'react';
 import styles from '@/DuelOfFates/Battle/BattleField.module.css';
-import DuelingCard from '~/constants/DuelingCard';
 import ModalEnum from '~/constants/modalEnum';
+import { useBoardContext } from '~/context/BoardContext';
 import { useModalContext } from '~/context/ModalContext';
 import DesertFoundationIcon from '~/icons/DesertFoundationIcon';
 import EarthFoundationIcon from '~/icons/EarthFoundationIcon';
@@ -9,7 +8,6 @@ import OceanFoundationIcon from '~/icons/OceanFoundationIcon';
 import { Foundation } from '~/models/Card';
 
 type OwnProps = {
-  cards: (DuelingCard | null)[];
   isEnemy?: boolean;
 };
 
@@ -24,15 +22,18 @@ const iconToUse = (name: Foundation, size: number) => {
   }
 };
 
-const FoundationCards = ({ cards, isEnemy = false }: OwnProps) => {
+const FoundationCards = ({ isEnemy = false }: OwnProps) => {
   const iconWidth = (window.innerWidth / 14) * 0.65;
   const { setModalInfo, setOpenModal } = useModalContext();
+  const { localBoard, enemyBoard } = useBoardContext();
+
+  const { foundations } = isEnemy ? enemyBoard : localBoard;
 
   return (
     <div
       className={`${styles.foundation} grid grid-rows-4 px-8 relative items-center`}
     >
-      {cards.map((card, index) => {
+      {foundations.map((card, index) => {
         if (!card) {
           return (
             <div

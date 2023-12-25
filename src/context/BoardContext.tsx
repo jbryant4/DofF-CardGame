@@ -5,7 +5,10 @@ import React, {
   useMemo,
   useState
 } from 'react';
-import { defaultPlayerField, PlayerField } from '~/constants/common/gameTypes';
+import {
+  createDefaultPlayerField,
+  PlayerField
+} from '~/constants/common/gameTypes';
 import DuelingCard from '~/constants/DuelingCard';
 import { GameContext } from '~/context/GameContext';
 import { useSocket } from '~/context/SocketContext';
@@ -47,10 +50,10 @@ const defaultBoard: BoardContextType = {
   activePreReqs: [],
   attackedThisRound: [],
   directHitThisRound: false,
-  enemyBoard: { ...defaultPlayerField },
-  localBoard: { ...defaultPlayerField },
-  playerOneBoard: { ...defaultPlayerField },
-  playerTwoBoard: { ...defaultPlayerField },
+  enemyBoard: { ...createDefaultPlayerField() },
+  localBoard: { ...createDefaultPlayerField() },
+  playerOneBoard: { ...createDefaultPlayerField() },
+  playerTwoBoard: { ...createDefaultPlayerField() },
   playerOneDraw() {},
   playerTwoDraw() {},
   setAttackedThisRound() {},

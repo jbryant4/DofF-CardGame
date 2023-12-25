@@ -1,14 +1,16 @@
 import styles from '@/DuelOfFates/Battle/BattleField.module.css';
-import DuelingCard from '~/constants/DuelingCard';
+import { useBoardContext } from '~/context/BoardContext';
 import MilitaryCard from './MilitaryCard';
 
 type OwnProps = {
-  army: (DuelingCard | null)[];
-  champions: (DuelingCard | null)[];
   isEnemy?: boolean;
 };
 
-const Military = ({ army, champions, isEnemy = false }: OwnProps) => {
+const Military = ({ isEnemy = false }: OwnProps) => {
+  const { localBoard, enemyBoard } = useBoardContext();
+
+  const { champions, army } = isEnemy ? enemyBoard : localBoard;
+
   return (
     <div
       className={`${styles.military} grid grid-cols-6 justify-items-center py-16`}

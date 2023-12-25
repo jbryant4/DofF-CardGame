@@ -95,7 +95,15 @@ export default function useHandleCardAttack() {
         updateEnemyBoard(updatedEnemyBoard);
       }
     },
-    [socket, localBoard, enemyBoard, updateLocalBoard, updateEnemyBoard]
+    [
+      localBoard,
+      enemyBoard,
+      socket,
+      roomId,
+      localPlayer,
+      updateLocalBoard,
+      updateEnemyBoard
+    ]
   );
 
   return handleAttack;

@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import {
-  defaultDuelist,
-  defaultPlayerField
+  createDefaultPlayerField,
+  defaultDuelist
 } from '~/constants/common/gameTypes';
 import { Africa } from '~/constants/starterDecks';
 import { useBoardContext } from '~/context/BoardContext';
@@ -33,7 +33,7 @@ export const useSetupAdminBoard = () => {
     const foundationDeck = adminDeck.filter(card => card.type === 'foundation');
 
     setPlayerOneBoard({
-      ...defaultPlayerField,
+      ...createDefaultPlayerField(),
       mainDeck: mainDeck.slice(5),
       foundationDeck: foundationDeck.slice(2),
       hand: [
@@ -45,7 +45,7 @@ export const useSetupAdminBoard = () => {
     });
 
     setPlayerTwoBoard({
-      ...defaultPlayerField,
+      ...createDefaultPlayerField(),
       mainDeck: adminDeck.filter(card => card.type !== 'foundation'),
       foundationDeck: adminDeck.filter(card => card.type === 'foundation'),
       army: [...adminDeck.filter(card => card.type === 'army').slice(0, 3)],

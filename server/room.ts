@@ -1,7 +1,7 @@
 import {
   BattleStage,
+  createDefaultPlayerField,
   defaultDuelist,
-  defaultPlayerField,
   Duelist,
   PlayerField,
   Players
@@ -32,8 +32,8 @@ export type GameRoom = {
 const defaultRoom: GameRoom = {
   player1: { ...defaultDuelist, active: false },
   player2: { ...defaultDuelist, active: false },
-  playerOneBoard: { ...defaultPlayerField },
-  playerTwoBoard: { ...defaultPlayerField },
+  playerOneBoard: { ...createDefaultPlayerField() },
+  playerTwoBoard: { ...createDefaultPlayerField() },
   gameState: 'Lobby',
   battleStage: null,
   battleTurn: '',

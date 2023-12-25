@@ -91,7 +91,7 @@ export default function BattleCardModal() {
                       handleAttack(
                         cardToUse.id,
                         card.id,
-                        cardToUse.type === 'champ'
+                        cardToUse.type === 'champion'
                       );
                       setAttackedThisRound(prevState => [
                         ...prevState,
