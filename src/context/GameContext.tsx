@@ -14,6 +14,7 @@ import {
   Players
 } from '~/constants/common/gameTypes';
 import { useSocket } from '~/context/SocketContext';
+import { BoardMessages } from '../../server/boardHandlers/boardHandlers';
 import { GameMessages } from '../../server/gameHandlers/gameHandlers';
 import { PreGameMessages } from '../../server/preGameHandlers/preGameHandlers';
 import { GameRoom } from '../../server/room';
@@ -113,7 +114,13 @@ export function GameProvider({ children }: Props) {
   }, [socket]);
 
   const advanceBattleStage = useCallback(() => {
-    const stagesInOrder: BattleStage[] = ['plan', 'place', 'duel', 'respite'];
+    const stagesInOrder: BattleStage[] = [
+      'plan',
+      'place',
+      'duel',
+      'respite',
+      'draw'
+    ];
     const currentIndex = stagesInOrder.indexOf(battleStage);
 
     // If we're at the last stage ('respite'), swap the turn and reset stage to 'plan'.

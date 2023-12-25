@@ -14,7 +14,7 @@ type OwnProps = {
   hand: DuelingCard[];
   foundationDeck: DuelingCard[];
   mainDeck: DuelingCard[];
-  enemyBoard: boolean;
+  enemyBoard?: boolean;
 };
 
 const ControlCenter = ({
@@ -22,7 +22,7 @@ const ControlCenter = ({
   graveyard,
   hand,
   mainDeck,
-  enemyBoard
+  enemyBoard = false
 }: OwnProps) => {
   const [handWrapperWidth, setHandWrapperWidth] = useState(0);
   //Currently Need this to determine card width and if not here throws errors
@@ -33,7 +33,7 @@ const ControlCenter = ({
   const handCardSizeToUse =
     (handWrapperWidth - 40) / 4 > 255 ? 255 : (handWrapperWidth - 40) / 4;
   const socket = useSocket();
-  const showDecks = localPlayer === battleTurn && battleStage === 'respite';
+  const showDecks = localPlayer === battleTurn && battleStage === 'draw';
   useEffect(() => {
     if (handWrapperRef.current) {
       setHandWrapperWidth(handWrapperRef.current.offsetWidth);

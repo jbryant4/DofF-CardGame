@@ -3,6 +3,7 @@ import attackHandler from './attackHandler';
 import drawHandler from './drawHandler';
 import flipHandler from './flipHandler';
 import placeHandler from './placeHandler';
+import respiteHandler from './respiteHandler';
 import stanceSwitchHandler from './stanceSwitchHandler';
 import { GameRoom } from '../room';
 
@@ -13,7 +14,8 @@ export enum BoardMessages {
   Place = 'place-card',
   Flip = 'flip-card',
   Switch = 'switch-stance',
-  Draw = 'draw'
+  Draw = 'draw',
+  Respite = 'respite-discard'
 }
 
 export default (
@@ -26,7 +28,7 @@ export default (
   stanceSwitchHandler(socket, rooms, io);
   attackHandler(socket, rooms, io);
   drawHandler(socket, rooms, io);
-  //discardHandler
+  respiteHandler(socket, rooms, io);
   //shuffleHandler
   //peakHandler
 };

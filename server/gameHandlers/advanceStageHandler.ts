@@ -11,12 +11,7 @@ export default (
   socket.on(GameMessages.AdvanceStage, (roomId: string) => {
     const room = rooms[roomId];
     if (room) {
-      advanceGameStage(room);
-
-      io.to(roomId).emit(GameMessages.AdvanceCompete, {
-        battleTurn: room.battleTurn,
-        battleStage: room.battleStage
-      });
+      advanceGameStage(room, roomId, io, 'advanceStageHandler');
     }
   });
 };

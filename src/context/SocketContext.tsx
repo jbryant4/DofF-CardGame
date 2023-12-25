@@ -17,15 +17,15 @@ export const SocketProvider = ({ children }: OwnProps) => {
     'Dont Forget To Reconnect Socket and flip cards in dev dueling cards face up'
   );
 
-  // useEffect(() => {
-  //   const newSocket = io('http://localhost:3001');
-  //   setSocket(newSocket);
-  //
-  //   // Clean up the socket on component unmount
-  //   return () => {
-  //     newSocket.disconnect();
-  //   };
-  // }, []);
+  useEffect(() => {
+    const newSocket = io('http://localhost:3001');
+    setSocket(newSocket);
+
+    // Clean up the socket on component unmount
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
 
   return (
     <SocketContext.Provider value={{ socket }}>

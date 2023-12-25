@@ -40,12 +40,7 @@ export default (
           playerTwoBoard: room.playerTwoBoard
         });
 
-        advanceGameStage(room);
-
-        io.to(roomId).emit(GameMessages.AdvanceCompete, {
-          battleTurn: room.battleTurn,
-          battleStage: room.battleStage
-        });
+        advanceGameStage(room, roomId, io, 'drawhandler');
       }
     }
   );

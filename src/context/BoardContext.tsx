@@ -71,7 +71,14 @@ type Props = {
 };
 
 export function BoardProvider({ children }: Props) {
-  const { battleTurn, localPlayer, setGameState } = useContext(GameContext);
+  const {
+    advanceBattleStage,
+    battleTurn,
+    localPlayer,
+    setGameState,
+    battleStage,
+    roomId
+  } = useContext(GameContext);
   const [activePreReqs, setActivePreReqs] = useState<PreReq[]>([]);
   const [playerOneBoard, setPlayerOneBoard] = useState(
     defaultBoard.playerOneBoard
@@ -109,12 +116,13 @@ export function BoardProvider({ children }: Props) {
     playerTurn: battleTurn
   });
 
-  const { discard } = useDiscardCard({
+  const { discard, respiteDiscard } = useDiscardCard({
     playerOneBoard,
     setPlayerOneBoard,
     playerTwoBoard,
     setPlayerTwoBoard,
-    playerTurn: battleTurn
+    playerTurn: battleTurn,
+    localPlayer
   });
 
   const { getIsBoardSlotFull } = useGetIsCardSlotsFull({
@@ -197,6 +205,25 @@ export function BoardProvider({ children }: Props) {
         : { ...prevBoard, ...playerOneBoard }
     );
   }, [localPlayer, playerOneBoard, playerTwoBoard]);
+
+  useEffect(() => {
+    if (localPlayer === battleTurn && battleStage === 'respite') {
+      if (socket) {
+        socket.emit(BoardMessages.Respite, roomId, localPlayer);
+      } else {
+        respiteDiscard();
+        advanceBattleStage();
+      }
+    }
+  }, [
+    advanceBattleStage,
+    battleStage,
+    battleTurn,
+    localPlayer,
+    respiteDiscard,
+    roomId,
+    socket
+  ]);
 
   return (
     <BoardContext.Provider value={value}>{children}</BoardContext.Provider>

@@ -38,4 +38,4 @@ export const defaultPlayerField = {
 };
 
 export type Players = '' | 'playerOne' | 'playerTwo';
-export type BattleStage = 'plan' | 'place' | 'duel' | 'respite' | null;
+export type BattleStage = 'plan' | 'place' | 'duel' | 'respite' | 'draw' | null;

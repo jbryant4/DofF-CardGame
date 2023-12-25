@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { Players } from '~/constants/common/gameTypes';
 import DuelingCard from '~/constants/DuelingCard';
 import { BoardContextType, DiscardCardFunction } from '~/context/BoardContext';
+import { useGameContext } from '~/context/GameContext';
 
 type OwnProps = Pick<
   BoardContextType,
@@ -11,6 +12,7 @@ type OwnProps = Pick<
   | 'setPlayerTwoBoard'
 > & {
   playerTurn: Players;
+  localPlayer: Players;
 };
 
 const useDiscardCard = ({
@@ -18,7 +20,8 @@ const useDiscardCard = ({
   playerTwoBoard,
   setPlayerOneBoard,
   setPlayerTwoBoard,
-  playerTurn
+  playerTurn,
+  localPlayer
 }: OwnProps) => {
   const discard: DiscardCardFunction = useCallback(
     (
@@ -57,36 +60,41 @@ const useDiscardCard = ({
   );
 
   const respiteDiscard = useCallback(() => {
-    const boardToUse =
-      playerTurn === 'playerOne' ? playerOneBoard : playerTwoBoard;
-    const setBoardToUse =
-      playerTurn === 'playerOne' ? setPlayerOneBoard : setPlayerTwoBoard;
+    const boardsToUse = [playerOneBoard, playerTwoBoard];
+    const setBoardsToUse = [setPlayerOneBoard, setPlayerTwoBoard];
+    const removeResource =
+      playerTurn === 'playerOne' ? [true, false] : [false, true];
+    boardsToUse.forEach((boardToUse, index) => {
+      const sectionsToCheck = ['resources', 'army', 'champions'];
+      let cardsToDiscard: DuelingCard[] = [];
 
-    const sectionsToCheck = ['resources', 'army', 'champions'];
-    let cardsToDiscard: DuelingCard[] = [];
-
-    sectionsToCheck.forEach(sectionName => {
-      const section = boardToUse[sectionName];
-      section.forEach((card: DuelingCard, index: string | number) => {
-        if (card && card.hp === 0) {
-          cardsToDiscard.push(card);
-          section[index] = null;
-        }
+      sectionsToCheck.forEach(sectionName => {
+        const section = boardToUse[sectionName];
+        section.forEach((card: DuelingCard, idx: string | number) => {
+          if (card) {
+            if (
+              (sectionName === 'resources' &&
+                card.faceUp &&
+                removeResource[index]) ||
+              (card.hp && card.hp <= 0)
+            ) {
+              cardsToDiscard.push(card);
+              section[idx] = null;
+            }
+          }
+        });
       });
+
+      const updatedGraveyard = [...cardsToDiscard, ...boardToUse.graveyard];
+      setBoardsToUse[index](prevBoard => ({
+        ...prevBoard,
+        graveyard: updatedGraveyard
+      }));
     });
-
-    // Randomizing the cardsToDiscard array
-    cardsToDiscard.sort(() => Math.random() - 0.5);
-
-    const updatedGraveyard = [...cardsToDiscard, ...boardToUse.graveyard];
-    setBoardToUse(prevBoard => ({
-      ...prevBoard,
-      graveyard: updatedGraveyard
-    }));
   }, [
     playerOneBoard,
-    playerTwoBoard,
     playerTurn,
+    playerTwoBoard,
     setPlayerOneBoard,
     setPlayerTwoBoard
   ]);

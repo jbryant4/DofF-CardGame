@@ -63,7 +63,6 @@ const CardLayout = ({ isEnemy = false }: OwnProps) => {
         graveyard={graveYardsToShow}
         mainDeck={mainDeckToShow}
         foundationDeck={foundationDeckToShow}
-        enemyBoard={isEnemy}
       />
     </div>
   );

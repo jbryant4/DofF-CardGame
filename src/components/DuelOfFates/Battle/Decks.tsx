@@ -47,6 +47,7 @@ const Decks = ({
 
   useEffect(() => {
     if (handDeckLength >= 7 && viewDecks) {
+      console.log(handDeckLength);
       if (socket) {
         socket.emit(GameMessages.AdvanceStage, roomId);
       } else {

@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import DuelingCard from '~/constants/DuelingCard';
 import { useBoardContext } from '~/context/BoardContext';
 import { useGameContext } from '~/context/GameContext';
-import { ModalCard } from '~/context/ModalContext';
 
 const defaultData = {
   canAttack: false,
@@ -47,7 +46,6 @@ export default function useGetBattleDetails(
     }
 
     const hasAlreadyAttacked = attackedThisRound.includes(card.id);
-    console.log(hasAlreadyAttacked, attackedThisRound, card.id);
     const canAttack =
       isCombatCard &&
       battleStage === 'duel' &&
