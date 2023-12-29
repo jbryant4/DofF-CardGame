@@ -1,6 +1,7 @@
 import FinalCard from '@/FinalCard';
 import DuelingCard from '~/constants/DuelingCard';
 import ModalEnum from '~/constants/modalEnum';
+import { useDimensionsContext } from '~/context/DimensionsContext';
 import { useModalContext } from '~/context/ModalContext';
 
 import { MilitaryCardWrapper } from './MilitaryCard.styles';
@@ -17,8 +18,7 @@ const MilitaryCard = ({
   isEnemy?: boolean;
 }) => {
   const { setModalInfo, setOpenModal } = useModalContext();
-  const cardWidth = innerWidth / 8 - 10;
-  const cardHeight = cardWidth * (4 / 3);
+  const { cardWidth, cardHeight } = useDimensionsContext();
 
   if (!card)
     return (
@@ -26,6 +26,8 @@ const MilitaryCard = ({
         isPlaceHolder={true}
         type={type}
         isEnemy={isEnemy}
+        oppositeSide={false}
+        inDefense={false}
         style={{ height: cardHeight, width: cardWidth }}
       >
         {type} slot {index}
@@ -39,6 +41,9 @@ const MilitaryCard = ({
       type={type}
       isPlaceHolder={false}
       isEnemy={isEnemy}
+      inDefense={card.position === 'defense'}
+      // inDefense={true}
+      oppositeSide={index === 1}
       onClick={() => {
         if (!cardShouldBeClickable) return;
         setModalInfo({ id: card.id, type: card.type, isEnemy });

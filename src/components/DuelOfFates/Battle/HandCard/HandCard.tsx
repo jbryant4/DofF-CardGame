@@ -43,7 +43,7 @@ const HandCard = ({
   return enemyHand ? (
     <div
       style={{
-        marginLeft: index === 0 ? 0 : -cardWidth / 2,
+        marginLeft: index === 0 ? 0 : -cardWidth * 0.25,
         zIndex: hover ? 8 - index : 7 - index,
         top: hover ? -30 : 10,
         width: cardWidth
@@ -68,7 +68,7 @@ const HandCard = ({
   ) : (
     <div
       style={{
-        marginLeft: index === 0 ? 0 : -cardWidth / 2,
+        marginLeft: index === 0 ? 0 : -cardWidth * 0.4,
         zIndex: hover || prePlace ? 3 + index : index,
         top: hover || prePlace ? -cardHeight * 0.75 : 10,
         width: cardWidth

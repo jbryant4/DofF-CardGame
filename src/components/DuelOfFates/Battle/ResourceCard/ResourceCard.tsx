@@ -1,6 +1,7 @@
 import FinalCard from '@/FinalCard';
 import DuelingCard from '~/constants/DuelingCard';
 import ModalEnum from '~/constants/modalEnum';
+import { useDimensionsContext } from '~/context/DimensionsContext';
 import { useModalContext } from '~/context/ModalContext';
 import { ResourceCardWrapper } from './ResourceCard.styles';
 
@@ -14,15 +15,14 @@ const ResourceCard = ({
   isEnemy?: boolean;
 }) => {
   const { setModalInfo, setOpenModal } = useModalContext();
-
-  const cardWidth = innerWidth / 7 - 20;
+  const { cardWidth, cardHeight } = useDimensionsContext();
 
   if (!card) {
     return (
       <ResourceCardWrapper
         isTopCard={isTopCard}
         isPlaceHolder={true}
-        style={{ width: cardWidth, height: (cardWidth * 4) / 3 }}
+        style={{ width: cardWidth, height: cardHeight }}
       />
     );
   }

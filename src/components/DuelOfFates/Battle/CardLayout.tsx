@@ -12,15 +12,19 @@ type OwnProps = { isEnemy?: boolean };
 const CardLayout = ({ isEnemy = false }: OwnProps) => {
   return isEnemy ? (
     <div className={styles.enemyLayout}>
-      <Resources isEnemy={isEnemy} />
-      <FoundationCards isEnemy={isEnemy} />
+      <div className={`${styles.perks} flex flex-col`}>
+        <Resources isEnemy={isEnemy} />
+        <FoundationCards isEnemy={isEnemy} />
+      </div>
       <Military isEnemy={isEnemy} />
       <ControlCenter isEnemy={isEnemy} />
     </div>
   ) : (
     <div className={styles.layout}>
-      <Resources />
-      <FoundationCards />
+      <div className={`${styles.perks} flex flex-col`}>
+        <FoundationCards />
+        <Resources />
+      </div>
       <Military />
       <ControlCenter />
     </div>

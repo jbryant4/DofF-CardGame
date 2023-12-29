@@ -1,6 +1,7 @@
 import styles from '@/DuelOfFates/Battle/BattleField.module.css';
 import ModalEnum from '~/constants/modalEnum';
 import { useBoardContext } from '~/context/BoardContext';
+import { useDimensionsContext } from '~/context/DimensionsContext';
 import { useModalContext } from '~/context/ModalContext';
 import DesertFoundationIcon from '~/icons/DesertFoundationIcon';
 import EarthFoundationIcon from '~/icons/EarthFoundationIcon';
@@ -23,16 +24,14 @@ const iconToUse = (name: Foundation, size: number) => {
 };
 
 const FoundationCards = ({ isEnemy = false }: OwnProps) => {
-  const iconWidth = (window.innerWidth / 14) * 0.65;
+  const { iconWidth } = useDimensionsContext();
   const { setModalInfo, setOpenModal } = useModalContext();
   const { localBoard, enemyBoard } = useBoardContext();
 
   const { foundations } = isEnemy ? enemyBoard : localBoard;
 
   return (
-    <div
-      className={`${styles.foundation} grid grid-rows-4 px-8 relative items-center`}
-    >
+    <div className="grid grid-cols-4 items-cente pl-8 relative w-full">
       {foundations.map((card, index) => {
         if (!card) {
           return (

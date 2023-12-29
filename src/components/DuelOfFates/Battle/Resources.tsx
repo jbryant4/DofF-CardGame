@@ -1,6 +1,4 @@
-import styles from '@/DuelOfFates/Battle/BattleField.module.css';
 import ResourceCard from '@/DuelOfFates/Battle/ResourceCard';
-import DuelingCard from '~/constants/DuelingCard';
 import { useBoardContext } from '~/context/BoardContext';
 
 type OwnProps = {
@@ -13,7 +11,7 @@ const Resources = ({ isEnemy = false }: OwnProps) => {
   const { resources } = isEnemy ? enemyBoard : localBoard;
 
   return (
-    <div className={`${styles.resource} p-8 bg-amber-50`}>
+    <div className="bg-amber-50 flex-grow p-8">
       <div className="h-full relative w-full">
         <ResourceCard card={resources[0]} isTopCard isEnemy={isEnemy} />
         <ResourceCard card={resources[1]} isEnemy={isEnemy} />

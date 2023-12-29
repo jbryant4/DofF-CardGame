@@ -1,3 +1,4 @@
+import cx from 'classnames';
 import styles from '@/DuelOfFates/Battle/BattleField.module.css';
 import { useBoardContext } from '~/context/BoardContext';
 import MilitaryCard from './MilitaryCard';
@@ -13,7 +14,11 @@ const Military = ({ isEnemy = false }: OwnProps) => {
 
   return (
     <div
-      className={`${styles.military} grid grid-cols-6 justify-items-center py-16`}
+      className={cx(
+        `${styles.military} grid grid-cols-6 justify-items-center `,
+        { 'pb-16': !isEnemy },
+        { 'pt-16': isEnemy }
+      )}
     >
       {champions.map((champ, index) => (
         <MilitaryCard

@@ -4,7 +4,11 @@ import DuelingCard from '~/constants/DuelingCard';
 import Hex from '~/icons/Hex';
 import { PreReq } from '~/models/Card';
 import CardBorders from './CardBorders';
-import { getHexIconKeys, getBorderToUse } from './cardUtils';
+import {
+  getHexIconKeys,
+  getBorderToUse,
+  getBackGroundToUse
+} from './cardUtils';
 import CombatStats from './CombatStats';
 import PreReqOverlay from './PreReqOverlay';
 import useGetCardDimensions from './useGetCardDimensions';
@@ -44,7 +48,6 @@ const FinalCard = ({
   const {
     borderThickness,
     combatCircleRadius,
-    topIconTop,
     bottomIconTop,
     titleHeight,
     cardHeight,
@@ -61,6 +64,11 @@ const FinalCard = ({
   const borderToUse =
     foundation && foundation.length > 0
       ? getBorderToUse(unlocked, foundation[0])
+      : 'border-black';
+
+  const backGroundToUse =
+    foundation && foundation.length > 0
+      ? getBackGroundToUse(unlocked, foundation[0])
       : 'bg-black';
 
   useEffect(() => {
@@ -72,21 +80,26 @@ const FinalCard = ({
     <div className="card-container">
       <div
         id="card"
-        className={cx('card relative', {
+        className={cx(`border-solid ${borderToUse} card relative`, {
           'card-flip': !(faceUp || forceFaceUp)
         })}
         style={{
           width: width,
-          height: width * (4 / 3)
+          height: cardHeight
         }}
       >
-        <div className="card-face flex flex-col h-fit">
+        <div
+          className={`border-solid ${borderToUse} card-face flex flex-col rounded-sm h-fit`}
+          style={{
+            borderWidth: borderThickness
+          }}
+        >
           {hexIconKeys && (
             <div
               className="absolute flex flex-col w-fit"
               style={{
-                left: borderThickness / 2,
-                top: topIconTop,
+                left: -borderThickness / 3,
+                top: -borderThickness / 3,
                 zIndex: inHand ? 5 : 2
               }}
             >
@@ -107,52 +120,38 @@ const FinalCard = ({
             </div>
           )}
 
-          <div className="flex flex-col overflow-hidden relative w-fit">
+          <div className="flex flex-col overflow-hidden relative w-full">
             <img
               alt="card image"
               src={blankUrl}
-              className="object-cover"
               style={{
                 width: width,
-                height: (width * 4) / 3
+                height: cardHeight
               }}
-            />
-            <CardBorders
-              borderThickness={borderThickness}
-              innerCardWidth={innerWidth}
-              borderToUse={borderToUse}
-              isPlaceable={unlocked}
-              sideHeight={cardHeight}
             />
 
             {showPreReqOverlay && (
               <PreReqOverlay
                 activePreReqs={activePreReqs}
                 width={innerWidth}
-                left={borderThickness}
                 preReqs={preReqs}
-                unlocked={false}
+                unlocked={unlocked}
                 setUnlocked={setUnlocked}
                 height={overlayHeight}
               />
             )}
 
             <div
-              className="absolute flex flex-col"
+              className="absolute bottom-0 flex flex-col w-full"
               style={{
-                width: innerWidth,
-                height: combatHeight + titleHeight,
-                left: borderThickness,
-                bottom: borderThickness
+                height: combatHeight + titleHeight
               }}
             >
               <div
                 id="title"
-                className={`${borderToUse} flex items-center truncate  text-white w-full justify-center`}
+                className={`${backGroundToUse} flex items-center truncate text-white w-full justify-center`}
                 style={{
                   height: titleHeight,
-                  paddingRight: borderThickness,
-                  paddingLeft: borderThickness,
                   fontSize: width * 0.25 * 0.4 - 4
                 }}
               >
@@ -178,7 +177,7 @@ const FinalCard = ({
         <div className="card-back card-face">
           <img
             width={width}
-            className="h-full object-cover"
+            className="h-full object-cover rounded"
             alt="card-back"
             src="/card-back.png"
           />

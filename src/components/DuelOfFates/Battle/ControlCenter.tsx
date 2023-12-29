@@ -4,6 +4,7 @@ import HandCard from '@/DuelOfFates/Battle/HandCard';
 import { ActionBtn } from '@/Modals/BattleCardModal/BattleCardModal.styles';
 import DuelingCard from '~/constants/DuelingCard';
 import { useBoardContext } from '~/context/BoardContext';
+import { useDimensionsContext } from '~/context/DimensionsContext';
 import { GameContext } from '~/context/GameContext';
 import { useSocket } from '~/context/SocketContext';
 import styles from './BattleField.module.css';
@@ -15,26 +16,17 @@ type OwnProps = {
 };
 
 const ControlCenter = ({ isEnemy = false }: OwnProps) => {
-  const [handWrapperWidth, setHandWrapperWidth] = useState(0);
   //Currently Need this to determine card width and if not here throws errors
-  const [loaded, setLoaded] = useState(false);
   const { advanceBattleStage, localPlayer, battleTurn, battleStage, roomId } =
     useContext(GameContext);
+  const { handCardWidth } = useDimensionsContext();
 
   const { localBoard, enemyBoard } = useBoardContext();
   const { hand } = isEnemy ? enemyBoard : localBoard;
 
   const handWrapperRef = useRef<HTMLDivElement>(null);
-  const handCardSizeToUse =
-    (handWrapperWidth - 40) / 4 > 255 ? 255 : (handWrapperWidth - 40) / 4;
-  const socket = useSocket();
 
-  useEffect(() => {
-    if (handWrapperRef.current) {
-      setHandWrapperWidth(handWrapperRef.current.offsetWidth);
-    }
-    setLoaded(true);
-  }, []);
+  const socket = useSocket();
 
   const showControls = !isEnemy && localPlayer === battleTurn;
   // TODO start following the patern of if socket send message if not use the local stuff for deving atm
@@ -48,7 +40,7 @@ const ControlCenter = ({ isEnemy = false }: OwnProps) => {
 
   return (
     <div className={`${styles.controlCenter} bg-green-400`}>
-      <GraveCards isEnemy={isEnemy} cardWidth={handCardSizeToUse} />
+      <GraveCards isEnemy={isEnemy} cardWidth={handCardWidth} />
 
       <div className={`${styles.hand} relative`}>
         <div
@@ -56,19 +48,18 @@ const ControlCenter = ({ isEnemy = false }: OwnProps) => {
           className="bg-green-600 flex h-full justify-end relative w-full z-[2]"
         >
           {hand.length > 0 &&
-            loaded &&
             hand.map((card, index) => (
               <Fragment key={card.id}>
                 <HandCard
                   duelingCard={card}
-                  cardWidth={handCardSizeToUse}
+                  cardWidth={handCardWidth}
                   index={index}
                   enemyHand={isEnemy}
                 />
               </Fragment>
             ))}
         </div>
-        {!isEnemy && <Decks cardWidth={handCardSizeToUse} />}
+        {!isEnemy && <Decks cardWidth={handCardWidth} />}
       </div>
       {showControls && (
         <div

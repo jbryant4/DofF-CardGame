@@ -9,7 +9,6 @@ type OwnProps = {
   activePreReqs?: PreReq[];
   width: number;
   height: number;
-  left: number;
   preReqs: PreReq[];
   unlocked: boolean;
   setUnlocked: Dispatch<SetStateAction<boolean>>;
@@ -18,7 +17,6 @@ type OwnProps = {
 const PreReqOverlay = ({
   activePreReqs,
   width,
-  left,
   height,
   preReqs,
   unlocked,
@@ -57,10 +55,10 @@ const PreReqOverlay = ({
 
   return (
     <div
-      className={classNames('absolute burn-bar overflow-hidden z-[5]', {
+      className={classNames('absolute burn-bar overflow-hidden w-full z-[5]', {
         burn: startBurn
       })}
-      style={{ width, left, top: left, height }}
+      style={{ height }}
     >
       <div
         className={classNames(

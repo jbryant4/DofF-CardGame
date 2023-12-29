@@ -1,7 +1,7 @@
 /*top level grid*/
 .layout {
   display: grid;
-  grid-template-columns: 1.7fr auto repeat(4, 2fr);
+  grid-template-columns: 1.7fr repeat(4, 2fr);
   grid-template-rows: 1fr 10vh;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
@@ -9,38 +9,30 @@
 
 .enemyLayout {
   display: grid;
-  grid-template-columns: 1.7fr auto repeat(4, 2fr);
-  grid-template-rows: 5vh auto;
+  grid-template-columns: 1.7fr repeat(4, 2fr);
+  grid-template-rows: 5vh;
 }
 
 .enemyLayout > .controlCenter {
-  grid-row: 1 / 2; /* Assigns it to the first row of .enemyLayout */
-  height: 5vh; /* Optional, ensures the height is 5vh */
+  grid-row: 1 / 2;
+  height: 5vh;
   transform: scaleY(-1);
 }
 
-.resource {
+.perks {
   grid-area: 1 / 1 / 2 / 2;
 }
 
-.enemyLayout > .resource {
-  grid-area: 2 / 1 / 3 / 2; /* Takes up second row, first column */
-}
-
-.foundation {
-  grid-area: 1 / 2 / 2 / 3;
-}
-
-.enemyLayout > .foundation {
-  grid-area: 2 / 2 / 3 / 3; /* Takes up second row, second column */
+.enemyLayout > .perks {
+  grid-area: 2 / 1 / 3 / 2;
 }
 
 .military {
-  grid-area: 1 / 3 / 2 / 7;
+  grid-area: 1 / 2 / 2 / 6;
 }
 
 .enemyLayout > .military {
-  grid-area: 2 / 3 / 3 / 7; /* Spans second row from third to seventh column */
+  grid-area: 2 / 2 / 3 / 6;
 }
 
 /*control center layout*/
