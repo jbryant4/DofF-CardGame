@@ -128,7 +128,7 @@
 .area {
   background: #4e54c8;
   background: linear-gradient(to left, #8f94fb, #4e54c8);
-  opacity: 60%;
+  opacity: 90%;
   width: 100%;
   height: 100%;
   position: absolute;
@@ -285,4 +285,30 @@
 .animate-fade {
   animation: fade 200ms forwards;
   animation-delay: 800ms;
+}
+
+/*Card Flip Animation*/
+
+.card-container {
+  perspective: 1000px;
+}
+
+.card {
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.card.card-flip {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.card-back {
+  transform: rotateY(180deg);
 }

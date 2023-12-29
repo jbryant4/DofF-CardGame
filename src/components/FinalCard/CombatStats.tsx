@@ -1,21 +1,43 @@
-import { useState } from 'react';
-import { CombatStat } from '@/UpdatedCard/BattleCard';
+import { useEffect, useState } from 'react';
 import AttackIcon from '~/icons/AttackIcon';
 import ShieldIcon from '~/icons/ShieldIcon';
+import { getDefaultCombatStat } from './constants';
 
 type OwnProps = {
   combatCircleRadius: number;
-  combatAtk: CombatStat;
-  combatDef: CombatStat;
+  atk: number;
+  hp: number;
+  def: number;
   position: 'attack' | 'defense';
 };
 
 const CombatStats = ({
-  combatAtk,
+  atk,
+  def,
+  hp,
   combatCircleRadius,
-  combatDef,
   position
 }: OwnProps) => {
+  const [combatHp, setHp] = useState(getDefaultCombatStat());
+  const [combatDef, setDef] = useState(getDefaultCombatStat());
+  const [combatAtk, setAtk] = useState(getDefaultCombatStat());
+
+  //Set initial combat stat
+  useEffect(() => {
+    setHp(prevState => ({
+      current: hp,
+      max: prevState.max ? prevState.max : hp
+    }));
+    setAtk(prevState => ({
+      current: atk,
+      max: prevState.max ? prevState.max : atk
+    }));
+    setDef(prevState => ({
+      current: def,
+      max: prevState.max ? prevState.max : def
+    }));
+  }, [atk, def, hp]);
+
   return (
     <>
       <div id="attack-defense" className="flex items-center relative">
@@ -76,6 +98,18 @@ const CombatStats = ({
             size={(combatCircleRadius / 2) * 2}
           />
         )}
+      </div>
+
+      {/*Health Circle*/}
+      <div
+        style={{
+          width: combatCircleRadius,
+          height: combatCircleRadius,
+          marginLeft: -(combatCircleRadius / 3)
+        }}
+        className="bg-red-700/90 flex font-bold items-center justify-center mt-4 rounded-full text-24 text-black"
+      >
+        {combatHp.current}
       </div>
     </>
   );

@@ -1,6 +1,7 @@
 import { Dialog } from '@headlessui/react';
 import cx from 'classnames';
 import { useState } from 'react';
+import FinalCard from '@/FinalCard';
 import {
   useGetBattleDetails,
   useGetCardOnBoard,
@@ -9,7 +10,6 @@ import {
   useHandleSwitchStance
 } from '@/Modals/BattleCardModal/hooks';
 import useHandleDirectHit from '@/Modals/BattleCardModal/hooks/useHandleDirectHit';
-import BattleCard from '@/UpdatedCard/BattleCard';
 import { useBoardContext } from '~/context/BoardContext';
 import { useModalContext } from '~/context/ModalContext';
 import { ActionBtn, Container } from './BattleCardModal.styles';
@@ -74,7 +74,7 @@ export default function BattleCardModal() {
         )}
 
         <Dialog.Description as="div" className="flex flex-col my-16">
-          <BattleCard card={cardToUse} />
+          <FinalCard card={cardToUse} forceFaceUp />
         </Dialog.Description>
 
         {showCardsToAttack && (
@@ -82,7 +82,7 @@ export default function BattleCardModal() {
             {cardsToAttack.map(card =>
               card ? (
                 <div key={card.id} className="flex flex-col gap-8 items-center">
-                  <BattleCard card={card} width={200} />
+                  <FinalCard card={card} width={200} />
                   <ActionBtn
                     disabled={(card?.hp ?? 99) <= 0 || hideButtons}
                     className={cx('w-fit', { invisible: hideButtons })}

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import PlacementControls from '@/DuelOfFates/Battle/HandCard/PlacementControls';
-import BattleCard from '@/UpdatedCard/BattleCard';
+import FinalCard from '@/FinalCard';
 import DuelingCard from '~/constants/DuelingCard';
 import { BoardContext } from '~/context/BoardContext';
 import { GameContext } from '~/context/GameContext';
@@ -91,7 +91,7 @@ const HandCard = ({
         />
       )}
       <div className="absolute inset-0">
-        <BattleCard
+        <FinalCard
           card={{
             ...duelingCard,
             position: placeAttack ? 'attack' : 'defense'

@@ -1,7 +1,6 @@
 import { Fragment } from 'react';
 import styles from '@/DuelOfFates/Battle/BattleField.module.css';
-import BattleCard from '@/UpdatedCard/BattleCard';
-import DuelingCard from '~/constants/DuelingCard';
+import FinalCard from '@/FinalCard';
 import { useBoardContext } from '~/context/BoardContext';
 
 type OwnProps = {
@@ -27,13 +26,11 @@ const GraveCards = ({ isEnemy, cardWidth }: OwnProps) => {
             <Fragment key={card.id}>
               <div
                 style={{
-                  width: cardWidth,
-                  height: cardWidth * (4 / 3),
                   zIndex: index
                 }}
                 className="absolute"
               >
-                <BattleCard card={card} width={cardWidth} />
+                <FinalCard card={card} width={cardWidth} />
               </div>
             </Fragment>
           ))

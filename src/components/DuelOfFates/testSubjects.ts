@@ -1,5 +1,5 @@
+import { Duelist } from '~/constants/common/gameTypes';
 import { Africa } from '~/constants/starterDecks';
-import { Duelist } from '~/context/GameContext';
 
 export const playerOne: Partial<Duelist> = {
   id: '1',

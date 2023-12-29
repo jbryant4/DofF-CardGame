@@ -1,14 +1,8 @@
-import cx from 'classnames';
-import { useContext } from 'react';
-import BattleCard from '@/UpdatedCard/BattleCard';
+import FinalCard from '@/FinalCard';
 import DuelingCard from '~/constants/DuelingCard';
 import ModalEnum from '~/constants/modalEnum';
-import { BoardContext } from '~/context/BoardContext';
-import { GameContext } from '~/context/GameContext';
 import { useModalContext } from '~/context/ModalContext';
-import createComponent, {
-  ElementWithProps
-} from '~/utils/styles/createComponent';
+
 import { MilitaryCardWrapper } from './MilitaryCard.styles';
 
 const MilitaryCard = ({
@@ -32,8 +26,7 @@ const MilitaryCard = ({
         isPlaceHolder={true}
         type={type}
         isEnemy={isEnemy}
-        w={cardWidth}
-        h={cardHeight}
+        style={{ height: cardHeight, width: cardWidth }}
       >
         {type} slot {index}
       </MilitaryCardWrapper>
@@ -45,8 +38,6 @@ const MilitaryCard = ({
     <MilitaryCardWrapper
       type={type}
       isPlaceHolder={false}
-      h={cardHeight}
-      w={cardWidth}
       isEnemy={isEnemy}
       onClick={() => {
         if (!cardShouldBeClickable) return;
@@ -54,11 +45,7 @@ const MilitaryCard = ({
         setOpenModal(ModalEnum.BattleCard);
       }}
     >
-      {card.faceUp ? (
-        <BattleCard card={card} width={cardWidth} />
-      ) : (
-        <img src="/card-back.png" />
-      )}
+      <FinalCard card={card} width={cardWidth} />
     </MilitaryCardWrapper>
   );
 };

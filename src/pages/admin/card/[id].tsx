@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
-import UpdatedCard from '@/UpdatedCard';
+import FinalCard from '@/FinalCard';
 import { CardContext } from '~/context/CardContext';
 
 const CardEditPage = () => {
@@ -11,7 +11,7 @@ const CardEditPage = () => {
 
   return card ? (
     <div className="flex h-full items-center justify-around w-full">
-      <UpdatedCard card={card} />
+      <FinalCard card={{ ...card, id: id, faceUp: true, position: 'attack' }} />
     </div>
   ) : (
     <div>Ooops, this card doesn`&apos;`t exist</div>

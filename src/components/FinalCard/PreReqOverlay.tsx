@@ -1,13 +1,14 @@
 import classNames from 'classnames';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import AnimatedBackGround from '@/UpdatedCard/AnimatedBackGround';
 import { PreReq } from '~/models/Card';
 import getIconsToUse from '~/utils/getIconsToUse';
+import AnimatedBackGround from './AnimatedBackGround';
 import Chain from './Chain';
 
 type OwnProps = {
   activePreReqs?: PreReq[];
   width: number;
+  height: number;
   left: number;
   preReqs: PreReq[];
   unlocked: boolean;
@@ -18,6 +19,7 @@ const PreReqOverlay = ({
   activePreReqs,
   width,
   left,
+  height,
   preReqs,
   unlocked,
   setUnlocked
@@ -55,10 +57,10 @@ const PreReqOverlay = ({
 
   return (
     <div
-      className={classNames('absolute burn-bar h-3/5 overflow-hidden top-0', {
+      className={classNames('absolute burn-bar overflow-hidden z-[5]', {
         burn: startBurn
       })}
-      style={{ width, left }}
+      style={{ width, left, top: left, height }}
     >
       <div
         className={classNames(
