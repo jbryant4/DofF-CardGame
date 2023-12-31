@@ -143,6 +143,7 @@ const FinalCard = ({
             )}
 
             <div
+              id="bottom-cover"
               className="absolute bottom-0 flex flex-col w-full"
               style={{
                 height: combatHeight + titleHeight

@@ -63,7 +63,7 @@ export function DimensionsProvider({ children }: Props) {
   const gridRowLayout = toShort
     ? '1fr 1fr 15vh'
     : canFullBoard
-    ? `repeat(2, ${playerBoardMax}px) ${1.2 * handCardHeight}px`
+    ? `repeat(2, ${playerBoardMax}px) ${handCardHeight}px`
     : `repeat(2, ${playerBoardMin}px) 1fr`;
 
   useEffect(() => {

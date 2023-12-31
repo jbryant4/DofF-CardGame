@@ -60,7 +60,7 @@ const Decks = ({}: OwnProps) => {
     <div
       id="decks"
       className={classNames(
-        'absolute bg-red-200 duration-[800ms] ease-in-out flex gap-28 pb-16 pt-8 px-20 right-0 top-[0] transition-all z-[1]',
+        'absolute bg-red-200 duration-[800ms] ease-in-out flex gap-28 left-64 pb-16 pt-8 px-20 top-[0] transition-all z-1',
         {
           '-translate-y-[100%]': showUi
         }

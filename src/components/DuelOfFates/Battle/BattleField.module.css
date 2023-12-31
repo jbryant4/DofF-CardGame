@@ -25,7 +25,4 @@
   /*where it sits in the top level layout*/
   display: grid;
   grid-template-columns: 4fr 2fr;
-  grid-template-rows: 1fr;
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
 }

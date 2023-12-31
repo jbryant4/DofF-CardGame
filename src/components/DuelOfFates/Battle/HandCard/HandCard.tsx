@@ -9,10 +9,9 @@ import { GameContext } from '~/context/GameContext';
 type OwnProps = {
   duelingCard: DuelingCard;
   index: number;
-  enemyHand: boolean;
 };
 
-const HandCard = ({ duelingCard, index = 0, enemyHand }: OwnProps) => {
+const HandCard = ({ duelingCard, index = 0 }: OwnProps) => {
   const [hover, setHover] = useState(false);
   const [prePlace, setPrePlace] = useState(false);
   const [placeAttack, setPlaceAttack] = useState(true);
@@ -20,8 +19,12 @@ const HandCard = ({ duelingCard, index = 0, enemyHand }: OwnProps) => {
   const { localPlayer, battleTurn, battleStage } = useContext(GameContext);
   const { activePreReqs, getIsBoardSlotFull } = useContext(BoardContext);
 
-  const { handCardWidth, handCardHeight, handCardTransitionLength } =
-    useDimensionsContext();
+  const {
+    handCardWidth,
+    handCardHeight,
+    handCardTransitionLength,
+    canFullBoard
+  } = useDimensionsContext();
 
   const allSlotsFilled = getIsBoardSlotFull(duelingCard);
   const cardCanBePlaced =
@@ -37,38 +40,14 @@ const HandCard = ({ duelingCard, index = 0, enemyHand }: OwnProps) => {
     cardCanBePlaced &&
     !allSlotsFilled;
 
-  return enemyHand ? (
-    <div
-      style={{
-        marginLeft: index === 0 ? 0 : -handCardWidth * 0.25,
-        zIndex: hover ? 8 - index : 7 - index,
-        top: hover ? -30 : 10,
-        width: handCardWidth
-      }}
-      className="duration-[800ms] h-full relative transition-all"
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-    >
-      {' '}
-      <img
-        className="absolute inset-0"
-        id={duelingCard.title}
-        src="/card-back.png"
-        style={{
-          width: handCardWidth,
-          height: handCardHeight,
-          backgroundColor: 'black'
-        }}
-        alt="card back image"
-      />
-    </div>
-  ) : (
+  return (
     <div
       style={{
         marginLeft: index === 0 ? 0 : -handCardWidth * 0.4,
         zIndex: hover || prePlace ? 3 + index : index,
         top: hover || prePlace ? -handCardTransitionLength : 0,
-        width: handCardWidth
+        width: handCardWidth,
+        height: handCardHeight
       }}
       className="duration-[800ms] h-full relative transition-all"
       onClick={() => {
@@ -87,17 +66,15 @@ const HandCard = ({ duelingCard, index = 0, enemyHand }: OwnProps) => {
           setPlaceAttack={setPlaceAttack}
         />
       )}
-      <div className="absolute inset-0">
-        <FinalCard
-          card={{
-            ...duelingCard,
-            position: placeAttack ? 'attack' : 'defense'
-          }}
-          width={handCardWidth}
-          activePreReqs={activePreReqs}
-          inHand
-        />
-      </div>
+      <FinalCard
+        card={{
+          ...duelingCard,
+          position: placeAttack ? 'attack' : 'defense'
+        }}
+        width={handCardWidth}
+        activePreReqs={activePreReqs}
+        inHand
+      />
     </div>
   );
 };

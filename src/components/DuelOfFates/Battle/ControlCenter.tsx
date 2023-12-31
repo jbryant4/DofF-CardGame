@@ -18,21 +18,21 @@ import Decks from './Decks';
 import { GameMessages } from '../../../../server/gameHandlers/gameHandlers';
 
 type OwnProps = {
-  isEnemy?: boolean;
   setShowGraveYard?: Dispatch<SetStateAction<boolean>>;
 };
 
-const ControlCenter = ({ isEnemy = false, setShowGraveYard }: OwnProps) => {
+const ControlCenter = ({ setShowGraveYard }: OwnProps) => {
   //Currently Need this to determine card width and if not here throws errors
   const { advanceBattleStage, localPlayer, battleTurn, battleStage, roomId } =
     useContext(GameContext);
 
-  const { localBoard, enemyBoard } = useBoardContext();
-  const { hand } = isEnemy ? enemyBoard : localBoard;
+  const {
+    localBoard: { hand }
+  } = useBoardContext();
 
   const socket = useSocket();
 
-  const showControls = !isEnemy && localPlayer === battleTurn;
+  const showControls = localPlayer === battleTurn;
   // TODO start following the patern of if socket send message if not use the local stuff for deving atm
   const handleAdvance = () => {
     if (socket) {
@@ -43,24 +43,28 @@ const ControlCenter = ({ isEnemy = false, setShowGraveYard }: OwnProps) => {
   };
 
   return (
-    <div className={`${styles.controlCenter} bg-green-400`} style={{}}>
-      <div className={`relative`}>
-        <div className="bg-green-600 flex h-full justify-center relative w-full z-[2]">
-          {hand.length > 0 &&
-            hand.map((card, index) => (
-              <Fragment key={card.id}>
-                <HandCard
-                  duelingCard={card}
-                  index={index}
-                  enemyHand={isEnemy}
-                />
-              </Fragment>
-            ))}
+    <div
+      id="control-wrapper"
+      className={`${styles.controlCenter} relative`}
+      style={{}}
+    >
+      <div className="bg-green-400 h-full relative z-[3]">
+        <div className="absolute inset-0">
+          <div className="flex h-full justify-center">
+            {hand.length > 0 &&
+              hand.map((card, index) => (
+                <Fragment key={card.id}>
+                  <HandCard duelingCard={card} index={index} />
+                </Fragment>
+              ))}
+          </div>
         </div>
-        {!isEnemy && <Decks />}
       </div>
+
       {showControls && (
-        <div className={`flex-col flex items-center justify-around`}>
+        <div
+          className={`flex-col flex items-center justify-around relative z-[3] bg-gray-400`}
+        >
           actions
           <ActionBtn disabled={false} onClick={() => handleAdvance()}>
             advance
@@ -75,6 +79,7 @@ const ControlCenter = ({ isEnemy = false, setShowGraveYard }: OwnProps) => {
           )}
         </div>
       )}
+      <Decks />
     </div>
   );
 };

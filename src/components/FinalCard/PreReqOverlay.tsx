@@ -55,9 +55,13 @@ const PreReqOverlay = ({
 
   return (
     <div
-      className={classNames('absolute burn-bar overflow-hidden w-full z-[5]', {
-        burn: startBurn
-      })}
+      id="pre-req"
+      className={classNames(
+        'absolute burn-bar overflow-hidden top-0 w-full z-[5]',
+        {
+          burn: startBurn
+        }
+      )}
       style={{ height }}
     >
       <div

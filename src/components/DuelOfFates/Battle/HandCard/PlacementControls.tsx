@@ -52,7 +52,7 @@ const PlacementControls = ({
   };
 
   return (
-    <div className="absolute grid grid-rows-3 h-fit justify-items-center left-full p-8 top-0 w-fit">
+    <div className="absolute bg-gray-400/80 grid grid-rows-3 h-fit justify-items-center left-full p-8 top-0 w-fit">
       <div
         onClick={e => {
           e.stopPropagation();
