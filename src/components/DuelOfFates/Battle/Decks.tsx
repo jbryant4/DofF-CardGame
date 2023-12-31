@@ -1,20 +1,18 @@
 import classNames from 'classnames';
 import { Fragment, useContext, useEffect, useState } from 'react';
-import DuelCard from '@/DuelOfFates/Battle/DuelCard';
+import FinalCard from '@/FinalCard';
 import BlueBtn from '@/Global/BlueBtn';
 import { ActionBtn } from '@/Modals/BattleCardModal/BattleCardModal.styles';
-import DuelingCard from '~/constants/DuelingCard';
 import { BoardContext } from '~/context/BoardContext';
+import { useDimensionsContext } from '~/context/DimensionsContext';
 import { GameContext } from '~/context/GameContext';
 import { useSocket } from '~/context/SocketContext';
 import { BoardMessages } from '../../../../server/boardHandlers/boardHandlers';
 import { GameMessages } from '../../../../server/gameHandlers/gameHandlers';
 
-type OwnProps = {
-  cardWidth: number;
-};
+type OwnProps = {};
 
-const Decks = ({ cardWidth }: OwnProps) => {
+const Decks = ({}: OwnProps) => {
   const socket = useSocket();
   const [showUi, setShowUi] = useState(false);
   const { localPlayer, roomId, advanceBattleStage, battleTurn, battleStage } =
@@ -23,10 +21,7 @@ const Decks = ({ cardWidth }: OwnProps) => {
   const viewDecks = localPlayer === battleTurn && battleStage === 'draw';
   const { playerOneDraw, playerTwoDraw, localBoard } = useContext(BoardContext);
   const { mainDeck, foundationDeck, hand } = localBoard;
-  const mainDeckToShow =
-    mainDeck.slice(0, 5).length > 0 ? mainDeck.slice(0, 5) : [];
-  const foundationDeckToShow =
-    foundationDeck.slice(0, 2).length > 0 ? foundationDeck.slice(0, 2) : [];
+  const { handCardWidth } = useDimensionsContext();
 
   const deckToDrawFrom =
     localPlayer === 'playerOne' ? playerOneDraw : playerTwoDraw;
@@ -71,45 +66,44 @@ const Decks = ({ cardWidth }: OwnProps) => {
         }
       )}
     >
-      <div className="flex flex-col flex-grow items-center">
+      <div className="flex flex-col flex-grow gap-8 items-center">
         <div>Main Deck</div>
-        {mainDeckToShow.map((card, index) => (
-          <Fragment key={card.id}>
-            <DuelCard
-              duelingCard={card}
-              location="main-deck"
-              layout={'pile'}
-              cardWidth={cardWidth}
-              index={index}
-            />
-          </Fragment>
-        ))}
+        {mainDeck.length > 0 && (
+          <img
+            width={handCardWidth}
+            className="h-full object-cover rounded"
+            alt="card-back"
+            src="/card-back.png"
+          />
+        )}
         <ActionBtn
-          disabled={mainDeckToShow.length === 0}
+          disabled={mainDeck.length === 0}
           onClick={() => handleDeckClick('main')}
         >
           Fill Deck
         </ActionBtn>
       </div>
-      <div className="flex flex-col flex-grow items-center">
+      <div className="flex flex-col flex-grow gap-8 items-center">
         <div>Foundation Deck</div>
-        {foundationDeckToShow.map((card, index) => (
-          <Fragment key={card.id}>
-            <DuelCard
-              duelingCard={card}
-              location="foundation-deck"
-              layout={'pile'}
-              cardWidth={cardWidth}
-              index={index}
-            />
-          </Fragment>
-        ))}
+        {foundationDeck.length > 0 && (
+          <img
+            width={handCardWidth}
+            className="h-full object-cover rounded"
+            alt="card-back"
+            src="/card-back.png"
+          />
+        )}
         <ActionBtn
-          disabled={foundationDeckToShow.length === 0}
+          disabled={foundationDeck.length === 0}
           onClick={() => handleDeckClick('foundation')}
         >
           Draw Foundation
         </ActionBtn>
+      </div>
+
+      <div className="flex flex-col flex-grow gap-8 items-center">
+        <div>-1 Hp</div>
+        <ActionBtn disabled={false}>fresh cards </ActionBtn>
       </div>
     </div>
   );

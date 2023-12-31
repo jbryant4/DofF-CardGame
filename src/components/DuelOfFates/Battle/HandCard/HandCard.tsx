@@ -3,28 +3,25 @@ import PlacementControls from '@/DuelOfFates/Battle/HandCard/PlacementControls';
 import FinalCard from '@/FinalCard';
 import DuelingCard from '~/constants/DuelingCard';
 import { BoardContext } from '~/context/BoardContext';
+import { useDimensionsContext } from '~/context/DimensionsContext';
 import { GameContext } from '~/context/GameContext';
 
 type OwnProps = {
   duelingCard: DuelingCard;
   index: number;
-  cardWidth: number;
   enemyHand: boolean;
 };
 
-const HandCard = ({
-  duelingCard,
-  index = 0,
-  cardWidth,
-  enemyHand
-}: OwnProps) => {
-  const cardHeight = cardWidth * (4 / 3);
+const HandCard = ({ duelingCard, index = 0, enemyHand }: OwnProps) => {
   const [hover, setHover] = useState(false);
   const [prePlace, setPrePlace] = useState(false);
   const [placeAttack, setPlaceAttack] = useState(true);
 
   const { localPlayer, battleTurn, battleStage } = useContext(GameContext);
   const { activePreReqs, getIsBoardSlotFull } = useContext(BoardContext);
+
+  const { handCardWidth, handCardHeight, handCardTransitionLength } =
+    useDimensionsContext();
 
   const allSlotsFilled = getIsBoardSlotFull(duelingCard);
   const cardCanBePlaced =
@@ -43,10 +40,10 @@ const HandCard = ({
   return enemyHand ? (
     <div
       style={{
-        marginLeft: index === 0 ? 0 : -cardWidth * 0.25,
+        marginLeft: index === 0 ? 0 : -handCardWidth * 0.25,
         zIndex: hover ? 8 - index : 7 - index,
         top: hover ? -30 : 10,
-        width: cardWidth
+        width: handCardWidth
       }}
       className="duration-[800ms] h-full relative transition-all"
       onMouseEnter={() => setHover(true)}
@@ -58,8 +55,8 @@ const HandCard = ({
         id={duelingCard.title}
         src="/card-back.png"
         style={{
-          width: cardWidth,
-          height: cardHeight,
+          width: handCardWidth,
+          height: handCardHeight,
           backgroundColor: 'black'
         }}
         alt="card back image"
@@ -68,10 +65,10 @@ const HandCard = ({
   ) : (
     <div
       style={{
-        marginLeft: index === 0 ? 0 : -cardWidth * 0.4,
+        marginLeft: index === 0 ? 0 : -handCardWidth * 0.4,
         zIndex: hover || prePlace ? 3 + index : index,
-        top: hover || prePlace ? -cardHeight * 0.75 : 10,
-        width: cardWidth
+        top: hover || prePlace ? -handCardTransitionLength : 0,
+        width: handCardWidth
       }}
       className="duration-[800ms] h-full relative transition-all"
       onClick={() => {
@@ -96,7 +93,7 @@ const HandCard = ({
             ...duelingCard,
             position: placeAttack ? 'attack' : 'defense'
           }}
-          width={cardWidth}
+          width={handCardWidth}
           activePreReqs={activePreReqs}
           inHand
         />

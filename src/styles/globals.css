@@ -23,27 +23,6 @@
   --swiper-pagination-bullet-height: 12px;
 }
 
-.health-circle {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: radial-gradient(circle, red, black);
-  border: 2px solid #000;
-}
-
-.health-circle.empty {
-  background: radial-gradient(circle, grey, black);
-}
-
-.health-circle.bonus-health {
-  background: radial-gradient(circle, blue, black);
-}
-
-.half-circle {
-  border-radius: 50%;
-  background: linear-gradient(to top, green 50%, transparent 50%);
-}
-
 .square {
   background-color: #000;
 }

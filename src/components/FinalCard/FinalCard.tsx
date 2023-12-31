@@ -120,7 +120,7 @@ const FinalCard = ({
             </div>
           )}
 
-          <div className="flex flex-col overflow-hidden relative w-full">
+          <div className="overflow-hidden relative w-full">
             <img
               alt="card image"
               src={blankUrl}
@@ -128,6 +128,7 @@ const FinalCard = ({
                 width: width,
                 height: cardHeight
               }}
+              className=""
             />
 
             {showPreReqOverlay && (

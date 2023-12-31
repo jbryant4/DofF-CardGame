@@ -15,9 +15,7 @@ const Military = ({ isEnemy = false }: OwnProps) => {
   return (
     <div
       className={cx(
-        `${styles.military} grid grid-cols-6 justify-items-center `,
-        { 'pb-16': !isEnemy },
-        { 'pt-16': isEnemy }
+        `${styles.military} grid grid-cols-6 justify-items-center py-12`
       )}
     >
       {champions.map((champ, index) => (

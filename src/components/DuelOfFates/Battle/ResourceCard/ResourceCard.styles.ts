@@ -12,7 +12,7 @@ export const ResourceCardWrapper = createComponent<
   className: cx(
     `absolute`,
     { 'bg-green-200 border-2 border-gray-600': props.isPlaceHolder },
-    { 'z-[2] right-[8px] bottom-[8px]': props.isTopCard },
-    { 'z-1 left-[8px] top-[8px]': !props.isTopCard }
+    { 'z-[2] right-[8px]': props.isTopCard },
+    { 'z-1 left-[8px]': !props.isTopCard }
   )
 }));
