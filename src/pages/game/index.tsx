@@ -78,7 +78,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col gap-24 h-full items-center justify-center w-full">
-      <h1>Duel of Fats</h1>
+      <h1>Duel of Fates</h1>
       <h2>Lobby </h2>
 
       <form

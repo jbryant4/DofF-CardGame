@@ -1,16 +1,8 @@
-import {
-  Dispatch,
-  Fragment,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useRef,
-  useState
-} from 'react';
+import { Dispatch, Fragment, SetStateAction, useContext } from 'react';
 import HandCard from '@/DuelOfFates/Battle/HandCard';
+import { Overlay } from '@/DuelOfFates/Battle/Overlays/Overlays';
 import { ActionBtn } from '@/Modals/BattleCardModal/BattleCardModal.styles';
 import { useBoardContext } from '~/context/BoardContext';
-import { useDimensionsContext } from '~/context/DimensionsContext';
 import { GameContext } from '~/context/GameContext';
 import { useSocket } from '~/context/SocketContext';
 import styles from './BattleField.module.css';
@@ -18,16 +10,18 @@ import Decks from './Decks';
 import { GameMessages } from '../../../../server/gameHandlers/gameHandlers';
 
 type OwnProps = {
-  setShowGraveYard?: Dispatch<SetStateAction<boolean>>;
+  overlayOpen: Overlay;
+  setShowGraveYard: Dispatch<SetStateAction<Overlay>>;
 };
 
-const ControlCenter = ({ setShowGraveYard }: OwnProps) => {
+const ControlCenter = ({ overlayOpen, setShowGraveYard }: OwnProps) => {
   //Currently Need this to determine card width and if not here throws errors
   const { advanceBattleStage, localPlayer, battleTurn, battleStage, roomId } =
     useContext(GameContext);
 
   const {
-    localBoard: { hand }
+    localBoard: { hand },
+    enemyBoard: { hand: enemyHand }
   } = useBoardContext();
 
   const socket = useSocket();
@@ -61,24 +55,47 @@ const ControlCenter = ({ setShowGraveYard }: OwnProps) => {
         </div>
       </div>
 
-      {showControls && (
-        <div
-          className={`flex-col flex items-center justify-around relative z-[3] bg-gray-400`}
-        >
-          actions
-          <ActionBtn disabled={false} onClick={() => handleAdvance()}>
-            advance
-          </ActionBtn>
-          {setShowGraveYard && (
-            <ActionBtn
-              disabled={false}
-              onClick={() => setShowGraveYard(prevState => !prevState)}
-            >
-              graveyard
+      <div
+        className={`flex-col flex items-center gap-4 relative z-[3] bg-gray-400`}
+      >
+        {showControls && (
+          <>
+            controls
+            <ActionBtn disabled={false} onClick={() => handleAdvance()}>
+              advance stage
             </ActionBtn>
-          )}
-        </div>
-      )}
+            overlays
+            <div className="flex justify-around w-full">
+              <ActionBtn
+                disabled={overlayOpen === Overlay.None}
+                onClick={() => setShowGraveYard(Overlay.None)}
+              >
+                none
+              </ActionBtn>
+              <ActionBtn
+                disabled={overlayOpen === Overlay.GraveYard}
+                onClick={() => setShowGraveYard(Overlay.GraveYard)}
+              >
+                graveyard
+              </ActionBtn>
+              <ActionBtn
+                disabled={
+                  overlayOpen === Overlay.EnemyHand || enemyHand.length === 0
+                }
+                onClick={() => setShowGraveYard(Overlay.EnemyHand)}
+              >
+                enemy hand
+              </ActionBtn>
+              <ActionBtn
+                disabled={overlayOpen === Overlay.ScoreBoard}
+                onClick={() => setShowGraveYard(Overlay.ScoreBoard)}
+              >
+                score board
+              </ActionBtn>
+            </div>
+          </>
+        )}
+      </div>
       <Decks />
     </div>
   );

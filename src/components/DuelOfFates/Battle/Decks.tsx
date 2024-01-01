@@ -1,20 +1,14 @@
 import classNames from 'classnames';
-import { Fragment, useContext, useEffect, useState } from 'react';
-import FinalCard from '@/FinalCard';
-import BlueBtn from '@/Global/BlueBtn';
+import { useContext } from 'react';
 import { ActionBtn } from '@/Modals/BattleCardModal/BattleCardModal.styles';
 import { BoardContext } from '~/context/BoardContext';
 import { useDimensionsContext } from '~/context/DimensionsContext';
 import { GameContext } from '~/context/GameContext';
 import { useSocket } from '~/context/SocketContext';
 import { BoardMessages } from '../../../../server/boardHandlers/boardHandlers';
-import { GameMessages } from '../../../../server/gameHandlers/gameHandlers';
 
-type OwnProps = {};
-
-const Decks = ({}: OwnProps) => {
+const Decks = () => {
   const socket = useSocket();
-  const [showUi, setShowUi] = useState(false);
   const { localPlayer, roomId, advanceBattleStage, battleTurn, battleStage } =
     useContext(GameContext);
 
@@ -25,6 +19,7 @@ const Decks = ({}: OwnProps) => {
 
   const deckToDrawFrom =
     localPlayer === 'playerOne' ? playerOneDraw : playerTwoDraw;
+
   const handleDeckClick = (fromDeck: 'foundation' | 'main') => {
     if (socket) {
       socket.emit(BoardMessages.Draw, roomId, localPlayer, fromDeck);
@@ -40,29 +35,23 @@ const Decks = ({}: OwnProps) => {
     }
   };
 
-  useEffect(() => {
-    if (hand.length >= 7 && viewDecks) {
-      if (socket) {
-        socket.emit(GameMessages.AdvanceStage, roomId);
-      } else {
-        advanceBattleStage();
-      }
+  const handleReshuffle = () => {
+    // TODO make local hook of this socket message for testing locally
+    if (!socket) {
+      console.log('no socket connected');
 
       return;
-    } else if (viewDecks) {
-      setShowUi(true);
-    } else {
-      setShowUi(false);
     }
-  }, [advanceBattleStage, hand.length, roomId, socket, viewDecks]);
+    socket.emit(BoardMessages.Reshuffle, roomId, localPlayer);
+  };
 
   return (
     <div
       id="decks"
       className={classNames(
-        'absolute bg-red-200 duration-[800ms] ease-in-out flex gap-28 left-64 pb-16 pt-8 px-20 top-[0] transition-all z-1',
+        'absolute bg-red-200 duration-[800ms] ease-in-out flex gap-28 left-64 pb-16 pt-8 px-20 top-[0] transition-all z-[2]',
         {
-          '-translate-y-[100%]': showUi
+          '-translate-y-[100%]': viewDecks
         }
       )}
     >
@@ -77,7 +66,7 @@ const Decks = ({}: OwnProps) => {
           />
         )}
         <ActionBtn
-          disabled={mainDeck.length === 0}
+          disabled={mainDeck.length === 0 || hand.length >= 7}
           onClick={() => handleDeckClick('main')}
         >
           Fill Deck
@@ -94,7 +83,7 @@ const Decks = ({}: OwnProps) => {
           />
         )}
         <ActionBtn
-          disabled={foundationDeck.length === 0}
+          disabled={foundationDeck.length === 0 || hand.length >= 7}
           onClick={() => handleDeckClick('foundation')}
         >
           Draw Foundation
@@ -103,7 +92,9 @@ const Decks = ({}: OwnProps) => {
 
       <div className="flex flex-col flex-grow gap-8 items-center">
         <div>-1 Hp</div>
-        <ActionBtn disabled={false}>fresh cards </ActionBtn>
+        <ActionBtn disabled={false} onClick={() => handleReshuffle()}>
+          fresh cards{' '}
+        </ActionBtn>
       </div>
     </div>
   );

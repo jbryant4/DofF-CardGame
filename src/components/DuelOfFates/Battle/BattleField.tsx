@@ -2,10 +2,10 @@ import { useState } from 'react';
 import styles from '@/DuelOfFates/Battle/BattleField.module.css';
 import ControlCenter from '@/DuelOfFates/Battle/ControlCenter';
 import FoundationCards from '@/DuelOfFates/Battle/FoundationCard';
-import GraveYard from '@/DuelOfFates/Battle/GraveYard';
 import Military from '@/DuelOfFates/Battle/Military';
+import Overlays from '@/DuelOfFates/Battle/Overlays';
+import { Overlay } from '@/DuelOfFates/Battle/Overlays/Overlays';
 import Resources from '@/DuelOfFates/Battle/Resources';
-import ScoreBoard from '@/DuelOfFates/Battle/ScoreBoard';
 import { useDimensionsContext } from '~/context/DimensionsContext';
 import { Container } from './BattleField.styles';
 
@@ -15,7 +15,7 @@ const BattleField = ({}: OwnProps) => {
   const { handCardHeight, gridRowLayout, canFullBoard } =
     useDimensionsContext();
 
-  const [showGraveYard, setShowGraveYard] = useState(false);
+  const [overlayOpen, setOpenOverlay] = useState(Overlay.None);
 
   return (
     <div className="flex h-full items-center">
@@ -43,11 +43,13 @@ const BattleField = ({}: OwnProps) => {
           </div>
           <Military />
         </div>
-        <ControlCenter setShowGraveYard={setShowGraveYard} />
+        <ControlCenter
+          overlayOpen={overlayOpen}
+          setShowGraveYard={setOpenOverlay}
+        />
 
         {/*Absolutely Positioned components*/}
-        <ScoreBoard />
-        <GraveYard show={showGraveYard} setShow={setShowGraveYard} />
+        <Overlays overlayToShow={overlayOpen} setOverlay={setOpenOverlay} />
       </Container>
     </div>
   );

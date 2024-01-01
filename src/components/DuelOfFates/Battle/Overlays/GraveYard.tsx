@@ -3,8 +3,9 @@ import FinalCard from '@/FinalCard';
 import { useBoardContext } from '~/context/BoardContext';
 import { useDimensionsContext } from '~/context/DimensionsContext';
 import SkullIcon from '~/icons/SkullIcon';
+import { Overlay } from './Overlays';
 
-type OwnProps = { show: boolean; setShow: Dispatch<SetStateAction<boolean>> };
+type OwnProps = { show: boolean; setShow: Dispatch<SetStateAction<Overlay>> };
 
 const GraveYard = ({ show }: OwnProps) => {
   const { cardWidth, cardHeight } = useDimensionsContext();
@@ -19,7 +20,10 @@ const GraveYard = ({ show }: OwnProps) => {
       style={{ left: show ? 0 : -(cardWidth + 48) }}
     >
       {enemyGraveYard.length > 0 ? (
-        <FinalCard card={enemyGraveYard[enemyGraveYard.length - 1]} />
+        <FinalCard
+          width={cardWidth}
+          card={enemyGraveYard[enemyGraveYard.length - 1]}
+        />
       ) : (
         <div
           style={{ width: cardWidth, height: cardHeight }}
