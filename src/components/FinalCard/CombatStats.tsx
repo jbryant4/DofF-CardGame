@@ -22,6 +22,7 @@ const CombatStats = ({
   const [combatDef, setDef] = useState(getDefaultCombatStat());
   const [combatAtk, setAtk] = useState(getDefaultCombatStat());
 
+  const dontShow = !atk && !def && !hp;
   //Set initial combat stat
   useEffect(() => {
     setHp(prevState => ({
@@ -38,7 +39,7 @@ const CombatStats = ({
     }));
   }, [atk, def, hp]);
 
-  return (
+  return dontShow ? null : (
     <>
       <div id="attack-defense" className="flex items-center relative">
         <div

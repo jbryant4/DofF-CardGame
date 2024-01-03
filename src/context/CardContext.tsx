@@ -10,7 +10,7 @@ import Card from '~/constants/CardType';
 import defaultCard from '~/constants/defaultCard';
 import { devCards } from '~/constants/developmentCards';
 import { CollectorContext } from '~/context/CollectorContext';
-import { CardDocument } from '~/models/Card';
+import { CardDocument, CardType } from '~/models/Card';
 import { Deck } from '~/models/Collector';
 
 type WholeDeck = {
@@ -22,6 +22,10 @@ type CardContextType = {
   cards: CardDocument[];
   localCards: CardDocument[];
   collection: CardDocument[];
+  filter: CardType;
+  setFilter: React.Dispatch<React.SetStateAction<CardType>>;
+  subFilter: string;
+  setSubFilter: React.Dispatch<React.SetStateAction<string>>;
   decks: WholeDeck[];
   isLoading: boolean;
   errorText: Error | null;
@@ -37,6 +41,10 @@ type CardContextType = {
 const defaultCardContext: CardContextType = {
   cards: [],
   localCards: [],
+  filter: '',
+  setFilter() {},
+  subFilter: '',
+  setSubFilter() {},
   collection: [],
   decks: [],
   isLoading: false,
@@ -83,7 +91,8 @@ export function CardProvider({ children }: Props) {
   const [decks, setDecks] = useState<WholeDeck[]>([]);
   const [fetchTrigger, setFetchTrigger] = useState(0);
   const { collector } = useContext(CollectorContext);
-
+  const [filter, setFilter] = useState<CardType>('');
+  const [subFilter, setSubFilter] = useState('');
   const unlockCard = useCallback(async (id: string): Promise<void> => {
     console.log(id);
   }, []);
@@ -142,6 +151,10 @@ export function CardProvider({ children }: Props) {
       localCards,
       collection,
       decks,
+      filter,
+      setFilter,
+      subFilter,
+      setSubFilter,
       isLoading,
       errorText,
       getCard,
@@ -157,17 +170,21 @@ export function CardProvider({ children }: Props) {
       localCards,
       collection,
       decks,
+      filter,
+      subFilter,
       isLoading,
       errorText,
       getCard,
       unlockCard,
       createDeck,
       editDeck,
-      deleteDeck,
-      setLocalCards,
-      setFetchTrigger
+      deleteDeck
     ]
   );
 
   return <CardContext.Provider value={value}>{children}</CardContext.Provider>;
+}
+
+export function useCardContext() {
+  return React.useContext(CardContext);
 }

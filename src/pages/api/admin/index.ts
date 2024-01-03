@@ -1,6 +1,10 @@
 import Admin from '~/models/Admin';
+import connectFateCollection from '~/utils/connectFateCollection';
 
 export default async function checkAdmin(req, res) {
+  // Connect to the database
+  await connectFateCollection();
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }

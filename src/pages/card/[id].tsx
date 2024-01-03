@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
+import CardDisplay from '@/CardDisplay';
 import FinalCard from '@/FinalCard';
 import BlueBtn from '@/Global/BlueBtn';
 import Lesson from '@/Lesson';
@@ -11,22 +12,11 @@ const CardDetailsPage = () => {
   const router = useRouter();
   const { id } = router.query as { id: string };
   const { getCard } = useContext(CardContext);
-  const { setOpenModal } = useContext(ModalContext);
   const card = getCard(id);
 
   return card ? (
-    <div className="grid grid-cols-[1fr,2fr] h-full items-center overflow-y-auto pb-[54px] pt-24 px-24">
-      <div className="flex flex-col items-center">
-        <FinalCard card={{ ...card, id, faceUp: true, position: 'attack' }} />
-        <div className="flex gap-24 justify-center mt-36 w-full">
-          <BlueBtn onClick={() => setOpenModal(ModalEnum.Breakdown)}>
-            Card
-          </BlueBtn>
-          <BlueBtn onClick={() => setOpenModal(ModalEnum.Unlock)}>
-            Unlock
-          </BlueBtn>
-        </div>
-      </div>
+    <div className="grid grid-rows-[1fr,2fr] h-full items-center max-w-[1200px] mx-auto overflow-y-auto pb-[54px] pt-24 px-24">
+      <CardDisplay card={{ ...card, id }} />
       {card.lesson ? <Lesson lesson={card.lesson} /> : null}
     </div>
   ) : (

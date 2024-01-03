@@ -55,11 +55,11 @@ const FinalCard = ({
     combatHeight,
     overlayHeight
   } = useGetCardDimensions(width);
-
   //once we have effect syymbols add to this check as well
-  const showStatOverlay = Boolean(atk && def && hp);
+  // check numbers not all 0
   const hasBattleStats =
     atk !== undefined && def !== undefined && hp !== undefined;
+  const noBattleStats = !atk && !def && !hp;
 
   const borderToUse =
     foundation && foundation.length > 0
@@ -159,17 +159,15 @@ const FinalCard = ({
               >
                 {title}
               </div>
-              {showStatOverlay && (
+              {hasBattleStats && !noBattleStats && (
                 <div className="bg-gray-500/60 flex flex-grow overflow-y-hidden">
-                  {hasBattleStats && (
-                    <CombatStats
-                      combatCircleRadius={combatCircleRadius}
-                      atk={atk}
-                      hp={hp}
-                      def={def}
-                      position={position}
-                    />
-                  )}
+                  <CombatStats
+                    combatCircleRadius={combatCircleRadius}
+                    atk={atk}
+                    hp={hp}
+                    def={def}
+                    position={position}
+                  />
                 </div>
               )}
             </div>
