@@ -1,18 +1,16 @@
 import { GetServerSidePropsContext } from 'next';
-import { useRouter } from 'next/router';
-import { useContext, useEffect } from 'react';
+import CardEditor from '@/CardEditor';
+
 import withAuth, {
   getServerSideProps as getServerSideAuthProps
 } from '@/withAuth';
-import { CollectorContext } from '~/context/CollectorContext';
 
-const Home = () => {
-  const { isLoggedIn } = useContext(CollectorContext);
-
-  return <div>Home Page</div>;
+const AdminAuth = () => {
+  // TODO Fix this
+  return <CardEditor />;
 };
 
-export default withAuth(Home);
+export default withAuth(AdminAuth);
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const authProps = await getServerSideAuthProps(ctx);

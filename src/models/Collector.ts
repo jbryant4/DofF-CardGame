@@ -7,9 +7,11 @@ export interface Deck {
 }
 export interface CollectorDocument extends Document {
   userName: string;
+  codePhrase: string;
   email: string;
   cards: string[];
   decks: Deck[];
+  isAdmin: boolean;
 }
 
 const DeckSchema = new Schema<Deck>({
@@ -33,10 +35,18 @@ const CollectorSchema = new Schema<CollectorDocument>({
     required: true,
     unique: true
   },
+  codePhrase: {
+    type: String,
+    required: true
+  },
   email: {
     type: String,
     required: true,
     unique: true
+  },
+  isAdmin: {
+    type: Boolean,
+    required: true
   },
   cards: {
     type: [String],

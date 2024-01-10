@@ -1,4 +1,8 @@
+import { GetServerSidePropsContext } from 'next';
 import { useContext } from 'react';
+import withAuth, {
+  getServerSideProps as getServerSideAuthProps
+} from '@/withAuth';
 import { CollectorContext } from '~/context/CollectorContext';
 
 const Collection = () => {
@@ -8,4 +12,10 @@ const Collection = () => {
   return <div>Welcome Collector</div>;
 };
 
-export default Collection;
+export default withAuth(Collection);
+
+export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+  const authProps = await getServerSideAuthProps(ctx);
+
+  return { props: { ...authProps.props } };
+}

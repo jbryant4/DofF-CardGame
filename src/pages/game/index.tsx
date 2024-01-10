@@ -1,12 +1,16 @@
+import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
+import withAuth, {
+  getServerSideProps as getServerSideAuthProps
+} from '@/withAuth';
 import { Duelist } from '~/constants/common/gameTypes';
 import { Africa, Americas } from '~/constants/starterDecks';
 import { GameContext, useGameContext } from '~/context/GameContext';
 import { useSocket } from '~/context/SocketContext';
 import { PreGameMessages } from '../../../server/preGameHandlers/preGameHandlers';
 
-export default function Home() {
+const Home = () => {
   const [name, setName] = useState('');
   const [deck, setDeck] = useState('');
   const [gameId, setGameId] = useState('');
@@ -124,4 +128,12 @@ export default function Home() {
       </form>
     </div>
   );
+};
+
+export default withAuth(Home);
+
+export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+  const authProps = await getServerSideAuthProps(ctx);
+
+  return { props: { ...authProps.props } };
 }

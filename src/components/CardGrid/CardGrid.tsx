@@ -14,7 +14,7 @@ const CardGrid = ({}: OwnProps) => {
   const [isLoading, setLoading] = useState(true);
   const router = useRouter();
   const handleClick = (cardId: string) => {
-    void router.push(`/card/${cardId}`);
+    void router.push(`/card/${cardId}?hasData=true`);
   };
 
   // Fake Loading State

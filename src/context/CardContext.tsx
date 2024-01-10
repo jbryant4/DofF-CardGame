@@ -72,6 +72,8 @@ function filterCardsById(
 }
 
 function makeDecks(decks: Deck[], cards: CardDocument[]): WholeDeck[] {
+  if (decks.length > 0) return [];
+
   return decks.map(deck => {
     const filteredCards = filterCardsById(deck.cards, cards);
 
@@ -138,9 +140,11 @@ export function CardProvider({ children }: Props) {
 
   useEffect(() => {
     // TODO might want to put these separate and go off the collector specific changes
+    console.log(collector);
     if (!collector) return;
-    const filteredCards = filterCardsById(collector.cards, cards);
-    setCollection(filteredCards);
+    // const filteredCards = filterCardsById(collector.cards, cards);
+    // setCollection(filteredCards);
+
     const madeDecks = makeDecks(collector.decks, cards);
     setDecks(madeDecks);
   }, [cards, collector]);

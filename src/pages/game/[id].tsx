@@ -1,11 +1,15 @@
+import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import DuelOfFates from '@/DuelOfFates';
+import withAuth, {
+  getServerSideProps as getServerSideAuthProps
+} from '@/withAuth';
 import { useGameContext } from '~/context/GameContext';
 import { useSocket } from '~/context/SocketContext';
 import { PreGameMessages } from '../../../server/preGameHandlers/preGameHandlers';
 
-export default function GamePage() {
+const GamePage = () => {
   const router = useRouter();
   const socket = useSocket();
   const { localPlayer, playerOne, playerTwo, roomId, setGameState } =
@@ -33,4 +37,12 @@ export default function GamePage() {
   }, [roomId, playerIdToUse, socket]);
 
   return <DuelOfFates />;
+};
+
+export default withAuth(GamePage);
+
+export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+  const authProps = await getServerSideAuthProps(ctx);
+
+  return { props: { ...authProps.props } };
 }

@@ -1,6 +1,10 @@
+import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import FinalCard from '@/FinalCard';
+import withAuth, {
+  getServerSideProps as getServerSideAuthProps
+} from '@/withAuth';
 import { CardContext } from '~/context/CardContext';
 
 const CardEditPage = () => {
@@ -21,4 +25,10 @@ const CardEditPage = () => {
   );
 };
 
-export default CardEditPage;
+export default withAuth(CardEditPage);
+
+export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+  const authProps = await getServerSideAuthProps(ctx);
+
+  return { props: { ...authProps.props } };
+}

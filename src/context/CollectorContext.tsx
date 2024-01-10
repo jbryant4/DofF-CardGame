@@ -1,30 +1,33 @@
+import { setCookie } from 'nookies';
 import React, {
   createContext,
   Dispatch,
   SetStateAction,
+  useContext,
+  useEffect,
   useMemo,
   useState
 } from 'react';
-import { CollectorDocument } from '~/models/Collector';
+import { CollectorDocument, Deck } from '~/models/Collector';
 import {
   findCollectorByUserName,
   newCollector
 } from '~/services/collectorService';
+export type Collector = Pick<
+  CollectorDocument,
+  'isAdmin' | 'cards' | 'decks' | 'userName'
+>;
 
 type CollectorContextType = {
-  collector: CollectorDocument | null;
+  collector: Collector | null;
   isLoggedIn: boolean;
-  needCreation: boolean;
-  createCollector: (payload: Partial<CollectorDocument>) => Promise<void>;
-  fetchCollectorByUserName: (v: string) => Promise<CollectorDocument | null>;
-  setCollector: Dispatch<SetStateAction<CollectorDocument | null>>;
+  fetchCollectorByUserName: (v: string) => Promise<Collector | null>;
+  setCollector: Dispatch<SetStateAction<Collector | null>>;
 };
 
 const defaultCollectorContext: CollectorContextType = {
   collector: null,
   isLoggedIn: false,
-  needCreation: false,
-  createCollector: async _payload => {},
   fetchCollectorByUserName: async (_value: string) => null,
   setCollector: _value => null
 };
@@ -38,22 +41,8 @@ type Props = {
 };
 
 export function CollectorProvider({ children }: Props) {
-  const [collector, setCollector] = useState<CollectorDocument | null>(null);
+  const [collector, setCollector] = useState<Collector | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [needCreation, setNeedCreation] = useState<boolean>(false);
-  // const [isLoadingCollector, setLoadingCollector] = useState<boolean>(false);
-  // const { user, isLoading } = useUser();
-  //TODO swap this state back to true when we want to use the sign in page
-  const [loadingHome] = useState(false);
-  // TODO add logic for grabbing user from auth0 and handling states dependant of if no user/ user is admin/ user is returned but we dont have them in our database (create user with default deck) (also if we create admin user pass 'all' into cards)
-  const createCollector = async (
-    payload: Partial<CollectorDocument>
-  ): Promise<void> => {
-    const data = await newCollector(payload);
-    setCollector(data);
-    setIsLoggedIn(true);
-    setNeedCreation(false);
-  };
 
   // const fetchCollectorByEmail = async (email: string): Promise<void> => {
   //   const collectorData = await findCollectorByEmail(email);
@@ -63,43 +52,34 @@ export function CollectorProvider({ children }: Props) {
     userName: string
   ): Promise<CollectorDocument | null> => findCollectorByUserName(userName);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     if (user) {
-  //       setLoadingHome(true);
-  //       const collector = await findCollectorByEmail(user.email);
-  //       if (collector) {
-  //         setCollector(collector);
-  //         setIsLoggedIn(true);
-  //       } else {
-  //         console.log('pass check');
-  //         setNeedCreation(true);
-  //       }
-  //       setLoadingHome(false);
-  //     }
-  //   })();
-  // }, [user]);
-
-  // useEffect(() => {
-  //   if (!isLoading && !user) setLoadingHome(false);
-  // }, [isLoading, user]);
+  useEffect(() => {
+    if (!collector) return;
+    setIsLoggedIn(true);
+  }, [collector]);
 
   const value = useMemo(
     () => ({
       collector,
       isLoggedIn,
-      needCreation,
-      createCollector,
       fetchCollectorByUserName,
-      setCollector,
-      setIsLoggedIn
+      setCollector
     }),
-    [collector, isLoggedIn, needCreation, setCollector]
+    [collector, isLoggedIn, setCollector]
   );
 
   return (
     <CollectorContext.Provider value={value}>
-      {loadingHome ? <div>Loading...</div> : <>{children}</>}
+      {children}
     </CollectorContext.Provider>
   );
 }
+
+export const useCollector = () => {
+  const context = useContext(CollectorContext);
+
+  if (!context) {
+    throw new Error('useCollector must be used within a CollectorProvider');
+  }
+
+  return context;
+};

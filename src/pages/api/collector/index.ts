@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Collector from '~/models/Collector';
 import connectFateCollection from '~/utils/connectFateCollection';
+import { generateJWTToken } from '~/utils/token';
 
 export const createCollector = async (
   req: NextApiRequest,
@@ -17,23 +18,32 @@ export const createCollector = async (
       .json({ message: `Unable to create collector: ${error}` });
   }
 };
+
 export const findCollector = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
   try {
-    const { email, userName } = req.query;
-    const collector = await Collector.findOne(email ? { email } : { userName });
+    const { userName, codePhrase } = req.query;
+
+    const collector = await Collector.findOne({ userName }, { password: 0 });
+
     if (!collector) {
-      // @ts-ignore
-      res.status(204).send();
+      res.status(204).end();
 
       return;
     }
 
-    return res.status(200).json(collector);
+    if (collector.codePhrase !== codePhrase) {
+      return res.status(401).json({ error: 'Invalid password' });
+    }
+
+    const token = generateJWTToken(collector.userName);
+
+    // Send the user data (excluding password) and the JWT token
+    res.status(200).json({ collector, token });
   } catch (error) {
-    return res.status(500).json({ message: `Internal server error: ${error}` });
+    res.status(500).json({ message: `Internal server error: ${error}` });
   }
 };
 

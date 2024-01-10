@@ -7,7 +7,6 @@ import { CollectorProvider } from '~/context/CollectorContext';
 import GameProviders from '~/context/GameProviders';
 import { GlobalProvider } from '~/context/GlobalContext';
 import { ModalProvider } from '~/context/ModalContext';
-import { SocketProvider } from '~/context/SocketContext';
 import createComponent from '~/utils/styles/createComponent';
 import 'swiper/css';
 import 'swiper/css/effect-flip';
@@ -41,6 +40,7 @@ export default function App({ Component, pageProps }: AppProps) {
                 <GameProviders>
                   <ComponentWrapper>
                     <Component {...pageProps} />
+
                     <Modals />
                   </ComponentWrapper>
                 </GameProviders>

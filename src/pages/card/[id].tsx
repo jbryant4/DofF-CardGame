@@ -1,12 +1,12 @@
+import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import CardDisplay from '@/CardDisplay';
-import FinalCard from '@/FinalCard';
-import BlueBtn from '@/Global/BlueBtn';
 import Lesson from '@/Lesson';
-import ModalEnum from '~/constants/modalEnum';
+import withAuth, {
+  getServerSideProps as getServerSideAuthProps
+} from '@/withAuth';
 import { CardContext } from '~/context/CardContext';
-import { ModalContext } from '~/context/ModalContext';
 
 const CardDetailsPage = () => {
   const router = useRouter();
@@ -24,4 +24,10 @@ const CardDetailsPage = () => {
   );
 };
 
-export default CardDetailsPage;
+export default withAuth(CardDetailsPage);
+
+export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+  const authProps = await getServerSideAuthProps(ctx);
+
+  return { props: { ...authProps.props } };
+}
