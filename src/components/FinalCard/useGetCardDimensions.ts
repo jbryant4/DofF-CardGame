@@ -14,10 +14,14 @@ const useGetCardDimensions = (width: number) => {
   const combatHeight = (((width * 4) / 3) * 3.5) / 10 - borderThickness;
   const overlayHeight =
     cardHeight - 2 * borderThickness - titleHeight - combatHeight + 3;
+  const imageWidth = width - 1.5 * borderThickness;
+  const imageHeight = cardHeight - 1.5 * borderThickness;
 
   return {
     combatHeight,
     borderThickness,
+    imageWidth,
+    imageHeight,
     overlayHeight,
     combatCircleRadius,
     titleWidth,

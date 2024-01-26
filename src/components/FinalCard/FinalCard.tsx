@@ -49,6 +49,8 @@ const FinalCard = ({
     borderThickness,
     combatCircleRadius,
     bottomIconTop,
+    imageWidth,
+    imageHeight,
     titleHeight,
     cardHeight,
     innerWidth,
@@ -89,9 +91,10 @@ const FinalCard = ({
         }}
       >
         <div
-          className={`border-solid ${borderToUse} card-face flex flex-col rounded-sm h-fit`}
+          className={`border-solid ${borderToUse} card-face flex flex-col rounded-sm `}
           style={{
-            borderWidth: borderThickness
+            borderWidth: borderThickness,
+            height: cardHeight
           }}
         >
           {hexIconKeys && (
@@ -125,8 +128,8 @@ const FinalCard = ({
               alt="card image"
               src={blankUrl}
               style={{
-                width: width,
-                height: cardHeight
+                width: imageWidth,
+                height: imageHeight
               }}
               className=""
             />

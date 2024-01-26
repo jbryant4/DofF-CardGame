@@ -5,7 +5,6 @@ import { useEffect } from 'react';
 import LoadingCardCircle from '@/LoadingCardCircle';
 import { authCookie } from '~/constants/cookies';
 import { useCollector } from '~/context/CollectorContext';
-import useEffectOnce from '~/utils/useEffectOnce';
 
 /**
 
@@ -76,15 +75,22 @@ export default function withAuth(Page) {
   return function AuthenticatedPage(props) {
     const { isLoggedIn, collector, setCollector } = useCollector();
     const router = useRouter();
-
     //remove query from url
-    useEffectOnce(() => {
+    useEffect(() => {
       const { hasData, shouldFetch, ...rest } = router.query;
       if (hasData === 'true') {
         // Check if the code is running on the client side
         if (typeof window !== 'undefined') {
           // Use replaceState to update the URL without triggering a navigation event
-          window.history.replaceState({}, '', `${window.location.pathname}`);
+          // window.history.replaceState({}, '', `${window.location.pathname}`);
+          void router.replace(
+            {
+              pathname: router.pathname,
+              query: { ...rest }
+            },
+            {},
+            { shallow: true }
+          );
         }
       }
     }, [router]);

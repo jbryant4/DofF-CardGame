@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss';
+import unimportant from 'tailwindcss-unimportant';
 import colors from 'tailwindcss/colors';
 const customSpacing = {
   0: '0',
@@ -62,7 +63,7 @@ const config: Config = {
       }
     }
   },
-  plugins: [],
+  plugins: [unimportant],
   safelist: [
     { pattern: /(bg|stroke|border)-(desert|earth|ocean)/ },
     { pattern: /(bg|stroke|border)-(desert|earth|ocean)-light/ }

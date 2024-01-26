@@ -6,7 +6,7 @@ import withAuth, {
 import { CollectorContext } from '~/context/CollectorContext';
 
 const Collection = () => {
-  const { collector = 'no' } = useContext(CollectorContext);
+  const { collector } = useContext(CollectorContext);
   console.log(collector);
 
   return <div>Welcome Collector</div>;

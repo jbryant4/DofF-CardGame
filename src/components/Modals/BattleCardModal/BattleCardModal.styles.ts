@@ -11,8 +11,7 @@ export const ActionBtn = createComponent<
   ElementWithProps & { disabled: boolean }
 >('button', props => ({
   className: cx(
-    'bg-blue-500 capitalize font-bold px-4 py-2 rounded text-center text-white',
-    { 'opacity-50 cursor-not-allowed': props.disabled },
-    { 'hover:bg-blue-700 cursor-pointer': !props.disabled }
+    '-:bg-blue-500 -:cursor-pointer -:hover:bg-blue-700 capitalize font-bold px-4 py-2 rounded text-center text-white',
+    { 'opacity-50 cursor-not-allowed': props.disabled }
   )
 }));

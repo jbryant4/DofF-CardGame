@@ -140,7 +140,6 @@ export function CardProvider({ children }: Props) {
 
   useEffect(() => {
     // TODO might want to put these separate and go off the collector specific changes
-    console.log(collector);
     if (!collector) return;
     // const filteredCards = filterCardsById(collector.cards, cards);
     // setCollection(filteredCards);
