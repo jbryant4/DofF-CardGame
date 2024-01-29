@@ -11,7 +11,7 @@ export type Duelist = {
 export const defaultDuelist = {
   id: '',
   userName: '',
-  deck: { title: '', cards: [''] },
+  deck: { title: '', cards: [''], duelReady: false },
   hitPoints: 10
 };
 

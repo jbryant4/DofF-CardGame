@@ -1,5 +1,3 @@
-import Military from '@/DuelOfFates/Battle/Military';
-
 export const Africa = {
   title: 'Africa Starter Deck',
   cards: [
@@ -36,7 +34,8 @@ export const Africa = {
     '644627da04a07976485ea56e',
     '644627da04a07976485ea57b',
     '644627da04a07976485ea57c'
-  ]
+  ],
+  duelReady: true
 };
 
 export const Americas = {
@@ -82,5 +81,6 @@ export const Americas = {
     '644627da04a07976485ea568',
     '644627da04a07976485ea57d',
     '644627da04a07976485ea57e'
-  ]
+  ],
+  duelReady: true
 };

@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import DeckValidations from '@/Forge/DeckValidations';
+import useDeckServices from '@/Forge/useDeckServices';
 import { ActionBtn } from '@/Modals/BattleCardModal/BattleCardModal.styles';
 import { ForgeDeck, useForgeContext } from '~/context/ForgeContext';
 import OceanFoundationIcon from '~/icons/OceanFoundationIcon';
@@ -14,36 +17,48 @@ const DeckCard = ({ deck }: OwnProps) => {
     title,
     cards: { army, champion, resource, foundation }
   } = deck;
-  const { setDeckInForge, setIsViewMode, isViewMode, deckInForge } =
+  const { isNewDeck, setDeckInForge, setIsViewMode, isViewMode, deckInForge } =
     useForgeContext();
+  const [duelReadyDeck, setDuelReadyDeck] = useState(false);
+  const [youSure, setYouSure] = useState(false);
+  const deckHandler = useDeckServices(duelReadyDeck);
+
+  async function deleteCard() {
+    if (!youSure) {
+      setYouSure(true);
+
+      return;
+    }
+    await deckHandler('delete');
+    setYouSure(false);
+  }
 
   return (
     <div className="border flex flex-col gap-16 p-8 rounded w-full">
-      <div className="flex justify-between">
-        <h3 className="font-bold text-20">{title}</h3>
-        {isViewMode && (
-          <>
-            <ActionBtn
-              disabled={false}
-              onClick={() => {
-                setDeckInForge({ ...deck });
-                setIsViewMode(true);
-              }}
-            >
-              view
-            </ActionBtn>
-            <ActionBtn
-              disabled={false}
-              onClick={() => {
-                setDeckInForge({ ...deck });
-                setIsViewMode(false);
-              }}
-            >
-              edit
-            </ActionBtn>
-          </>
-        )}
-      </div>
+      <h3 className="font-bold text-20">{title}</h3>
+      {isViewMode && (
+        <div className="flex gap-12 justify-end">
+          <ActionBtn
+            disabled={false}
+            onClick={() => {
+              setDeckInForge({ ...deck });
+              setIsViewMode(true);
+            }}
+          >
+            view
+          </ActionBtn>
+          <ActionBtn
+            disabled={false}
+            onClick={() => {
+              setDeckInForge({ ...deck });
+              setIsViewMode(false);
+            }}
+          >
+            edit
+          </ActionBtn>
+        </div>
+      )}
+
       <div className="flex justify-between w-full">
         <div>
           <OneChampionIcon size={50} />
@@ -65,11 +80,24 @@ const DeckCard = ({ deck }: OwnProps) => {
 
       {!isViewMode && title === deckInForge.title && (
         <>
+          <DeckValidations
+            duelReadyDeck={duelReadyDeck}
+            setDuelReadyDeck={setDuelReadyDeck}
+          />
+
+          <ActionBtn
+            className="bg-red-500 hover:bg-red-700"
+            disabled={false}
+            onClick={deleteCard}
+          >
+            {youSure ? 'You Sure' : 'Delete'}
+          </ActionBtn>
           <ActionBtn
             disabled={false}
             className={'bg-green-500 hover:bg-green-700'}
+            onClick={async () => deckHandler(isNewDeck ? 'create' : 'update')}
           >
-            Save Deck
+            {isNewDeck ? 'Save Deck' : 'Update Deck'}
           </ActionBtn>
         </>
       )}

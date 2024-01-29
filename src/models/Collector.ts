@@ -4,6 +4,7 @@ import mongoose, { Document, Model, Schema } from 'mongoose';
 export interface Deck {
   title: string;
   cards: string[];
+  duelReady: boolean;
 }
 export interface CollectorDocument extends Document {
   userName: string;
@@ -17,11 +18,15 @@ export interface CollectorDocument extends Document {
 const DeckSchema = new Schema<Deck>({
   title: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   cards: {
     type: [String],
     default: []
+  },
+  duelReady: {
+    type: Boolean
   }
 });
 

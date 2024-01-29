@@ -15,10 +15,15 @@ import hasSpecialCharacters from '~/utils/getHasSpecialCharacters';
 
 export default function DeckList() {
   const [deckTitle, setDeckTitle] = useState('');
-  const { deckInForge, isViewMode, setDeckInForge, setIsViewMode } =
-    useForgeContext();
+  const {
+    deckInForge,
+    isViewMode,
+    setDeckInForge,
+    setIsNewDeck,
+    setIsViewMode
+  } = useForgeContext();
   const { collector, setCollector } = useCollector();
-  const decksToUse = collector ? [Africa, ...collector.decks] : ([] as Deck[]);
+  const decksToUse = collector ? [...collector.decks] : ([] as Deck[]);
 
   const handleCreateDeck = () => {
     const titleAlreadyExists = decksToUse.some(
@@ -35,12 +40,17 @@ export default function DeckList() {
       prevState
         ? {
             ...prevState,
-            decks: [...prevState.decks, { title: deckTitle, cards: [] }]
+            decks: [
+              ...prevState.decks,
+              { title: deckTitle, cards: [], duelReady: false }
+            ]
           }
         : null
     );
     setDeckInForge({ ...defaultForgeDeck, title: deckTitle });
+    setIsNewDeck(true);
     setIsViewMode(false);
+    setDeckTitle('');
   };
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = e => {
