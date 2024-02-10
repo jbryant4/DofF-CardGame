@@ -13,19 +13,24 @@ type OwnProps = {
 
 export const SocketProvider = ({ children }: OwnProps) => {
   const [socket, setSocket] = useState<Socket | null>(null);
-  console.log(
-    'Dont Forget To Reconnect Socket and flip cards in dev dueling cards face up'
-  );
-  //TODO update this once heroku is deployed
-  // useEffect(() => {
-  //   const newSocket = io('http://localhost:3001');
-  //   setSocket(newSocket);
-  //
-  //   // Clean up the socket on component unmount
-  //   return () => {
-  //     newSocket.disconnect();
-  //   };
-  // }, []);
+
+  useEffect(() => {
+    const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL;
+
+    if (!socketUrl) {
+      alert('No Socket URL please check env');
+
+      return;
+    }
+
+    const newSocket = io(socketUrl);
+    setSocket(newSocket);
+
+    // Clean up the socket on component unmount
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
 
   return (
     <SocketContext.Provider value={{ socket }}>

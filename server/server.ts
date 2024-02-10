@@ -14,7 +14,9 @@ const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
     origin:
-      process.env.NODE_ENV === 'test' ? 'test.com' : 'http://localhost:3000', //TODO deploy vercel test app get url
+      process.env.NODE_ENV === 'test'
+        ? 'https://doff-test-client.vercel.app'
+        : 'http://localhost:3000',
     methods: ['GET', 'POST']
   }
 });
