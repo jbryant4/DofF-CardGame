@@ -73,22 +73,23 @@ const ControlCenter = ({ overlayOpen, setShowGraveYard }: OwnProps) => {
                 none
               </ActionBtn>
               <ActionBtn
-                disabled={overlayOpen === Overlay.GraveYard}
-                onClick={() => setShowGraveYard(Overlay.GraveYard)}
+                disabled={overlayOpen === Overlay.GraveYardOverlay}
+                onClick={() => setShowGraveYard(Overlay.GraveYardOverlay)}
               >
                 graveyard
               </ActionBtn>
               <ActionBtn
                 disabled={
-                  overlayOpen === Overlay.EnemyHand || enemyHand.length === 0
+                  overlayOpen === Overlay.EnemyHandOverlay ||
+                  enemyHand.length === 0
                 }
-                onClick={() => setShowGraveYard(Overlay.EnemyHand)}
+                onClick={() => setShowGraveYard(Overlay.EnemyHandOverlay)}
               >
                 enemy hand
               </ActionBtn>
               <ActionBtn
-                disabled={overlayOpen === Overlay.ScoreBoard}
-                onClick={() => setShowGraveYard(Overlay.ScoreBoard)}
+                disabled={overlayOpen === Overlay.ScoreBoardOverlay}
+                onClick={() => setShowGraveYard(Overlay.ScoreBoardOverlay)}
               >
                 score board
               </ActionBtn>
