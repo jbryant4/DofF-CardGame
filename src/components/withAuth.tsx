@@ -55,7 +55,22 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
   // If there's a JWT but 'hasData' is 'false', fetch the user data
   if (cookies[authCookie] && !hasData) {
-    const response = await fetch(`http://localhost:3000/api/collector/token`, {
+    let baseUrl = '';
+    if (ctx.req) {
+      // Server side
+      baseUrl = `${ctx.req.headers['x-forwarded-proto'] || 'http'}://${
+        ctx.req.headers.host
+      }`;
+    } else {
+      // Client side (this shouldn't happen in getServerSideProps, but just in case)
+      baseUrl =
+        window.location.protocol +
+        '//' +
+        window.location.hostname +
+        (window.location.port ? ':' + window.location.port : '');
+    }
+
+    const response = await fetch(`${baseUrl}/api/collector/token`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
