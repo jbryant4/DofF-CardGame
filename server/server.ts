@@ -13,7 +13,8 @@ const httpServer = createServer(app);
 // Adjust the cors settings for socket.io
 const io = new Server(httpServer, {
   cors: {
-    origin: 'http://localhost:3000', // or wherever your frontend is hosted
+    origin:
+      process.env.NODE_ENV === 'test' ? 'test.com' : 'http://localhost:3000', //TODO deploy vercel test app get url
     methods: ['GET', 'POST']
   }
 });
@@ -43,7 +44,7 @@ io.on('connection', socket => {
   });
 });
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 httpServer.listen(PORT, () => {
   console.log(`listening on *:${PORT}`);
 });

@@ -73,7 +73,7 @@ export function ForgeProvider({ children }: Props) {
       setForgeDecks,
       setUnlockedCards
     }),
-    [deckInForge, forgeDecks, isViewMode, unlockedCards]
+    [deckInForge, forgeDecks, isNewDeck, isViewMode, unlockedCards]
   );
 
   return (

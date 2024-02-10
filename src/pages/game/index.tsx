@@ -1,28 +1,40 @@
 import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
+import { ActionBtn } from '@/Modals/BattleCardModal/BattleCardModal.styles';
 import withAuth, {
   getServerSideProps as getServerSideAuthProps
 } from '@/withAuth';
 import { Duelist } from '~/constants/common/gameTypes';
 import { Africa, Americas } from '~/constants/starterDecks';
+import { useCollector } from '~/context/CollectorContext';
 import { GameContext, useGameContext } from '~/context/GameContext';
 import { useSocket } from '~/context/SocketContext';
+import { Deck } from '~/models/Collector';
 import { PreGameMessages } from '../../../server/preGameHandlers/preGameHandlers';
 
 const Home = () => {
-  const [name, setName] = useState('');
-  const [deck, setDeck] = useState('');
+  const [deck, setDeck] = useState<Deck | undefined>(undefined);
   const [gameId, setGameId] = useState('');
   const socket = useSocket();
   const router = useRouter();
   const { setLocalPLayer, updatePlayerTwo, updatePlayerOne } = useGameContext();
   const { setRoomId } = useContext(GameContext);
-  const deckToUse = deck === 'Africa' ? Africa : Americas;
+  const { collector } = useCollector();
+
+  if (!collector) {
+    console.error('No collector');
+
+    return null;
+  }
+
+  const { userName, decks } = collector;
+  const decksToShow: Deck[] = [Africa, Americas, ...decks];
+
   const duelist: Duelist = {
-    id: name,
-    userName: name,
-    deck: deckToUse,
+    id: collector.userName,
+    userName: collector.userName,
+    deck: deck ? deck : { title: '', cards: [], duelReady: false },
     hitPoints: 10
   };
 
@@ -49,7 +61,7 @@ const Home = () => {
       setRoomId(data);
       router
         .push(`/game/${data}`)
-        .catch(err => console.log('Navigation Error /game join function'));
+        .catch(err => console.log('Navigation Error /game join function', err));
     });
   };
 
@@ -90,22 +102,24 @@ const Home = () => {
           e.preventDefault();
           functionToUse();
         }}
+        className="flex flex-col gap-24"
       >
-        <div>
-          <label htmlFor="name-select">Select Name:</label>
-          <select id="name-select" onChange={e => setName(e.target.value)}>
-            <option value="">Select Name</option>
-            <option value="Architect">Architect</option>
-            <option value="Historian">Historian</option>
-          </select>
-        </div>
+        <div>Welcome Duelist: {userName}</div>
 
         <div>
           <label htmlFor="deck-select">Select Deck:</label>
-          <select id="deck-select" onChange={e => setDeck(e.target.value)}>
-            <option value="">Select Deck</option>
-            <option value="Africa">Africa</option>
-            <option value="Americas">Americas</option>
+          <select
+            id="deck-select"
+            onChange={e => setDeck(JSON.parse(e.target.value))}
+          >
+            <option>Select Deck</option>
+            {decksToShow.map(d =>
+              d.duelReady ? (
+                <option key={d.title} value={JSON.stringify(d)}>
+                  {d.title}
+                </option>
+              ) : null
+            )}
           </select>
         </div>
 
@@ -121,9 +135,9 @@ const Home = () => {
         </div>
 
         <div>
-          <button type="submit" disabled={!deck || !name}>
+          <ActionBtn type="submit" disabled={!deck}>
             {gameId.trim().length > 0 ? 'Join Game' : 'Create Game'}
-          </button>
+          </ActionBtn>
         </div>
       </form>
     </div>

@@ -1,9 +1,7 @@
-import { ChangeEventHandler, Fragment, SetStateAction, useState } from 'react';
-import decks from '@/DuelOfFates/Battle/Decks';
+import { ChangeEventHandler, Fragment, useState } from 'react';
 import DeckCard from '@/Forge/DeckCard';
 import { makeForgeDeck } from '@/Forge/utiles';
 import { ActionBtn } from '@/Modals/BattleCardModal/BattleCardModal.styles';
-import { Africa } from '~/constants/starterDecks';
 import { useCollector } from '~/context/CollectorContext';
 import {
   defaultForgeDeck,

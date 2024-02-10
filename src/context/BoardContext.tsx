@@ -124,8 +124,7 @@ export function BoardProvider({ children }: Props) {
     setPlayerOneBoard,
     playerTwoBoard,
     setPlayerTwoBoard,
-    playerTurn: battleTurn,
-    localPlayer
+    playerTurn: battleTurn
   });
 
   const { getIsBoardSlotFull } = useGetIsCardSlotsFull({

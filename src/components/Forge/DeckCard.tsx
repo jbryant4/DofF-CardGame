@@ -2,7 +2,11 @@ import { useState } from 'react';
 import DeckValidations from '@/Forge/DeckValidations';
 import useDeckServices from '@/Forge/useDeckServices';
 import { ActionBtn } from '@/Modals/BattleCardModal/BattleCardModal.styles';
-import { ForgeDeck, useForgeContext } from '~/context/ForgeContext';
+import {
+  defaultForgeDeck,
+  ForgeDeck,
+  useForgeContext
+} from '~/context/ForgeContext';
 import OceanFoundationIcon from '~/icons/OceanFoundationIcon';
 import OneArmyIcon from '~/icons/OneArmyIcon';
 import OneChampionIcon from '~/icons/OneChampionIcon';
@@ -17,12 +21,19 @@ const DeckCard = ({ deck }: OwnProps) => {
     title,
     cards: { army, champion, resource, foundation }
   } = deck;
-  const { isNewDeck, setDeckInForge, setIsViewMode, isViewMode, deckInForge } =
-    useForgeContext();
+  const {
+    isNewDeck,
+    setDeckInForge,
+    setIsNewDeck,
+    setIsViewMode,
+    isViewMode,
+    deckInForge
+  } = useForgeContext();
   const [duelReadyDeck, setDuelReadyDeck] = useState(false);
   const [youSure, setYouSure] = useState(false);
   const deckHandler = useDeckServices(duelReadyDeck);
 
+  const isBeingEdited = !isViewMode && title === deckInForge.title;
   async function deleteCard() {
     if (!youSure) {
       setYouSure(true);
@@ -34,7 +45,7 @@ const DeckCard = ({ deck }: OwnProps) => {
   }
 
   return (
-    <div className="border flex flex-col gap-16 p-8 rounded w-full">
+    <div className="border duration-300 flex flex-col gap-16 p-8 rounded transition-all w-full">
       <h3 className="font-bold text-20">{title}</h3>
       {isViewMode && (
         <div className="flex gap-12 justify-end">
@@ -61,30 +72,49 @@ const DeckCard = ({ deck }: OwnProps) => {
 
       <div className="flex justify-between w-full">
         <div>
-          <OneChampionIcon size={50} />
+          <OneChampionIcon
+            className={isBeingEdited ? '' : 'grayscale'}
+            size={50}
+          />
           {champion.length}
         </div>{' '}
         <div>
-          <OneArmyIcon size={50} />
+          <OneArmyIcon className={isBeingEdited ? '' : 'grayscale'} size={50} />
           {army.length}
         </div>{' '}
         <div>
-          <ResourceIcon size={50} />
+          <ResourceIcon
+            className={isBeingEdited ? '' : 'grayscale'}
+            size={50}
+          />
           {resource.length}
         </div>{' '}
         <div>
-          <OceanFoundationIcon className="grayscale" size={50} />
+          <OceanFoundationIcon
+            className={isBeingEdited ? '' : 'grayscale'}
+            size={50}
+          />
           {foundation.length}
         </div>
       </div>
 
-      {!isViewMode && title === deckInForge.title && (
+      {isBeingEdited && (
         <>
           <DeckValidations
             duelReadyDeck={duelReadyDeck}
             setDuelReadyDeck={setDuelReadyDeck}
           />
-
+          <ActionBtn
+            className="bg-yellow-500 hover:bg-yellow-700"
+            disabled={false}
+            onClick={() => {
+              setDeckInForge({ ...defaultForgeDeck });
+              setIsNewDeck(false);
+              setIsViewMode(true);
+            }}
+          >
+            cancel
+          </ActionBtn>
           <ActionBtn
             className="bg-red-500 hover:bg-red-700"
             disabled={false}

@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 import { Players } from '~/constants/common/gameTypes';
 import DuelingCard from '~/constants/DuelingCard';
 import { BoardContextType, DiscardCardFunction } from '~/context/BoardContext';
-import { useGameContext } from '~/context/GameContext';
 
 type OwnProps = Pick<
   BoardContextType,
@@ -12,7 +11,6 @@ type OwnProps = Pick<
   | 'setPlayerTwoBoard'
 > & {
   playerTurn: Players;
-  localPlayer: Players;
 };
 
 const useDiscardCard = ({
@@ -20,8 +18,7 @@ const useDiscardCard = ({
   playerTwoBoard,
   setPlayerOneBoard,
   setPlayerTwoBoard,
-  playerTurn,
-  localPlayer
+  playerTurn
 }: OwnProps) => {
   const discard: DiscardCardFunction = useCallback(
     (

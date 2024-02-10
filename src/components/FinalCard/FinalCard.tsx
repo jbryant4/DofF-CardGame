@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import DuelingCard from '~/constants/DuelingCard';
 import Hex from '~/icons/Hex';
 import { PreReq } from '~/models/Card';
-import CardBorders from './CardBorders';
 import {
   getHexIconKeys,
   getBorderToUse,

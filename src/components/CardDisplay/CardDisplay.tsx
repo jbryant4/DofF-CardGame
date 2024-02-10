@@ -2,7 +2,6 @@ import { useContext, useState } from 'react';
 import FinalCard from '@/FinalCard';
 import BlueBtn from '@/Global/BlueBtn';
 import Card from '~/constants/CardType';
-import DuelingCard from '~/constants/DuelingCard';
 import ModalEnum from '~/constants/modalEnum';
 import { ModalContext } from '~/context/ModalContext';
 

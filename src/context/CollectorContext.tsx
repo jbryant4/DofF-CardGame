@@ -1,4 +1,3 @@
-import { setCookie } from 'nookies';
 import React, {
   createContext,
   Dispatch,
@@ -8,11 +7,9 @@ import React, {
   useMemo,
   useState
 } from 'react';
-import { CollectorDocument, Deck } from '~/models/Collector';
-import {
-  findCollectorByUserName,
-  newCollector
-} from '~/services/collectorService';
+import { CollectorDocument } from '~/models/Collector';
+import { findCollectorByUserName } from '~/services/collectorService';
+
 export type Collector = Pick<
   CollectorDocument,
   'isAdmin' | 'cards' | 'decks' | 'userName'

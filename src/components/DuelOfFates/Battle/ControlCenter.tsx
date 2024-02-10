@@ -16,7 +16,7 @@ type OwnProps = {
 
 const ControlCenter = ({ overlayOpen, setShowGraveYard }: OwnProps) => {
   //Currently Need this to determine card width and if not here throws errors
-  const { advanceBattleStage, localPlayer, battleTurn, battleStage, roomId } =
+  const { advanceBattleStage, localPlayer, battleTurn, roomId } =
     useContext(GameContext);
 
   const {

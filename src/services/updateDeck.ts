@@ -1,4 +1,4 @@
-import { CollectorDocument, Deck } from '~/models/Collector';
+import { Deck } from '~/models/Collector';
 
 export default async function updateDeck(deck: Deck) {
   try {

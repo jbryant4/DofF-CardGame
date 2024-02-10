@@ -12,8 +12,7 @@ import { Container } from './BattleField.styles';
 type OwnProps = {};
 
 const BattleField = ({}: OwnProps) => {
-  const { handCardHeight, gridRowLayout, canFullBoard } =
-    useDimensionsContext();
+  const { gridRowLayout, canFullBoard } = useDimensionsContext();
 
   const [overlayOpen, setOpenOverlay] = useState(Overlay.None);
 

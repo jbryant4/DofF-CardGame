@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { Dispatch, SetStateAction, useContext, useState } from 'react';
 import DuelingCard from '~/constants/DuelingCard';
 import { BoardContext } from '~/context/BoardContext';
-import { GameContext, useGameContext } from '~/context/GameContext';
+import { useGameContext } from '~/context/GameContext';
 import { useSocket } from '~/context/SocketContext';
 import AttackIcon from '~/icons/AttackIcon';
 import ShieldIcon from '~/icons/ShieldIcon';

@@ -1,4 +1,3 @@
-import styles from '@/DuelOfFates/Battle/BattleField.module.css';
 import ModalEnum from '~/constants/modalEnum';
 import { useBoardContext } from '~/context/BoardContext';
 import { useDimensionsContext } from '~/context/DimensionsContext';

@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Filter } from '@/Forge/DeckEditor';
 import DuelingCard from '~/constants/DuelingCard';
 import { ForgeDeck } from '~/context/ForgeContext';

@@ -77,7 +77,7 @@ export default function withAuth(Page) {
     const router = useRouter();
     //remove query from url
     useEffect(() => {
-      const { hasData, shouldFetch, ...rest } = router.query;
+      const { hasData, ...rest } = router.query;
       if (hasData === 'true') {
         // Check if the code is running on the client side
         if (typeof window !== 'undefined') {

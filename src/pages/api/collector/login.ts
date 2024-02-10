@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import Collector from '~/models/Collector'; // Import your Collector model
-import connectFateCollection from '~/utils/connectFateCollection';
+import Collector from '~/models/Collector';
 import { generateJWTToken } from '~/utils/token';
 
 export default async function handler(

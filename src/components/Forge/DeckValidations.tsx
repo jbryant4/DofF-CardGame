@@ -40,7 +40,7 @@ export function isInRange(amount: number, type: Filter | 'deck') {
 }
 
 export function getMissingPreReqs(cards: ForgeDeck['cards']) {
-  const { champion, resource, army, foundation } = cards;
+  const { champion, army, foundation } = cards;
 
   const uniquePrereqs = [
     ...new Set(
@@ -70,7 +70,6 @@ export default function DeckValidations({
   duelReadyDeck,
   setDuelReadyDeck
 }: OwnProps) {
-  const [value, setValue] = useState();
   const {
     deckInForge: { cards }
   } = useForgeContext();

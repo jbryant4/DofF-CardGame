@@ -1,13 +1,13 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import EnemyHand from '@/DuelOfFates/Battle/Overlays/EnemyHand';
 import GraveYard from '@/DuelOfFates/Battle/Overlays/GraveYard';
 import ScoreBoard from '@/DuelOfFates/Battle/Overlays/ScoreBoard';
 
 export enum Overlay {
-  EnemyHand,
-  GraveYard,
+  EnemyHandOverlay,
+  GraveYardOverlay,
   None,
-  ScoreBoard
+  ScoreBoardOverlay
 }
 
 type OwnProps = {
@@ -19,15 +19,15 @@ export default function Overlays({ overlayToShow, setOverlay }: OwnProps) {
   return (
     <>
       <GraveYard
-        show={overlayToShow === Overlay.GraveYard}
+        show={overlayToShow === Overlay.GraveYardOverlay}
         setShow={setOverlay}
       />
       <ScoreBoard
-        show={overlayToShow === Overlay.ScoreBoard}
+        show={overlayToShow === Overlay.ScoreBoardOverlay}
         setShow={setOverlay}
       />
       <EnemyHand
-        show={overlayToShow === Overlay.EnemyHand}
+        show={overlayToShow === Overlay.EnemyHandOverlay}
         setShow={setOverlay}
       />
     </>

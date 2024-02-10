@@ -14,7 +14,6 @@ import {
   Players
 } from '~/constants/common/gameTypes';
 import { useSocket } from '~/context/SocketContext';
-import { BoardMessages } from '../../server/boardHandlers/boardHandlers';
 import { GameMessages } from '../../server/gameHandlers/gameHandlers';
 import { PreGameMessages } from '../../server/preGameHandlers/preGameHandlers';
 import { GameRoom } from '../../server/room';

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import FinalCard from '@/FinalCard';
 import { Filter } from '@/Forge/DeckEditor';
 import { ActionBtn } from '@/Modals/BattleCardModal/BattleCardModal.styles';
@@ -13,8 +12,12 @@ type OwnProps = {
   filter: Filter;
 };
 
-const ForgeCard = ({ card, inDeck = false, isViewMode, filter }: OwnProps) => {
-  const [value, setValue] = useState();
+export default function ForgeCard({
+  card,
+  inDeck = false,
+  isViewMode,
+  filter
+}: OwnProps) {
   const { IconOne, IconTwo, IconThree, IconFour, IconFive } = getIconsToUse(
     card?.preReqs ?? [],
     175
@@ -64,6 +67,4 @@ const ForgeCard = ({ card, inDeck = false, isViewMode, filter }: OwnProps) => {
       )}
     </div>
   );
-};
-
-export default ForgeCard;
+}

@@ -9,7 +9,7 @@ import useSubsequantEffect from '~/utils/useSubsequantEffect';
 type OwnProps = {};
 
 const CardGrid = ({}: OwnProps) => {
-  const { cards, localCards } = useContext(CardContext);
+  const { localCards } = useContext(CardContext);
   const [showPhysicalCard, setPhysical] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const router = useRouter();

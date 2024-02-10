@@ -16,7 +16,7 @@ export const SocketProvider = ({ children }: OwnProps) => {
   console.log(
     'Dont Forget To Reconnect Socket and flip cards in dev dueling cards face up'
   );
-
+  //TODO update this once heroku is deployed
   // useEffect(() => {
   //   const newSocket = io('http://localhost:3001');
   //   setSocket(newSocket);

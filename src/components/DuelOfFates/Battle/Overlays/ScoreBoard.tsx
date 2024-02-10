@@ -5,7 +5,7 @@ import { GameContext } from '~/context/GameContext';
 
 type OwnProps = { show: boolean; setShow: Dispatch<SetStateAction<Overlay>> };
 
-const ScoreBoard = ({ show, setShow }: OwnProps) => {
+const ScoreBoard = ({ show }: OwnProps) => {
   const {
     playerOne: { userName: pOneUserName, hitPoints: pOneHitPoints },
     playerTwo: { userName: pTwoUserName, hitPoints: pTwoHitPoints },

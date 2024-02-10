@@ -1,9 +1,7 @@
 import cx from 'classnames';
 import { Fragment, useState } from 'react';
-import FinalCard from '@/FinalCard';
 import ForgeCard from '@/Forge/ForgeCard';
 import useGetCardsToShow from '@/Forge/useGetCardsToShow';
-import { ActionBtn } from '@/Modals/BattleCardModal/BattleCardModal.styles';
 import { useForgeContext } from '~/context/ForgeContext';
 import OceanFoundationIcon from '~/icons/OceanFoundationIcon';
 import OneArmyIcon from '~/icons/OneArmyIcon';

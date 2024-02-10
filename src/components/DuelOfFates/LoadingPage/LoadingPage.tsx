@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import { playerOne, playerTwo } from '@/DuelOfFates/testSubjects';
 import { GameContext } from '~/context/GameContext';
 
 function LoadingPage() {

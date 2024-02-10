@@ -1,7 +1,6 @@
 import classNames from 'classnames';
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import { CardContext, useCardContext } from '~/context/CardContext';
-import { CardType } from '~/models/Card';
 import {
   Container,
   FilterTab,

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import DesertFoundationIcon from '~/icons/DesertFoundationIcon';
 import DivineIcon from '~/icons/DivineIcon';
 import EarthFoundationIcon from '~/icons/EarthFoundationIcon';
