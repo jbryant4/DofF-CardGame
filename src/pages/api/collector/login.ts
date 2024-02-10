@@ -1,11 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Collector from '~/models/Collector';
+import connectFateCollection from '~/utils/connectFateCollection';
 import { generateJWTToken } from '~/utils/token';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  await connectFateCollection();
   if (req.method !== 'POST') {
     return res.status(405).end(); // Method Not Allowed
   }
