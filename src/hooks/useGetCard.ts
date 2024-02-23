@@ -1,4 +1,4 @@
-import { getDoc } from '@firebase/firestore';
+import { getDoc } from 'firebase/firestore';
 import { doc } from 'firebase/firestore';
 import { useEffect } from 'react';
 import { useCardContext } from '~/context/CardContext';
@@ -6,7 +6,7 @@ import { Card } from '~/contracts/card';
 import useLoadableState from '~/utils/useLoadableState';
 import { Collections, db } from '../../firebase';
 
-export default function useGetCard(id) {
+export default function useGetCard(id: string) {
   const { globalCards } = useCardContext();
   const cardFromContext = Object.values(globalCards)
     .flat()

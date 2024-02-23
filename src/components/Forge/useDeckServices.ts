@@ -105,6 +105,13 @@ export default function useDeckServices(duelReady: boolean) {
         throw new Error(`Error in ${method} hook ${error}`);
       }
     },
-    [deckInForge, duelReady, setDeckInForge, setIsNewDeck, setIsViewMode]
+    [
+      deckInForge,
+      duelReady,
+      setCollector,
+      setDeckInForge,
+      setIsNewDeck,
+      setIsViewMode
+    ]
   );
 }
