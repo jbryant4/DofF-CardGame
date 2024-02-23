@@ -1,15 +1,16 @@
 import React from 'react';
+
 import {
-  cardTypeArray,
-  foundationArray,
-  preReqArray,
-  traitArray
-} from '~/constants/cardEnumArrays';
-import { CardDocument } from '~/models/Card';
+  Card,
+  CardTypes,
+  Foundations,
+  PreReqs,
+  Traits
+} from '~/contracts/card';
 
 type OwnProps = {
-  cardValues: Partial<CardDocument>;
-  setCardValues: React.Dispatch<React.SetStateAction<Partial<CardDocument>>>;
+  cardValues: Card;
+  setCardValues: React.Dispatch<React.SetStateAction<Card>>;
 };
 
 const CardForm = ({ cardValues, setCardValues }: OwnProps) => {
@@ -71,7 +72,7 @@ const CardForm = ({ cardValues, setCardValues }: OwnProps) => {
             onChange={e => handleChange(e)}
           >
             <option value={undefined}>Select a type</option>
-            {cardTypeArray.map(option => (
+            {[...CardTypes].map(option => (
               <option key={option} value={option}>
                 {option}
               </option>
@@ -111,7 +112,7 @@ const CardForm = ({ cardValues, setCardValues }: OwnProps) => {
                 <option key="no-class" value={undefined}>
                   No Primary
                 </option>
-                {traitArray.map(option => (
+                {[...Traits].map(option => (
                   <option key={option} value={option}>
                     {option}
                   </option>
@@ -130,7 +131,7 @@ const CardForm = ({ cardValues, setCardValues }: OwnProps) => {
                 <option key="no-class" value={undefined}>
                   No Secondary
                 </option>
-                {traitArray.map(option => (
+                {[...Traits].map(option => (
                   <option key={option} value={option}>
                     {option}
                   </option>
@@ -148,7 +149,7 @@ const CardForm = ({ cardValues, setCardValues }: OwnProps) => {
             value={cardValues.class || []}
             onChange={e => handleSelectChange(e)}
           >
-            {traitArray.map(option => (
+            {[...Traits].map(option => (
               <option key={option} value={option}>
                 {option}
               </option>
@@ -165,7 +166,7 @@ const CardForm = ({ cardValues, setCardValues }: OwnProps) => {
             value={cardValues.foundation || []}
             onChange={e => handleSelectChange(e)}
           >
-            {foundationArray.map(option => (
+            {[...Foundations].map(option => (
               <option key={option} value={option}>
                 {option}
               </option>
@@ -181,7 +182,7 @@ const CardForm = ({ cardValues, setCardValues }: OwnProps) => {
             value={cardValues.preReqs}
             multiple
           >
-            {preReqArray.map(option => (
+            {[...PreReqs].map(option => (
               <option key={option} value={option}>
                 {option}
               </option>

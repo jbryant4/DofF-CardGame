@@ -1,10 +1,16 @@
 import classNames from 'classnames';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useAdminCardContext } from '@/CardEditor/AdminCardContext';
 import EditCardForm from '@/CardEditor/EditCardForm';
+import { useCollectorContext } from '~/context/CollectorContext';
 import NewCardForm from './NewCardForm';
 
 const CardEditor = () => {
-  const [task, setTask] = useState<'edit' | 'create' | null>(null);
+  const {
+    task,
+    setTask,
+    apiMessage: { data: apiMessage }
+  } = useAdminCardContext();
 
   return (
     <div className="flex flex-col gap-4 h-full items-center text-center w-full">
@@ -38,8 +44,14 @@ const CardEditor = () => {
           Edit a Card
         </div>
       </div>
-      {task === 'create' ? <NewCardForm newCardForm /> : null}
-      {task === 'edit' ? <EditCardForm /> : null}
+
+      {task && <EditCardForm />}
+
+      {!task && (
+        <div className={apiMessage ? 'font-bold text-green-600' : 'hidden'}>
+          {apiMessage}
+        </div>
+      )}
     </div>
   );
 };

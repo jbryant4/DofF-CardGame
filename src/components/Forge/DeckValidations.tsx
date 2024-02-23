@@ -1,8 +1,9 @@
 import cx from 'classnames';
-import React, { Dispatch, useEffect, useState } from 'react';
-import { Filter } from '@/Forge/DeckEditor';
-import { ForgeDeck, useForgeContext } from '~/context/ForgeContext';
-import { PreReq } from '~/models/Card';
+import React, { Dispatch, useEffect } from 'react';
+import { useCardContext } from '~/context/CardContext';
+import { useForgeContext } from '~/context/ForgeContext';
+import { Card, CardType, PreReq } from '~/contracts/card';
+import { Deck } from '~/contracts/collector';
 import createComponent, {
   ElementWithProps
 } from '~/utils/styles/createComponent';
@@ -15,7 +16,7 @@ type MinMax = {
   min: number;
   max: number;
 };
-const cardMinMax: Record<Filter, MinMax> = {
+const cardMinMax: Record<CardType, MinMax> = {
   champion: { min: 4, max: 14 },
   army: { min: 6, max: 16 },
   resource: { min: 3, max: 12 },
@@ -33,24 +34,34 @@ const UpdatedCount = createComponent<ElementWithProps & { isValid: boolean }>(
   })
 );
 
-export function isInRange(amount: number, type: Filter | 'deck') {
+export function isInRange(amount: number, type: CardType | 'deck') {
   return type === 'deck'
     ? amount <= deckMinMax.max && amount >= deckMinMax.min
     : amount <= cardMinMax[type].max && amount >= cardMinMax[type].min;
 }
 
-export function getMissingPreReqs(cards: ForgeDeck['cards']) {
+function useGetMissingPreReqs(cards: Deck['cards']) {
   const { champion, army, foundation } = cards;
+  const { globalCards } = useCardContext();
+
+  const champCardsInDeck = champion
+    .map(id => globalCards.champion.find(c => c.id === id))
+    .filter(Boolean) as Card[];
+  const foundationCardsInDeck = foundation
+    .map(id => globalCards.foundation.find(c => c.id === id))
+    .filter(Boolean) as Card[];
 
   const uniquePrereqs = [
     ...new Set(
-      champion
+      champCardsInDeck
         .flatMap(c => c.preReqs ?? []) // Use nullish coalescing to handle undefined
         .filter((prereq): prereq is PreReq => prereq !== undefined)
     )
   ];
 
-  const foundationsInDeck = new Set([...foundation.flatMap(c => c.foundation)]);
+  const foundationsInDeck = new Set([
+    ...foundationCardsInDeck.flatMap(c => c.foundation)
+  ]);
   const armyInDeck = army
     .map((c, index) => (index <= 2 ? `${index + 1}a` : ''))
     .filter(Boolean);
@@ -76,7 +87,7 @@ export default function DeckValidations({
   const { champion, resource, army, foundation } = cards;
   const totalDeckSize = Object.values(cards).flat().length;
 
-  const missingPreReqs = getMissingPreReqs(cards);
+  const missingPreReqs = useGetMissingPreReqs(cards);
 
   useEffect(() => {
     setDuelReadyDeck(

@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { useContext } from 'react';
 import { CardContext, useCardContext } from '~/context/CardContext';
+import { CardType, Foundation, Trait } from '~/contracts/card';
 import {
   Container,
   FilterTab,
@@ -10,31 +11,12 @@ import {
 import { Filters } from './Filters';
 
 const FilterBar = () => {
-  const { cards, setLocalCards } = useContext(CardContext);
+  const { globalCards } = useContext(CardContext);
   const { filter, setFilter, subFilter, setSubFilter } = useCardContext();
 
-  const handleFilterClick = value => {
-    setFilter(value);
-    setSubFilter('');
-    if (!Filters[value]) {
-      setLocalCards(cards.filter(card => card.type === value));
-    }
-  };
-
-  const handleSubFilterClick = value => {
-    setSubFilter(value);
-    if (filter === 'foundation') {
-      setLocalCards(cards.filter(card => card.foundation?.includes(value)));
-    }
-
-    if (filter === 'champion') {
-      setLocalCards(cards.filter(card => card.class?.includes(value)));
-    }
-  };
-
   return (
-    <Container className="bg-black flex flex-row flex-shrink-0 flex-wrap gap-8 justify-center relative w-full md:flex-col md:gap-0 md:h-full md:justify-start md:p-20 md:w-[250px]">
-      {Object.keys(Filters).map(f => (
+    <Container className="bg-black flex flex-row flex-shrink-0 flex-wrap gap-8 justify-center relative w-full md:flex-col md:gap-0 md:h-auto md:justify-start md:p-20 md:w-[250px]">
+      {(Object.keys(Filters) as CardType[]).map(f => (
         <div key={f} className="flex flex-col-reverse md:flex-col">
           <FilterTab
             className={classNames(
@@ -45,11 +27,11 @@ const FilterBar = () => {
                 'bg-white border-b border-black': filter !== f
               }
             )}
-            onClick={() => handleFilterClick(f)}
+            onClick={() => setFilter(f)}
           >
             {f}
           </FilterTab>
-          {Filters[f] ? (
+          {Filters[f].length > 0 && globalCards[f].length > 0 ? (
             <SubFilterWrapper
               className={classNames(
                 'absolute bg-blue-800 bottom-[33px] duration-500 ease-in-out flex flex-row flex-wrap gap-4 inset-x-0 max-h-0 overflow-hidden transition-all md:flex-col md:flex-nowrap md:static',
@@ -59,7 +41,7 @@ const FilterBar = () => {
                 }
               )}
             >
-              {Filters[f].map(subF => (
+              {Filters[f].map((subF: Trait | Foundation) => (
                 <SubFilter
                   key={subF}
                   className={classNames(
@@ -69,7 +51,7 @@ const FilterBar = () => {
                       'bg-blue-800 text-white': subFilter !== subF
                     }
                   )}
-                  onClick={() => handleSubFilterClick(subF)}
+                  onClick={() => setSubFilter(subF)}
                 >
                   {subF}
                 </SubFilter>

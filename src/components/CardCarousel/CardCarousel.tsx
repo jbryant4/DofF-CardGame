@@ -12,7 +12,7 @@ const CardCarousel = () => {
   const [currentIndex, setIndex] = useState(0);
   const [isLoading, setLoading] = useState(false);
 
-  const { localCards } = useContext(CardContext);
+  const { displayCards } = useContext(CardContext);
   const { isMobile } = useContext(GlobalContext);
 
   const router = useRouter();
@@ -33,7 +33,7 @@ const CardCarousel = () => {
 
   // Fake Loading State
   useEffect(() => {
-    if (localCards.length === 0) {
+    if (displayCards.length === 0) {
       setLoading(true);
 
       return;
@@ -43,7 +43,7 @@ const CardCarousel = () => {
     setTimeout(() => {
       setLoading(false);
     }, 1000);
-  }, [localCards]);
+  }, [displayCards]);
 
   return (
     <Container ref={carouselContainerRef} className="h-full w-full">
@@ -57,9 +57,9 @@ const CardCarousel = () => {
           isMobile={isMobile}
           maxWidth={carouselWidth}
         >
-          {localCards.map((card, index) => (
+          {displayCards.map((card, index) => (
             <SwiperSlide
-              key={card._id}
+              key={card.id}
               className="h-[450px] relative text-center md:w-fit"
             >
               <div className="mx-auto w-[300px]">
@@ -67,7 +67,7 @@ const CardCarousel = () => {
                   alt={card.title}
                   src={index <= currentIndex + 2 ? `${card.blankUrl}` : ''}
                   loading="lazy"
-                  onClick={e => handleImageClicked(e, card._id)}
+                  onClick={e => handleImageClicked(e, card.id)}
                   className="mx-auto"
                 />
                 <div className="swiper-lazy-preloader"></div>

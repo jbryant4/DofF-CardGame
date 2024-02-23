@@ -1,8 +1,8 @@
 import FinalCard from '@/FinalCard';
 import { Filter } from '@/Forge/DeckEditor';
 import { ActionBtn } from '@/Modals/BattleCardModal/BattleCardModal.styles';
-import DuelingCard from '~/constants/DuelingCard';
 import { useForgeContext } from '~/context/ForgeContext';
+import { DuelingCard } from '~/contracts/card';
 import getIconsToUse from '~/utils/getIconsToUse';
 
 type OwnProps = {
@@ -29,7 +29,7 @@ export default function ForgeCard({
       ...prevState,
       cards: {
         ...prevState.cards,
-        [filter]: [card, ...prevState.cards[filter]]
+        [filter]: [card.id, ...prevState.cards[filter]]
       }
     }));
   };
@@ -40,7 +40,7 @@ export default function ForgeCard({
       ...prevState,
       cards: {
         ...prevState.cards,
-        [filter]: prevState.cards[filter].filter(c => c.id !== card.id)
+        [filter]: prevState.cards[filter].filter(id => id !== card.id)
       }
     }));
   };

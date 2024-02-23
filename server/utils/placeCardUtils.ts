@@ -1,5 +1,5 @@
 import { PlayerField } from '~/constants/common/gameTypes';
-import DuelingCard from '~/constants/DuelingCard';
+import { DuelingCard } from '~/contracts/card';
 
 function placeCardUtils(
   boardSection: (DuelingCard | null)[],

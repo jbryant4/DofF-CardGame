@@ -1,5 +1,23 @@
 import { devCards } from '../../src/constants/developmentCards';
-import DuelingCard, { desiredKeys } from '../../src/constants/DuelingCard';
+import { DuelingCard } from '../../src/contracts/card';
+
+const desiredKeys: (keyof DuelingCard)[] = [
+  'blankUrl',
+  'class',
+  'effectText',
+  'foundation',
+  'primaryClass',
+  'secondaryClass',
+  'preReqs',
+  'hp',
+  'atk',
+  'def',
+  'title',
+  'type',
+  'id',
+  'faceUp',
+  'position'
+];
 
 const devDuelingCards = devCards.map(card => {
   const newCard = desiredKeys.reduce<DuelingCard>((result, key) => {
@@ -10,8 +28,6 @@ const devDuelingCards = devCards.map(card => {
 
     return result;
   }, {} as DuelingCard);
-
-  newCard.id = card._id; // Assign new ID format
 
   // Set default values for faceUp and position if they aren't provided
   newCard.faceUp = true;

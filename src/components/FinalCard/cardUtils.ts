@@ -1,5 +1,4 @@
-import DuelingCard from '~/constants/DuelingCard';
-import { Foundation } from '~/models/Card';
+import { DuelingCard, Foundation } from '~/contracts/card';
 
 export function getBorderToUse(canPlace: boolean, foundation: Foundation) {
   switch (true) {

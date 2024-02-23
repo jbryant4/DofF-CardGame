@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import { Dispatch, SetStateAction, useContext, useState } from 'react';
-import DuelingCard from '~/constants/DuelingCard';
 import { BoardContext } from '~/context/BoardContext';
 import { useGameContext } from '~/context/GameContext';
 import { useSocket } from '~/context/SocketContext';
+import { DuelingCard } from '~/contracts/card';
 import AttackIcon from '~/icons/AttackIcon';
 import ShieldIcon from '~/icons/ShieldIcon';
 import { BoardMessages } from '../../../../../server/boardHandlers/boardHandlers';

@@ -1,11 +1,11 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import BlueBtn from '@/Global/BlueBtn';
-import { Question, CardDocument } from '~/models/Card';
+import { Card, Question } from '~/contracts/card';
 import QuestionTab from './QuestionTab';
 
 type OwnProps = {
   questions: Question[];
-  setCardValues: Dispatch<SetStateAction<Partial<CardDocument>>>;
+  setCardValues: Dispatch<SetStateAction<Card>>;
 };
 
 const QuestionForm = ({ questions, setCardValues }: OwnProps) => {

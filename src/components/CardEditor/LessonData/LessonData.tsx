@@ -1,26 +1,23 @@
-import React, { useState } from 'react';
-// import MediaLinksForm from './MediaLinksForm';
-// import QuickNotesForm from './QuickNotesForm';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useAdminCardContext } from '@/CardEditor/AdminCardContext';
 import BlueBtn from '@/Global/BlueBtn';
-import { CardDocument, Question } from '~/models/Card';
+import { Card, Question } from '~/contracts/card';
 import LessonForm from './LessonForm';
 import QuestionForm from './QuestionForm';
 
-type OwnProps = {
-  mediaLinks: string[] | undefined;
-  quickNotes: string[] | undefined;
-  quiz: Question[] | undefined;
-  setCardValues: React.Dispatch<React.SetStateAction<Partial<CardDocument>>>;
-};
-const LessonData = ({
-  mediaLinks = [],
-  quickNotes = [],
-  setCardValues,
-  quiz = []
-}: OwnProps) => {
+export default function LessonData() {
+  const { cardValues, setCardValues } = useAdminCardContext();
+  const {
+    lesson: { mediaLinks, quickNotes },
+    quiz
+  } = cardValues;
   const [activeForm, setActiveForm] = useState<
-    'quickNotes' | 'mediaLinks' | 'questions'
-  >('quickNotes');
+    'quickNotes' | 'mediaLinks' | 'questions' | null
+  >(null);
+
+  useEffect(() => {
+    setActiveForm(null);
+  }, [cardValues]);
 
   return (
     <div className="border border-solid h-fit overflow-y-auto p-12 w-[400px]">
@@ -67,6 +64,4 @@ const LessonData = ({
       )}
     </div>
   );
-};
-
-export default LessonData;
+}

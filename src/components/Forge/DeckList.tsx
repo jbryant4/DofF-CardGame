@@ -1,14 +1,9 @@
 import { ChangeEventHandler, Fragment, useState } from 'react';
 import DeckCard from '@/Forge/DeckCard';
-import { makeForgeDeck } from '@/Forge/utiles';
 import { ActionBtn } from '@/Modals/BattleCardModal/BattleCardModal.styles';
-import { useCollector } from '~/context/CollectorContext';
-import {
-  defaultForgeDeck,
-  ForgeDeck,
-  useForgeContext
-} from '~/context/ForgeContext';
-import { Deck } from '~/models/Collector';
+import { useCollectorContext } from '~/context/CollectorContext';
+import { defaultForgeDeck, useForgeContext } from '~/context/ForgeContext';
+import { Deck } from '~/contracts/collector';
 import hasSpecialCharacters from '~/utils/getHasSpecialCharacters';
 
 export default function DeckList() {
@@ -20,7 +15,7 @@ export default function DeckList() {
     setIsNewDeck,
     setIsViewMode
   } = useForgeContext();
-  const { collector, setCollector } = useCollector();
+  const { collector, setCollector } = useCollectorContext();
   const decksToUse = collector ? [...collector.decks] : ([] as Deck[]);
 
   const handleCreateDeck = () => {
@@ -40,7 +35,7 @@ export default function DeckList() {
             ...prevState,
             decks: [
               ...prevState.decks,
-              { title: deckTitle, cards: [], duelReady: false }
+              { ...defaultForgeDeck, title: deckTitle }
             ]
           }
         : null
@@ -66,12 +61,10 @@ export default function DeckList() {
 
   return (
     <div className="flex flex-col flex-grow gap-16 justify-center max-w-[320px] px-4">
-      {decksToUse.map(({ title, cards }, index) => {
-        const forgeDeck: ForgeDeck = { title, cards: makeForgeDeck(cards) };
-
+      {decksToUse.map(deck => {
         return (
-          <Fragment key={`${title}${index}`}>
-            <DeckCard deck={forgeDeck} />
+          <Fragment key={`${deck.title}`}>
+            <DeckCard deck={deck} />
           </Fragment>
         );
       })}

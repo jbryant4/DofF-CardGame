@@ -9,15 +9,15 @@ import {
   createDefaultPlayerField,
   PlayerField
 } from '~/constants/common/gameTypes';
-import DuelingCard from '~/constants/DuelingCard';
 import { GameContext } from '~/context/GameContext';
 import { useSocket } from '~/context/SocketContext';
+import { DuelingCard, PreReq } from '~/contracts/card';
 import useDiscardCard from '~/hooks/BoardHooks/useDiscardCard';
 import { useDrawCards } from '~/hooks/BoardHooks/useDrawCards';
 import useGetActivePreReqs from '~/hooks/BoardHooks/useGetActivePreReqs';
 import useGetIsCardSlotsFull from '~/hooks/BoardHooks/useGetIsCardSlotsFull';
 import usePlaceCard from '~/hooks/BoardHooks/usePlaceCard';
-import { PreReq } from '~/models/Card';
+
 import { BoardMessages } from '../../server/boardHandlers/boardHandlers';
 import { GameRoom } from '../../server/room';
 

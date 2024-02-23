@@ -1,16 +1,14 @@
-import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
 import { ActionBtn } from '@/Modals/BattleCardModal/BattleCardModal.styles';
-import withAuth, {
-  getServerSideProps as getServerSideAuthProps
-} from '@/withAuth';
 import { Duelist } from '~/constants/common/gameTypes';
 import { Africa, Americas } from '~/constants/starterDecks';
-import { useCollector } from '~/context/CollectorContext';
+import { useCollectorContext } from '~/context/CollectorContext';
+import { defaultForgeDeck } from '~/context/ForgeContext';
 import { GameContext, useGameContext } from '~/context/GameContext';
 import { useSocket } from '~/context/SocketContext';
-import { Deck } from '~/models/Collector';
+import { Deck } from '~/contracts/collector';
+
 import { PreGameMessages } from '../../../server/preGameHandlers/preGameHandlers';
 
 const Home = () => {
@@ -20,7 +18,7 @@ const Home = () => {
   const router = useRouter();
   const { setLocalPLayer, updatePlayerTwo, updatePlayerOne } = useGameContext();
   const { setRoomId } = useContext(GameContext);
-  const { collector } = useCollector();
+  const { collector } = useCollectorContext();
 
   if (!collector) {
     console.error('No collector');
@@ -29,12 +27,13 @@ const Home = () => {
   }
 
   const { userName, decks } = collector;
-  const decksToShow: Deck[] = [Africa, Americas, ...decks];
+  // const decksToShow: Deck[] = [Africa, Americas, ...decks];
+  const decksToShow: Deck[] = [...decks];
 
   const duelist: Duelist = {
     id: collector.userName,
     userName: collector.userName,
-    deck: deck ? deck : { title: '', cards: [], duelReady: false },
+    deck: deck ? deck : { ...defaultForgeDeck },
     hitPoints: 10
   };
 
@@ -144,10 +143,4 @@ const Home = () => {
   );
 };
 
-export default withAuth(Home);
-
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  const authProps = await getServerSideAuthProps(ctx);
-
-  return { props: { ...authProps.props } };
-}
+export default Home;

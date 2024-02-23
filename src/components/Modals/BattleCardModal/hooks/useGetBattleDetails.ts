@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
-import DuelingCard from '~/constants/DuelingCard';
 import { useBoardContext } from '~/context/BoardContext';
 import { useGameContext } from '~/context/GameContext';
+import { DuelingCard } from '~/contracts/card';
 
 const defaultData = {
   canAttack: false,

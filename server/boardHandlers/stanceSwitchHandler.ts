@@ -1,10 +1,8 @@
 import { Server, Socket } from 'socket.io';
-import cardType from '~/constants/CardType';
 import { Players } from '~/constants/common/gameTypes';
-import DuelingCard from '~/constants/DuelingCard';
+import { DuelingCard } from '~/contracts/card';
 import { BoardMessages } from './boardHandlers';
 import { GameRoom } from '../room';
-import { getBoardKey } from '../utils/getBoardKey';
 
 export default (
   socket: Socket,

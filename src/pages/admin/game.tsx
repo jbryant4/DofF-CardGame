@@ -1,9 +1,6 @@
-import { GetServerSidePropsContext } from 'next';
 import { useEffect, useState } from 'react';
 import DuelOfFates from '@/DuelOfFates';
-import withAuth, {
-  getServerSideProps as getServerSideAuthProps
-} from '@/withAuth';
+
 import { useSetupAdminBoard } from '~/hooks/BoardHooks';
 
 type OwnProps = {};
@@ -21,10 +18,4 @@ const AdminGame = ({}: OwnProps) => {
   return <DuelOfFates />;
 };
 
-export default withAuth(AdminGame);
-
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  const authProps = await getServerSideAuthProps(ctx);
-
-  return { props: { ...authProps.props } };
-}
+export default AdminGame;

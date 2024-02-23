@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 import React, { forwardRef } from 'react';
-import { Foundation } from '~/models/Card';
+import { Foundation } from '~/contracts/card';
 
 const EarthIcon = dynamic(() => import('./EarthFoundationIcon'));
 const OceanIcon = dynamic(() => import('./OceanFoundationIcon'));

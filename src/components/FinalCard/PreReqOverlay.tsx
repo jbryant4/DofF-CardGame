@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { PreReq } from '~/models/Card';
+import { PreReq } from '~/contracts/card';
 import getIconsToUse from '~/utils/getIconsToUse';
 import AnimatedBackGround from './AnimatedBackGround';
 import Chain from './Chain';

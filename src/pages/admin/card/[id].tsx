@@ -1,17 +1,14 @@
-import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import FinalCard from '@/FinalCard';
-import withAuth, {
-  getServerSideProps as getServerSideAuthProps
-} from '@/withAuth';
+
 import { CardContext } from '~/context/CardContext';
+import useGetCard from '~/hooks/useGetCard';
 
 const CardEditPage = () => {
   const router = useRouter();
   const { id } = router.query as { id: string };
-  const { getCard } = useContext(CardContext);
-  const card = getCard(id);
+  const { card } = useGetCard(id);
 
   return card ? (
     <div className="flex h-full items-center justify-around w-full">
@@ -25,10 +22,4 @@ const CardEditPage = () => {
   );
 };
 
-export default withAuth(CardEditPage);
-
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  const authProps = await getServerSideAuthProps(ctx);
-
-  return { props: { ...authProps.props } };
-}
+export default CardEditPage;

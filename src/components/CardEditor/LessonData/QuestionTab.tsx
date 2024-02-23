@@ -1,6 +1,6 @@
 import { Disclosure } from '@headlessui/react';
 import BlueBtn from '@/Global/BlueBtn';
-import { Question } from '~/models/Card';
+import { Question } from '~/contracts/card';
 
 type OwnProps = {
   question: Question;

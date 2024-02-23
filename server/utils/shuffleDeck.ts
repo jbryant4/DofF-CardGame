@@ -1,4 +1,4 @@
-import DuelingCard from '../../src/constants/DuelingCard';
+import { DuelingCard } from '~/contracts/card';
 
 function shuffleDeck(deck: DuelingCard[]): DuelingCard[] {
   let shuffled = [...deck]; // Clone the deck to avoid modifying the original

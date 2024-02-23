@@ -1,99 +1,61 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { doc, addDoc, collection, updateDoc } from 'firebase/firestore';
+import React, { useState } from 'react';
+import { useAdminCardContext } from '@/CardEditor/AdminCardContext';
 import CardForm from '@/CardEditor/CardForm';
 import ImageSection from '@/CardEditor/ImageSection';
 import ScrollDiv from '@/Global/ScrollDiv';
-import { CardContext } from '~/context/CardContext';
-import { CardDocument } from '~/models/Card';
-import { newCard, updateCard } from '~/services/cardServices';
+
 import LessonData from './LessonData';
+import { Collections, db } from '../../../firebase';
 
-//TODO keep this somewhere better like local env file
-const blankImageUrl = process.env.NEXT_PUBLIC_BLANK_IMAGE_URL;
-const cardImageUrl = process.env.NEXT_PUBLIC_CARD_IMAGE_URL;
-interface Props {
-  initialState?: Partial<CardDocument>;
-  newCardForm: boolean;
-}
-const blankCard: Partial<CardDocument> = {
-  _id: '',
-  class: [],
-  blankUrl: '',
-  cardUrl: '',
-  description: '',
-  effectText: '',
-  fileName: '',
-  foundation: [],
-  lesson: {
-    mediaLinks: [],
-    quickNotes: []
-  },
-  location: '',
-  primaryClass: undefined,
-  secondaryClass: undefined,
-  preReqs: [],
-  quiz: [],
-  hp: 0,
-  atk: 0,
-  def: 0,
-  title: '',
-  type: '',
-  yearEnd: 0,
-  yearStart: 0
-};
+export default function NewCardForm() {
+  const {
+    cardValues,
+    setCardValues,
+    task,
+    setTask,
+    apiMessage: { setData, setLoading }
+  } = useAdminCardContext();
 
-const NewCardForm = ({ initialState = blankCard, newCardForm }: Props) => {
-  const [cardValues, setCardValues] =
-    useState<Partial<CardDocument>>(blankCard);
-  const [callComplete, setComplete] = useState(false);
-  const { setFetchTrigger } = useContext(CardContext);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setComplete(false);
-    // console.log(cardValues);
-    // const cleanData = objectCleaner(cardValues);
-    // console.log(cardValues, cleanData, cleanData._id);
-    if (newCardForm) {
-      await newCard(cardValues);
-    } else {
-      await updateCard(cardValues);
+    console.log(cardValues.id, 'in handle submit');
+    try {
+      setLoading();
+
+      if (cardValues.id) {
+        const docRef = doc(db, Collections.Cards, cardValues.id);
+        await updateDoc(docRef, { ...cardValues });
+        setData(
+          `Card Has been Updated Refresh page and go to ${cardValues.title} to see updates`
+        );
+      } else {
+        const docRef = await addDoc(
+          collection(db, Collections.Cards),
+          cardValues
+        );
+        await updateDoc(docRef, { id: docRef.id });
+        setData(`Document added with ID: ${docRef.id}`);
+      }
+
+      setTask(null);
+    } catch (err) {
+      console.error(err);
     }
-    setFetchTrigger(Date.now());
-    setComplete(true);
   };
 
-  useEffect(() => {
-    if (initialState?._id === cardValues._id) return;
-    setCardValues({ ...blankCard, ...initialState });
-  }, [cardValues._id, initialState]);
+  const show = task === 'create' || (task === 'edit' && cardValues.id);
 
-  useEffect(() => {
-    if (
-      !cardValues.fileName ||
-      (initialState.blankUrl && initialState.blankUrl.length > 0)
-    )
-      return;
-
-    setCardValues({
-      ...cardValues,
-      blankUrl: `${blankImageUrl}${cardValues.fileName}.jpg`,
-      cardUrl: `${cardImageUrl}${cardValues.fileName}.png`
-    });
-  }, [cardValues, cardValues.fileName, initialState.blankUrl]);
-
-  return (
+  return show ? (
     <form
       onSubmit={handleSubmit}
       className="flex-grow h-fit overflow-auto w-full"
+      key="cardForm"
     >
       <ScrollDiv heightBreakPoint={800}>
         <div className="flex gap-12 h-fit justify-center overflow-auto overflow-y-hidden w-full">
           <CardForm cardValues={cardValues} setCardValues={setCardValues} />
-          <LessonData
-            mediaLinks={cardValues.lesson?.mediaLinks ?? []}
-            setCardValues={setCardValues}
-            quickNotes={cardValues.lesson?.quickNotes}
-            quiz={cardValues.quiz}
-          />
+          <LessonData />
           <ImageSection
             blankUrl={cardValues.blankUrl ?? ''}
             cardUrl={cardValues.cardUrl ?? ''}
@@ -105,16 +67,9 @@ const NewCardForm = ({ initialState = blankCard, newCardForm }: Props) => {
           type="submit"
           className="border border-black hover:text-green-600 my-8 p-8 w-fit"
         >
-          {newCardForm ? 'Create UpdatedCard' : 'Update UpdatedCard'}
+          {task === 'edit' ? 'Update Card' : 'Create Card'}
         </button>
-        <div className={callComplete ? 'font-bold text-green-600' : 'hidden'}>
-          {newCardForm
-            ? 'UpdatedCard Created Successfully'
-            : 'UpdatedCard Updated Successfully'}
-        </div>
       </div>
     </form>
-  );
-};
-
-export default NewCardForm;
+  ) : null;
+}

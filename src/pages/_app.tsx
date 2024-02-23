@@ -1,5 +1,7 @@
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
+import AppData from '@/AppData';
+import Footer from '@/Footer';
 import Header from '@/Header/Header';
 import Modals from '@/Modals';
 import { CardProvider } from '~/context/CardContext';
@@ -50,10 +52,9 @@ export default function App({ Component, pageProps }: AppProps) {
                   <Modals />
                 </ComponentWrapper>
               )}
-              {!isGameRoute && (
-                <div className="bg-blue-800 h-full max-h-[36px]" />
-              )}
+              {!isGameRoute && <Footer />}
             </AppWrapper>
+            <AppData />
           </ModalProvider>
         </GlobalProvider>
       </CardProvider>

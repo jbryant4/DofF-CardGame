@@ -2,13 +2,13 @@ import cx from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
-import { useCollector } from '~/context/CollectorContext';
+import { useCollectorContext } from '~/context/CollectorContext';
 import links from './internalLinks';
 
 const navStyles = 'w-fit capitalize font-serif font-bold underline';
 const Header = () => {
   const router = useRouter();
-  const { isLoggedIn, collector } = useCollector();
+  const { isLoggedIn, collector } = useCollectorContext();
   const [showAdminNav, setShowAdminNav] = useState(false);
   const showAdmin = collector ? collector.isAdmin : false;
   const { internalLinks, adminLinks } = links;
@@ -21,7 +21,7 @@ const Header = () => {
     <div className="bg-blue-800 flex gap-24 items-center min-h-36 px-12 w-full">
       {isLoggedIn && (
         <div className="flex flex-grow gap-24 h-full items-center relative w-full">
-          <Link href="/?hasData=true">
+          <Link href="/">
             <img alt="header logo" src="/logo.png" className="w-56" />
           </Link>
           <div className="bg-blue-800 flex gap-24 h-full items-center justify-start last:justify-between relative w-full z-[2]">

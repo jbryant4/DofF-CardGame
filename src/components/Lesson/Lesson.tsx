@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import BlueBtn from '@/Global/BlueBtn';
+import { LessonType } from '~/contracts/card';
 import Cog from '~/icons/Cog';
-import { LessonType } from '~/models/Card';
 import { Container } from './Lesson.styles';
 
 type OwnProps = {

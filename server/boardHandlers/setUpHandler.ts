@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { Server } from 'socket.io';
 import { BoardMessages } from './boardHandlers';
-import DuelingCard from '../../src/constants/DuelingCard';
+import { DuelingCard } from '../../src/contracts/card';
 import { GameRoom } from '../room';
 //TODO Replace this giant array of abjects with an api call
 // eslint-disable-next-line
@@ -32,9 +32,9 @@ export default (io: Server, room: GameRoom, roomId: string) => {
   } = room;
 
   const { foundationDeck: player1FoundationDeck, mainDeck: player1MainDeck } =
-    makeDuelingDeck(player1CardIds);
+    makeDuelingDeck(Object.values(player1CardIds).flat());
   const { foundationDeck: player2FoundationDeck, mainDeck: player2MainDeck } =
-    makeDuelingDeck(player2CardIds);
+    makeDuelingDeck(Object.values(player2CardIds).flat());
 
   // Update playerOneBoard properties
   room.playerOneBoard.hand = [

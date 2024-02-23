@@ -1,8 +1,8 @@
 import FinalCard from '@/FinalCard';
-import DuelingCard from '~/constants/DuelingCard';
 import ModalEnum from '~/constants/modalEnum';
 import { useDimensionsContext } from '~/context/DimensionsContext';
 import { useModalContext } from '~/context/ModalContext';
+import { DuelingCard } from '~/contracts/card';
 
 import { MilitaryCardWrapper } from './MilitaryCard.styles';
 

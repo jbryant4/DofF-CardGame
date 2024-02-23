@@ -2,18 +2,15 @@ import { useState } from 'react';
 import DeckValidations from '@/Forge/DeckValidations';
 import useDeckServices from '@/Forge/useDeckServices';
 import { ActionBtn } from '@/Modals/BattleCardModal/BattleCardModal.styles';
-import {
-  defaultForgeDeck,
-  ForgeDeck,
-  useForgeContext
-} from '~/context/ForgeContext';
+import { defaultForgeDeck, useForgeContext } from '~/context/ForgeContext';
+import { Deck } from '~/contracts/collector';
 import OceanFoundationIcon from '~/icons/OceanFoundationIcon';
 import OneArmyIcon from '~/icons/OneArmyIcon';
 import OneChampionIcon from '~/icons/OneChampionIcon';
 import ResourceIcon from '~/icons/ResourceIcon';
 
 type OwnProps = {
-  deck: ForgeDeck;
+  deck: Deck;
 };
 
 const DeckCard = ({ deck }: OwnProps) => {

@@ -1,6 +1,6 @@
 import { Server, Socket } from 'socket.io';
 import { Players } from '~/constants/common/gameTypes';
-import DuelingCard from '~/constants/DuelingCard';
+import { CardType, DuelingCard } from '~/contracts/card';
 import { BoardMessages } from './boardHandlers';
 import { GameRoom } from '../room';
 import { getBoardKey } from '../utils/getBoardKey';
@@ -12,7 +12,7 @@ export default (
 ) => {
   socket.on(
     BoardMessages.Flip,
-    (roomId: string, player: Players, cardType: string, cardId: string) => {
+    (roomId: string, player: Players, cardType: CardType, cardId: string) => {
       const room = rooms[roomId];
       if (room) {
         const { playerOneBoard, playerTwoBoard } = room;

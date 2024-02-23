@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { Players } from '~/constants/common/gameTypes';
-import DuelingCard from '~/constants/DuelingCard';
 import { BoardContextType } from '~/context/BoardContext';
+import { DuelingCard } from '~/contracts/card';
 
 type OwnProps = Pick<BoardContextType, 'playerOneBoard' | 'playerTwoBoard'> & {
   localPlayer: Players;

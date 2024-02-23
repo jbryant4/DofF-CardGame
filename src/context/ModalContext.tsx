@@ -1,11 +1,11 @@
 import React, { createContext, useEffect, useState } from 'react';
-import DuelingCard from '~/constants/DuelingCard';
+
 import ModalEnum from '~/constants/modalEnum';
-import { CardType } from '~/models/Card';
+import { CardType, DuelingCard } from '~/contracts/card';
 
 export type ModalInfo = {
   id: string;
-  type: Omit<CardType, ''>;
+  type: CardType;
   isEnemy: boolean;
 };
 

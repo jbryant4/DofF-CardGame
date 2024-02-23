@@ -1,30 +1,33 @@
 import { useMemo } from 'react';
-import { Filter } from '@/Forge/DeckEditor';
-import DuelingCard from '~/constants/DuelingCard';
-import { ForgeDeck } from '~/context/ForgeContext';
+import { useCardContext } from '~/context/CardContext';
+import { useForgeContext } from '~/context/ForgeContext';
+import { Card } from '~/contracts/card';
 
-export default function useGetCardsToShow(
-  filter: Filter,
-  deck: Pick<ForgeDeck, 'cards'>,
-  unlockedCards: DuelingCard[]
-) {
-  const deckFilteredCards: DuelingCard[] = useMemo(
-    () => deck.cards[filter] || [],
-    [deck, filter]
-  );
-  const filteredUnlockedCards = useMemo(
-    () => unlockedCards.filter(c => c.type === filter),
-    [unlockedCards, filter]
+//TODO let defaultArray = [''];
+export default function useGetCardsToShow() {
+  const { filter, displayCards } = useCardContext();
+  const { deckInForge } = useForgeContext();
+  //TODO const unlockedCards = useUnlockedCards() ?? defaultArray;
+
+  const cardIdsInDeck = deckInForge.cards[filter];
+
+  const deckCardsToShow = useMemo(
+    () =>
+      cardIdsInDeck
+        .map(id => displayCards.find(c => c.id === id))
+        .filter(Boolean) as Card[],
+    [cardIdsInDeck, displayCards]
   );
 
   const unlockedNotInDeck = useMemo(
     () =>
-      filteredUnlockedCards.filter(
+      //TODO replace this with unlockedCards above when we are no longer play testing
+      displayCards.filter(
         unlockedCard =>
-          !deckFilteredCards.some(deckCard => deckCard.id === unlockedCard.id)
+          !cardIdsInDeck.some(cardId => cardId === unlockedCard.id)
       ),
-    [filteredUnlockedCards, deckFilteredCards]
+    [displayCards, cardIdsInDeck]
   );
 
-  return { deckCards: deckFilteredCards, unlockedCards: unlockedNotInDeck };
+  return { deckCards: deckCardsToShow, unlockedCards: unlockedNotInDeck };
 }

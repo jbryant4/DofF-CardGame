@@ -1,5 +1,6 @@
-import DuelingCard from '~/constants/DuelingCard';
-import { Deck } from '~/models/Collector';
+import { defaultForgeDeck } from '~/context/ForgeContext';
+import { DuelingCard } from '~/contracts/card';
+import { Deck } from '~/contracts/collector';
 
 export type Duelist = {
   id: string;
@@ -11,7 +12,7 @@ export type Duelist = {
 export const defaultDuelist = {
   id: '',
   userName: '',
-  deck: { title: '', cards: [''], duelReady: false },
+  deck: { title: '', cards: { ...defaultForgeDeck.cards }, duelReady: false },
   hitPoints: 10
 };
 
@@ -26,16 +27,6 @@ export type PlayerField = {
   resources: Array<DuelingCard | null>;
 };
 
-export const defaultPlayerField = {
-  mainDeck: [],
-  foundationDeck: [],
-  hand: [],
-  graveyard: [],
-  army: [null, null, null],
-  champions: [null, null, null],
-  foundations: [null, null, null, null],
-  resources: [null, null]
-};
 export function createDefaultPlayerField(): PlayerField {
   return {
     mainDeck: [],

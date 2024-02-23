@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
-import DuelingCard from '~/constants/DuelingCard';
+
 import { useBoardContext } from '~/context/BoardContext';
 import { ModalInfo } from '~/context/ModalContext';
-import { CardType } from '~/models/Card';
+import { CardType, DuelingCard } from '~/contracts/card';
 
-function getBoardKey(cardType: Omit<CardType, ''>): string {
+function getBoardKey(cardType: CardType): string {
   return cardType === 'army' ? `${cardType}` : `${cardType}s`;
 }
 

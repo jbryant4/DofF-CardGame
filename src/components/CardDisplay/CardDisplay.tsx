@@ -1,16 +1,12 @@
 import { useContext, useState } from 'react';
 import FinalCard from '@/FinalCard';
 import BlueBtn from '@/Global/BlueBtn';
-import Card from '~/constants/CardType';
 import ModalEnum from '~/constants/modalEnum';
 import { ModalContext } from '~/context/ModalContext';
-
-export interface DisplayCard extends Card {
-  id: string;
-}
+import { Card } from '~/contracts/card';
 
 type OwnProps = {
-  card: DisplayCard;
+  card: Card;
 };
 
 const CardDisplay = ({ card }: OwnProps) => {

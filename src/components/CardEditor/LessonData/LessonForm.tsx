@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import BlueBtn from '@/Global/BlueBtn';
-import { CardDocument } from '~/models/Card';
+import { Card } from '~/contracts/card';
 
 type OwnProps = {
   stringArray: string[];
-  setCardValues: React.Dispatch<React.SetStateAction<Partial<CardDocument>>>;
+  setCardValues: React.Dispatch<React.SetStateAction<Card>>;
   isMediaLinks: boolean;
 };
 const LessonForm = ({ stringArray, setCardValues, isMediaLinks }: OwnProps) => {

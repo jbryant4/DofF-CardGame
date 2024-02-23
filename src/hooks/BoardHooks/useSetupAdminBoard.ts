@@ -22,7 +22,7 @@ export const useSetupAdminBoard = () => {
   return useCallback(() => {
     // convert deck id arrays to DuelingCardp[]
     const adminDeck = devDuelingCards.filter(card =>
-      Africa.cards.includes(card.id)
+      Object.values(Africa.cards).flat().includes(card.id)
     );
     //setup admin game context
     updatePlayerOne({ ...defaultDuelist, id: 'Monkey', userName: 'Monkey' });

@@ -1,8 +1,7 @@
 import cx from 'classnames';
 import { useEffect, useState } from 'react';
-import DuelingCard from '~/constants/DuelingCard';
+import { DuelingCard, PreReq } from '~/contracts/card';
 import Hex from '~/icons/Hex';
-import { PreReq } from '~/models/Card';
 import {
   getHexIconKeys,
   getBorderToUse,

@@ -1,9 +1,10 @@
 import { useCallback } from 'react';
 import { getBoardKey } from '@/Modals/BattleCardModal/modalUtils';
-import DuelingCard from '~/constants/DuelingCard';
+
 import { useBoardContext } from '~/context/BoardContext';
 import { useGameContext } from '~/context/GameContext';
 import { useSocket } from '~/context/SocketContext';
+import { DuelingCard } from '~/contracts/card';
 import { BoardMessages } from '../../../../../server/boardHandlers/boardHandlers';
 
 export default function useHandleSwitchStance(card: DuelingCard | null) {

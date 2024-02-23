@@ -5,6 +5,7 @@ import BlueBtn from '@/Global/BlueBtn';
 import ModalEnum from '~/constants/modalEnum';
 import { CardContext } from '~/context/CardContext';
 import { ModalContext } from '~/context/ModalContext';
+import useGetCard from '~/hooks/useGetCard';
 
 type OwnProps = {
   confirmClose: boolean;
@@ -13,9 +14,9 @@ type OwnProps = {
 const QuizModal = ({ confirmClose, setConfirm }: OwnProps) => {
   const router = useRouter();
   const { id } = router.query as { id: string };
-  const { getCard } = useContext(CardContext);
-  let card = getCard(id);
-  const { title = '', quiz = [] } = card;
+  const { card } = useGetCard(id);
+  const title = card?.title || '';
+  const quiz = card?.quiz || [];
   const { setOpenModal } = useContext(ModalContext);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);

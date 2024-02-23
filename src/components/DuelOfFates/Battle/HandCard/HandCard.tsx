@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
 import PlacementControls from '@/DuelOfFates/Battle/HandCard/PlacementControls';
 import FinalCard from '@/FinalCard';
-import DuelingCard from '~/constants/DuelingCard';
 import { BoardContext } from '~/context/BoardContext';
 import { useDimensionsContext } from '~/context/DimensionsContext';
 import { GameContext } from '~/context/GameContext';
+import { DuelingCard } from '~/contracts/card';
 
 type OwnProps = {
   duelingCard: DuelingCard;

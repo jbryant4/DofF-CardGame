@@ -1,3 +1,5 @@
+import { doc, getDoc } from 'firebase/firestore';
+import { useRouter } from 'next/router';
 import React, {
   createContext,
   Dispatch,
@@ -7,25 +9,20 @@ import React, {
   useMemo,
   useState
 } from 'react';
-import { CollectorDocument } from '~/models/Collector';
-import { findCollectorByUserName } from '~/services/collectorService';
-
-export type Collector = Pick<
-  CollectorDocument,
-  'isAdmin' | 'cards' | 'decks' | 'userName'
->;
+import { useAuthState } from 'react-firebase-hooks/auth';
+import LoadingCardCircle from '@/LoadingCardCircle';
+import { ContextCollector } from '~/contracts/collector';
+import { auth, Collections, db } from '../../firebase';
 
 type CollectorContextType = {
-  collector: Collector | null;
+  collector: ContextCollector | null;
   isLoggedIn: boolean;
-  fetchCollectorByUserName: (v: string) => Promise<Collector | null>;
-  setCollector: Dispatch<SetStateAction<Collector | null>>;
+  setCollector: Dispatch<SetStateAction<ContextCollector | null>>;
 };
 
 const defaultCollectorContext: CollectorContextType = {
   collector: null,
   isLoggedIn: false,
-  fetchCollectorByUserName: async (_value: string) => null,
   setCollector: _value => null
 };
 
@@ -37,32 +34,70 @@ type Props = {
   children: React.ReactNode;
 };
 
+async function getCollectorData(uid: string) {
+  try {
+    const docRef = doc(db, Collections.Collectors, uid);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const { id, ...dataWithoutId } = docSnap.data();
+
+      return dataWithoutId as ContextCollector;
+    } else {
+      //TODO Make new doc
+      console.error('No such document!');
+
+      return null;
+    }
+  } catch (error) {
+    console.error('Error getting document:', error);
+  }
+}
+
 export function CollectorProvider({ children }: Props) {
-  const [collector, setCollector] = useState<Collector | null>(null);
+  const [user, loading, error] = useAuthState(auth);
+  const [collector, setCollector] = useState<ContextCollector | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-
-  // const fetchCollectorByEmail = async (email: string): Promise<void> => {
-  //   const collectorData = await findCollectorByEmail(email);
-  // };
-
-  const fetchCollectorByUserName = async (
-    userName: string
-  ): Promise<CollectorDocument | null> => findCollectorByUserName(userName);
+  const router = useRouter();
 
   useEffect(() => {
     if (!collector) return;
     setIsLoggedIn(true);
   }, [collector]);
 
+  useEffect(() => {
+    if (collector) return;
+
+    if (!loading && !user && router.pathname !== '/gateway') {
+      void router.push('/gateway');
+    }
+
+    if (user && !collector) {
+      console.log();
+      getCollectorData(user.uid).then(collectorData => {
+        if (collectorData === undefined) return;
+
+        setCollector(collectorData);
+      });
+    }
+  }, [user, loading, router, collector]);
+
   const value = useMemo(
     () => ({
       collector,
       isLoggedIn,
-      fetchCollectorByUserName,
       setCollector
     }),
     [collector, isLoggedIn, setCollector]
   );
+
+  if (loading) {
+    return (
+      <div className="bg-gray-400 flex h-screen items-center justify-center w-full">
+        <LoadingCardCircle />
+      </div>
+    );
+  }
 
   return (
     <CollectorContext.Provider value={value}>
@@ -71,12 +106,18 @@ export function CollectorProvider({ children }: Props) {
   );
 }
 
-export const useCollector = () => {
+export function useCollectorContext() {
   const context = useContext(CollectorContext);
 
   if (!context) {
-    throw new Error('useCollector must be used within a CollectorProvider');
+    throw new Error(
+      'useCollectorContext must be used within a CollectorProvider'
+    );
   }
 
   return context;
-};
+}
+
+export function useUnlockedCards() {
+  return useCollectorContext().collector?.cards;
+}

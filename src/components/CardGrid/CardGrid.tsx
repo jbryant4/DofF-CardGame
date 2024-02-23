@@ -9,23 +9,23 @@ import useSubsequantEffect from '~/utils/useSubsequantEffect';
 type OwnProps = {};
 
 const CardGrid = ({}: OwnProps) => {
-  const { localCards } = useContext(CardContext);
+  const { displayCards } = useContext(CardContext);
   const [showPhysicalCard, setPhysical] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const router = useRouter();
   const handleClick = (cardId: string) => {
-    void router.push(`/card/${cardId}?hasData=true`);
+    void router.push(`/card/${cardId}`);
   };
 
   // Fake Loading State
   useSubsequantEffect(() => {
-    if (localCards.length !== 0) {
+    if (displayCards.length !== 0) {
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
       }, 1000);
     }
-  }, [localCards.length]);
+  }, [displayCards.length]);
 
   return (
     <div className="flex flex-col h-full overflow-hidden pt-24 w-full">
@@ -56,11 +56,11 @@ const CardGrid = ({}: OwnProps) => {
             />
           </div>
           <div className="flex flex-wrap gap-x-64 gap-y-64 h-full justify-center overflow-scroll pb-24 px-24">
-            {localCards.map(card => (
+            {displayCards.map(card => (
               <div
-                key={card._id}
+                key={card.id}
                 className="h-fit"
-                onClick={() => handleClick(card._id)}
+                onClick={() => handleClick(card.id)}
               >
                 {showPhysicalCard ? (
                   <img
@@ -75,7 +75,7 @@ const CardGrid = ({}: OwnProps) => {
                   <FinalCard
                     card={{
                       ...card,
-                      id: card._id,
+                      id: card.id,
                       faceUp: true,
                       position: 'attack'
                     }}

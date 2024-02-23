@@ -1,4 +1,8 @@
-export const Filters = {
+import { CardType, Foundation, Trait } from '~/contracts/card';
+
+export type FiltersType = Record<CardType, Trait[] | Foundation[]>;
+
+export const Filters: FiltersType = {
   champion: [
     'divine',
     'explorer',
@@ -7,7 +11,7 @@ export const Filters = {
     'revolutionist',
     'scholar'
   ],
-  army: null,
+  army: [],
   foundation: ['desert', 'earth', 'ocean'],
-  resource: null
+  resource: []
 };

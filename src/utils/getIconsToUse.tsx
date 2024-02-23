@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
-import { PreReq } from '~/models/Card';
+import { PreReq } from '~/contracts/card';
 
 //Dynamic Import all Foundation Icons
 const EarthIcon = dynamic(() => import('~/icons/EarthFoundationIcon'));

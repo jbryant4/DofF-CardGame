@@ -1,6 +1,32 @@
-import { Card } from '~/contracts/card';
+export const defaultFireCard = {
+  id: '',
+  blankUrl: '',
+  cardUrl: '',
+  class: [],
+  description: '',
+  effectText: '',
+  gender: '',
+  fileName: '',
+  foundation: [],
+  lesson: {
+    quickNotes: [],
+    mediaLinks: []
+  },
+  location: '',
+  primaryClass: '',
+  secondaryClass: '',
+  preReqs: [],
+  quiz: [],
+  hp: -1,
+  atk: -1,
+  def: -1,
+  title: '',
+  type: '',
+  yearStart: 0,
+  yearEnd: 0
+};
 
-export const devCards: Partial<Card>[] = [
+export const cardsToFireBase = [
   {
     lesson: {
       quickNotes: [],
