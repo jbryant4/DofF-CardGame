@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
 import PlacementControls from '@/DuelOfFates/Battle/HandCard/PlacementControls';
 import FinalCard from '@/FinalCard';
+import { DuelingCard } from '@shared/cardTypes';
 import { BoardContext } from '~/context/BoardContext';
 import { useDimensionsContext } from '~/context/DimensionsContext';
 import { GameContext } from '~/context/GameContext';
-import { DuelingCard } from '~/contracts/card';
 
 type OwnProps = {
   duelingCard: DuelingCard;
@@ -16,7 +16,12 @@ const HandCard = ({ duelingCard, index = 0 }: OwnProps) => {
   const [prePlace, setPrePlace] = useState(false);
   const [placeAttack, setPlaceAttack] = useState(true);
 
-  const { localPlayer, battleTurn, battleStage } = useContext(GameContext);
+  const {
+    localPlayer,
+    gameData: {
+      data: { battleTurn, battleStage }
+    }
+  } = useContext(GameContext);
   const { activePreReqs, getIsBoardSlotFull } = useContext(BoardContext);
 
   const {

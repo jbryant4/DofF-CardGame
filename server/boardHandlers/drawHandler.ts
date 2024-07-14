@@ -1,6 +1,6 @@
 import { Server, Socket } from 'socket.io';
-import { Players } from '~/constants/common/gameTypes';
-import { DuelingCard } from '~/contracts/card';
+import { DuelingCard } from '@shared/cardTypes';
+import { Players } from '@shared/gameTypes';
 import { BoardMessages } from './boardHandlers';
 import { GameRoom } from '../room';
 import advanceGameStage from '../utils/advanceStage';

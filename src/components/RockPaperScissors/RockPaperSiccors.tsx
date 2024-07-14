@@ -2,51 +2,28 @@ import classnames from 'classnames';
 import { useEffect, useState } from 'react';
 import BlueBtn from '@/Global/BlueBtn';
 import { Circle } from '@/RockPaperScissors/RPS.styles';
-import { Players } from '~/constants/common/gameTypes';
+import { Players } from '@shared/gameTypes';
 import { useGameContext } from '~/context/GameContext';
-import { useSocket } from '~/context/SocketContext';
-import { PreGameMessages } from '../../../server/preGameHandlers/preGameHandlers';
 
 const RockPaperScissors = () => {
   const [prevResult, setPrevResult] = useState('');
   const [waitingResults, setWaiting] = useState(false);
   const [selectedOption, setSelectedOption] = useState('');
   const [roundResult, setRoundResult] = useState<Players[]>([]);
-  const socket = useSocket();
   const { localPlayer, roomId } = useGameContext();
 
   const handleTimerEnd = () => {
-    if (!socket) return;
     // Handle logic when the timer reaches zero
     // You can send the selected option to the socket here
     setWaiting(true);
-    socket.emit(
-      PreGameMessages.PlayerSelection,
-      roomId,
-      localPlayer,
-      selectedOption
-    );
+    //TODO firebase functionality
     setSelectedOption('');
   };
 
   useEffect(() => {
-    if (!socket) return;
-
     // Handle the mini-game result
-    socket.on(PreGameMessages.RPSResult, (result: Players | 'tie') => {
-      setPrevResult(result);
-      if (result !== 'tie') {
-        setRoundResult(prev => [...prev, result]);
-      }
-
-      setWaiting(false);
-    });
-
-    // Clean up the socket listener when the component unmounts
-    return () => {
-      socket.off(PreGameMessages.RPSResult);
-    };
-  }, [socket]);
+    //TODO firebase functionality
+  }, []);
 
   const handleOptionSelect = option => {
     setSelectedOption(option);

@@ -2,8 +2,8 @@ import { useState, useEffect, useContext } from 'react';
 import { blankCard, useAdminCardContext } from '@/CardEditor/AdminCardContext';
 import NewCardForm from '@/CardEditor/NewCardForm';
 import FilterBar from '@/FilterBar';
+import { Card } from '@shared/cardTypes';
 import { CardContext } from '~/context/CardContext';
-import { Card } from '~/contracts/card';
 
 const EditCardForm = () => {
   const { cardValues, setCardValues, task } = useAdminCardContext();

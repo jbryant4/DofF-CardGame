@@ -1,5 +1,5 @@
 import { Socket } from 'socket.io';
-import { Duelist } from '~/constants/common/gameTypes';
+import { Duelist } from '@shared/gameTypes';
 import { PreGameMessages } from './preGameHandlers';
 import { GameRoom } from '../room';
 
@@ -13,7 +13,7 @@ export default (socket: Socket, rooms: Record<string, GameRoom>) => {
       // TODO Room is full update for checking if the player id is in one of the slots
       socket.emit(PreGameMessages.JoinFailed, `Room is full ${{ ...room }}`);
     } else {
-      room.player2 = { ...duelist, active: false };
+      // room.player2 = { ...duelist, active: false };
 
       socket.join(roomId);
       // Notify both players that the game is starting

@@ -1,14 +1,8 @@
 import React, { createContext, useEffect, useMemo, useState } from 'react';
+import { DuelingCard } from '@shared/cardTypes';
+import { Deck, defaultForgeDeck } from '@shared/gameTypes';
 import { useCollectorContext } from '~/context/CollectorContext';
-import { DuelingCard } from '~/contracts/card';
-import { Deck } from '~/contracts/collector';
 import devDuelingCards from '../../server/utils/devDuelingCards';
-
-export const defaultForgeDeck: Deck = {
-  title: '',
-  cards: { army: [], champion: [], foundation: [], resource: [] },
-  duelReady: false
-};
 
 type ForgeContextType = {
   isNewDeck: boolean;
@@ -56,7 +50,7 @@ export function ForgeProvider({ children }: Props) {
 
   useEffect(() => {
     if (!collector) return;
-    setForgeDecks(collector.decks);
+    setForgeDecks(collector.data?.decks ?? []);
   }, [collector]);
 
   const value = useMemo(

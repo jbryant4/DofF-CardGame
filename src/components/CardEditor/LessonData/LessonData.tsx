@@ -1,7 +1,6 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAdminCardContext } from '@/CardEditor/AdminCardContext';
 import BlueBtn from '@/Global/BlueBtn';
-import { Card, Question } from '~/contracts/card';
 import LessonForm from './LessonForm';
 import QuestionForm from './QuestionForm';
 

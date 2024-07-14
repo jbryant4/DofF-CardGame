@@ -1,8 +1,8 @@
 import FinalCard from '@/FinalCard';
 import { Filter } from '@/Forge/DeckEditor';
 import { ActionBtn } from '@/Modals/BattleCardModal/BattleCardModal.styles';
+import { DuelingCard } from '@shared/cardTypes';
 import { useForgeContext } from '~/context/ForgeContext';
-import { DuelingCard } from '~/contracts/card';
 import getIconsToUse from '~/utils/getIconsToUse';
 
 type OwnProps = {

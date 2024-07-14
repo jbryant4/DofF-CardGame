@@ -1,4 +1,4 @@
-import { Card } from '~/contracts/card';
+import { Card } from '@shared/cardTypes';
 
 export const devCards: Partial<Card>[] = [
   {

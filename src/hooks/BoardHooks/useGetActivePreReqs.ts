@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
-import { PlayerField } from '~/constants/common/gameTypes';
-import { Foundation, PreReq } from '~/contracts/card';
+import { Foundation, PreReq } from '@shared/cardTypes';
+import { PlayerField } from '@shared/gameTypes';
 
 type OwnProps = {
   playerBoard: PlayerField;

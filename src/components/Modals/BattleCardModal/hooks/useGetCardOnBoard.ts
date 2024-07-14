@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
+import { CardType, DuelingCard } from '@shared/cardTypes';
 
 import { useBoardContext } from '~/context/BoardContext';
 import { ModalInfo } from '~/context/ModalContext';
-import { CardType, DuelingCard } from '~/contracts/card';
 
 function getBoardKey(cardType: CardType): string {
   return cardType === 'army' ? `${cardType}` : `${cardType}s`;

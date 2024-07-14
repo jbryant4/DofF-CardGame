@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react';
+import { CardType, DuelingCard } from '@shared/cardTypes';
 
 import ModalEnum from '~/constants/modalEnum';
-import { CardType, DuelingCard } from '~/contracts/card';
 
 export type ModalInfo = {
   id: string;

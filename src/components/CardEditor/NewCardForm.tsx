@@ -1,12 +1,12 @@
 import { doc, addDoc, collection, updateDoc } from 'firebase/firestore';
-import React, { useState } from 'react';
+import React from 'react';
 import { useAdminCardContext } from '@/CardEditor/AdminCardContext';
 import CardForm from '@/CardEditor/CardForm';
 import ImageSection from '@/CardEditor/ImageSection';
 import ScrollDiv from '@/Global/ScrollDiv';
+import { Collections, db } from '@firebaseUiConfig';
 
 import LessonData from './LessonData';
-import { Collections, db } from '../../../firebase';
 
 export default function NewCardForm() {
   const {

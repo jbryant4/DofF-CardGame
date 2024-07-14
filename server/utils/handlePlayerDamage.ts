@@ -1,7 +1,8 @@
+import { number } from 'prop-types';
 import { Server } from 'socket.io';
-import { Players } from '~/constants/common/gameTypes';
+import { Players } from '@shared/gameTypes';
 import { GameMessages } from '../gameHandlers/gameHandlers';
-import { GameRoom } from '../room';
+import room, { GameRoom } from '../room';
 
 export default function handlePlayerDamage(
   room: GameRoom,

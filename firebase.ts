@@ -1,5 +1,6 @@
 // Import the functions you need from the SDKs you need
-import { getAnalytics } from 'firebase/analytics';
+import { connectDatabaseEmulator, getDatabase } from '@firebase/database';
+import { connectFunctionsEmulator, getFunctions } from '@firebase/functions';
 import { initializeApp, getApp, getApps } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
@@ -19,7 +20,8 @@ const firebaseConfig = {
   storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
   messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_APP_ID,
-  measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID
+  measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
+  databaseURL: process.env.NEXT_PUBLIC_RT_DATABASE_URL
 };
 
 // Initialize Firebase
@@ -27,7 +29,13 @@ const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
 const auth = getAuth(app);
 const db = getFirestore(app);
-// const analytics = getAnalytics(app);
+const rtdb = getDatabase(app);
+const functions = getFunctions(app);
 
+// Check if we should use emulators based on location.hostname
+if (process.env.NEXT_PUBLIC_USE_EMULATOR === 'true') {
+  connectDatabaseEmulator(rtdb, 'localhost', 9000);
+  connectFunctionsEmulator(functions, 'localhost', 5001);
+}
 export default app;
-export { auth, db };
+export { auth, db, rtdb };

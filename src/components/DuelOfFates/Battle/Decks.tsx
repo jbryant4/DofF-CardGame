@@ -4,13 +4,15 @@ import { ActionBtn } from '@/Modals/BattleCardModal/BattleCardModal.styles';
 import { BoardContext } from '~/context/BoardContext';
 import { useDimensionsContext } from '~/context/DimensionsContext';
 import { GameContext } from '~/context/GameContext';
-import { useSocket } from '~/context/SocketContext';
-import { BoardMessages } from '../../../../server/boardHandlers/boardHandlers';
 
 const Decks = () => {
-  const socket = useSocket();
-  const { localPlayer, roomId, advanceBattleStage, battleTurn, battleStage } =
-    useContext(GameContext);
+  const {
+    localPlayer,
+    // advanceBattleStage,
+    gameData: {
+      data: { battleTurn, battleStage }
+    }
+  } = useContext(GameContext);
 
   const viewDecks = localPlayer === battleTurn && battleStage === 'draw';
   const { playerOneDraw, playerTwoDraw, localBoard } = useContext(BoardContext);
@@ -21,28 +23,19 @@ const Decks = () => {
     localPlayer === 'playerOne' ? playerOneDraw : playerTwoDraw;
 
   const handleDeckClick = (fromDeck: 'foundation' | 'main') => {
-    if (socket) {
-      socket.emit(BoardMessages.Draw, roomId, localPlayer, fromDeck);
+    // TODO firebase functionality
+    if (fromDeck === 'main') {
+      deckToDrawFrom(7 - hand.length, 0);
     } else {
-      if (fromDeck === 'main') {
-        deckToDrawFrom(7 - hand.length, 0);
-      } else {
-        deckToDrawFrom(0, 1);
-      }
-      advanceBattleStage();
-
-      return;
+      deckToDrawFrom(0, 1);
     }
+    // advanceBattleStage();
+
+    return;
   };
 
   const handleReshuffle = () => {
-    // TODO make local hook of this socket message for testing locally
-    if (!socket) {
-      console.log('no socket connected');
-
-      return;
-    }
-    socket.emit(BoardMessages.Reshuffle, roomId, localPlayer);
+    // TODO firebase functionality
   };
 
   return (

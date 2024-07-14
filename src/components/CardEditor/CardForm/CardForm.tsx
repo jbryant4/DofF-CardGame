@@ -1,12 +1,11 @@
 import React from 'react';
-
 import {
   Card,
   CardTypes,
   Foundations,
   PreReqs,
   Traits
-} from '~/contracts/card';
+} from '@shared/cardTypes';
 
 type OwnProps = {
   cardValues: Card;

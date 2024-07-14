@@ -8,12 +8,16 @@ const BreakDownModal = dynamic(() => import('./BreakDownModal'));
 const UnlockModal = dynamic(() => import('./UnlockModal'));
 const QuizModal = dynamic(() => import('./QuizModal'));
 const BattleCardModal = dynamic(() => import('./BattleCardModal'));
+const UserNameModal = dynamic(() => import('./UserNameModal'));
+const ActivePlayerModal = dynamic(() => import('./PlayerActivePlayer'));
 
 const Modals = () => {
   const { isModalOverlayOpen, openModal, setOpenModal, setModalInfo } =
     useContext(ModalContext);
   const [confirmClose, setConfirm] = useState(false);
   const handleClose = () => {
+    if (openModal === ModalEnum.PlayersActive) return;
+
     if (openModal === ModalEnum.Quiz) {
       setConfirm(true);
     } else if (openModal === ModalEnum.BattleCard) {
@@ -42,6 +46,8 @@ const Modals = () => {
           <QuizModal confirmClose={confirmClose} setConfirm={setConfirm} />
         )}
         {openModal === ModalEnum.BattleCard && <BattleCardModal />}
+        {openModal === ModalEnum.UserName && <UserNameModal />}
+        {openModal === ModalEnum.PlayersActive && <ActivePlayerModal />}
       </div>
     </Dialog>
   );

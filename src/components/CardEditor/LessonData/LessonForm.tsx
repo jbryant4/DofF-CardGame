@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import BlueBtn from '@/Global/BlueBtn';
-import { Card } from '~/contracts/card';
+import { Card } from '@shared/cardTypes';
 
 type OwnProps = {
   stringArray: string[];

@@ -2,9 +2,10 @@ import cx from 'classnames';
 import { Fragment } from 'react';
 import ForgeCard from '@/Forge/ForgeCard';
 import useGetCardsToShow from '@/Forge/useGetCardsToShow';
+import { CardType } from '@shared/cardTypes';
 import { useCardContext } from '~/context/CardContext';
 import { useForgeContext } from '~/context/ForgeContext';
-import { CardType, makeDefaultDuelingCard } from '~/contracts/card';
+import { makeDefaultDuelingCard } from '~/contracts/card';
 
 export type Filter = Exclude<CardType, ''>;
 type OwnProps = {};

@@ -1,4 +1,4 @@
-import { Duelist } from '~/constants/common/gameTypes';
+import { Duelist } from '@shared/gameTypes';
 import { Africa } from '~/constants/starterDecks';
 
 export const playerOne: Partial<Duelist> = {

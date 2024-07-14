@@ -1,5 +1,5 @@
-import { devCards } from '../../src/constants/developmentCards';
-import { DuelingCard } from '../../src/contracts/card';
+import { DuelingCard } from '@shared/cardTypes';
+import { devCards } from '~/constants/developmentCards';
 
 const desiredKeys: (keyof DuelingCard)[] = [
   'blankUrl',

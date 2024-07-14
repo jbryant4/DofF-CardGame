@@ -1,5 +1,5 @@
 import { Server, Socket } from 'socket.io';
-import { PlayerField, Players } from '~/constants/common/gameTypes';
+import { PlayerField, Players } from '@shared/gameTypes';
 import { BoardMessages } from './boardHandlers';
 import { GameRoom } from '../room';
 import advanceGameStage from '../utils/advanceStage';

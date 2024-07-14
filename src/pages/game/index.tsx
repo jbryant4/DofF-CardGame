@@ -1,24 +1,28 @@
 import { useRouter } from 'next/router';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { ActionBtn } from '@/Modals/BattleCardModal/BattleCardModal.styles';
-import { Duelist } from '~/constants/common/gameTypes';
+import { Deck, defaultForgeDeck, Duelist } from '@shared/gameTypes';
+import { isFailure, isSuccess } from '@shared/resultType';
 import { Africa, Americas } from '~/constants/starterDecks';
 import { useCollectorContext } from '~/context/CollectorContext';
-import { defaultForgeDeck } from '~/context/ForgeContext';
-import { GameContext, useGameContext } from '~/context/GameContext';
-import { useSocket } from '~/context/SocketContext';
-import { Deck } from '~/contracts/collector';
-
-import { PreGameMessages } from '../../../server/preGameHandlers/preGameHandlers';
+import { useGameContext } from '~/context/GameContext';
+import game from '~/pages/admin/game';
+import createGame from '~/utils/firebase/createGame';
+import joinGame from '~/utils/firebase/joinGame';
 
 const Home = () => {
   const [deck, setDeck] = useState<Deck | undefined>(undefined);
-  const [gameId, setGameId] = useState('');
-  const socket = useSocket();
+  const [joinId, setJoinId] = useState('');
+  const [error, setError] = useState('');
   const router = useRouter();
-  const { setLocalPLayer, updatePlayerTwo, updatePlayerOne } = useGameContext();
-  const { setRoomId } = useContext(GameContext);
-  const { collector } = useCollectorContext();
+  const { setRoomId } = useGameContext();
+  const {
+    collector: { data: collector, isLoaded }
+  } = useCollectorContext();
+
+  if (!isLoaded) {
+    return <div>Loading.....</div>;
+  }
 
   if (!collector) {
     console.error('No collector');
@@ -27,69 +31,46 @@ const Home = () => {
   }
 
   const { userName, decks } = collector;
-  // const decksToShow: Deck[] = [Africa, Americas, ...decks];
-  const decksToShow: Deck[] = [...decks];
+  const decksToShow: Deck[] = [Africa, Americas, ...decks];
+  // const decksToShow: Deck[] = [...decks];
 
   const duelist: Duelist = {
-    id: collector.userName,
+    id: collector.id,
     userName: collector.userName,
-    deck: deck ? deck : { ...defaultForgeDeck },
-    hitPoints: 10
+    deck: deck ? deck : { ...defaultForgeDeck }
   };
 
-  const handleJoinGame = () => {
-    if (!socket) {
-      console.error('no socket connection');
+  async function handleJoinGame() {
+    const result = await joinGame(duelist, joinId);
 
-      return;
+    if (isSuccess(result)) {
+      console.log(result.content);
+      setRoomId(result.content);
+      void router.push(`/game/${result.content}`);
     }
 
-    // Emit a 'join-game' event to the server with the provided game ID
-    socket.emit(PreGameMessages.JoinRoom, gameId, duelist);
+    if (isFailure(result)) {
+      console.log(result.errorMessage);
+      setError(result.errorMessage);
+    }
+  }
 
-    // Handle the response from the server
-    socket.on(PreGameMessages.JoinFailed, error => {
-      // Handle the error scenario, e.g., display an error message
-      console.log(`Join game failed: ${error}`);
-    });
+  async function handleCreateGame() {
+    const result = await createGame(duelist);
 
-    socket.on(PreGameMessages.JoinSuccess, data => {
-      updatePlayerTwo({ ...duelist });
-      setLocalPLayer('playerTwo');
-      console.log(data);
-      setRoomId(data);
-      router
-        .push(`/game/${data}`)
-        .catch(err => console.log('Navigation Error /game join function', err));
-    });
-  };
-
-  const handleCreateGame = () => {
-    if (!socket) {
-      console.error('no socket connection');
-
-      return;
+    if (isSuccess(result)) {
+      console.log(result.content);
+      setRoomId(result.content);
+      void router.push(`/game/${result.content}`);
     }
 
-    socket.emit(PreGameMessages.NewRoom, duelist);
-
-    socket.on(PreGameMessages.RoomCreated, data => {
-      updatePlayerOne({ ...duelist });
-
-      setLocalPLayer('playerOne');
-      const roomId = data.roomId;
-      setRoomId(roomId);
-
-      router
-        .push(`/game/${roomId}`)
-        .catch(err =>
-          console.log('Navigation Error /game create function', err)
-        );
-    });
-  };
+    if (isFailure(result)) {
+      setError(result.errorMessage);
+    }
+  }
 
   const functionToUse =
-    gameId.trim().length > 0 ? handleJoinGame : handleCreateGame;
+    joinId.trim().length > 0 ? handleJoinGame : handleCreateGame;
 
   return (
     <div className="flex flex-col gap-24 h-full items-center justify-center w-full">
@@ -128,14 +109,14 @@ const Home = () => {
             type="text"
             id="game-id"
             placeholder="Enter Game ID"
-            value={gameId}
-            onChange={e => setGameId(e.target.value)}
+            value={joinId}
+            onChange={e => setJoinId(e.target.value)}
           />
         </div>
 
         <div>
           <ActionBtn type="submit" disabled={!deck}>
-            {gameId.trim().length > 0 ? 'Join Game' : 'Create Game'}
+            {joinId.trim().length > 0 ? 'Join Game' : 'Create Game'}
           </ActionBtn>
         </div>
       </form>

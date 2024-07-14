@@ -1,4 +1,4 @@
-import { CardType, Foundation, Trait } from '~/contracts/card';
+import { CardType, Foundation, Trait } from '@shared/cardTypes';
 
 export type FiltersType = Record<CardType, Trait[] | Foundation[]>;
 

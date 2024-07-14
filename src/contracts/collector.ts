@@ -1,12 +1,4 @@
-import { CardType } from '~/contracts/card';
-
-type DeckCards = Record<CardType, string[]>;
-
-export type Deck = {
-  title: string;
-  cards: DeckCards;
-  duelReady: boolean;
-};
+import { Deck } from '@shared/gameTypes';
 
 export type Collector = {
   userName: string;
@@ -14,6 +6,14 @@ export type Collector = {
   cards: string[];
   decks: Deck[];
   isAdmin: boolean;
+};
+
+export const defaultCollector: Collector = {
+  userName: '',
+  id: '',
+  cards: [],
+  decks: [],
+  isAdmin: false
 };
 
 export type ContextCollector = Omit<Collector, 'id'>;

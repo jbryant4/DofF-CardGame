@@ -6,7 +6,7 @@ import React, {
   useMemo,
   useState
 } from 'react';
-import { Card } from '~/contracts/card';
+import { Card } from '@shared/cardTypes';
 import useLoadableState, {
   defaultLoadableState,
   LoadableState

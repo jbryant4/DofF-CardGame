@@ -1,5 +1,5 @@
 import { Server } from 'socket.io';
-import { BattleStage } from '~/constants/common/gameTypes';
+import { BattleStage } from '@shared/gameTypes';
 import { GameMessages } from '../gameHandlers/gameHandlers';
 import { GameRoom } from '../room';
 

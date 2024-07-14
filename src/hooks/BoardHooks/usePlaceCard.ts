@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
-import { Players } from '~/constants/common/gameTypes';
+import { DuelingCard } from '@shared/cardTypes';
+import { Players } from '@shared/gameTypes';
 import { BoardContextType, PlaceCardFunction } from '~/context/BoardContext';
-import { DuelingCard } from '~/contracts/card';
 
 type OwnProps = Pick<
   BoardContextType,

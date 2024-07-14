@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import BlueBtn from '@/Global/BlueBtn';
-import { LessonType } from '~/contracts/card';
+import { LessonType } from '@shared/cardTypes';
 import Cog from '~/icons/Cog';
 import { Container } from './Lesson.styles';
 

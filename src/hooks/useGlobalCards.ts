@@ -1,9 +1,15 @@
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { Filters } from '@/FilterBar/Filters';
+import { db } from '@firebaseUiConfig';
+import {
+  Card,
+  Foundation,
+  Foundations,
+  Trait,
+  Traits
+} from '@shared/cardTypes';
 import { useCardContext } from '~/context/CardContext';
-import { Card, Foundations, Trait, Foundation, Traits } from '~/contracts/card';
-import { db } from '../../firebase';
 
 function isFoundation(value: Trait | Foundation): value is Foundation {
   return Foundations.has(value as Foundation);

@@ -1,12 +1,10 @@
 import classNames from 'classnames';
 import { Dispatch, SetStateAction, useContext, useState } from 'react';
+import { DuelingCard } from '@shared/cardTypes';
 import { BoardContext } from '~/context/BoardContext';
 import { useGameContext } from '~/context/GameContext';
-import { useSocket } from '~/context/SocketContext';
-import { DuelingCard } from '~/contracts/card';
 import AttackIcon from '~/icons/AttackIcon';
 import ShieldIcon from '~/icons/ShieldIcon';
-import { BoardMessages } from '../../../../../server/boardHandlers/boardHandlers';
 
 type OwnProps = {
   card: DuelingCard;
@@ -23,7 +21,6 @@ const PlacementControls = ({
   placeAttack,
   setPlaceAttack
 }: OwnProps) => {
-  const socket = useSocket();
   const { roomId, localPlayer } = useGameContext();
   const [placeUp, setPlaceUp] = useState(true);
 
@@ -36,19 +33,12 @@ const PlacementControls = ({
   const { placeCard } = useContext(BoardContext);
   const handlePlaceCard = e => {
     e.stopPropagation();
-    if (socket) {
-      socket.emit(BoardMessages.Place, roomId, localPlayer, {
-        ...card,
-        faceUp: placeUp,
-        position: placeAttack ? 'attack' : 'defense'
-      });
-    } else {
-      placeCard({
-        ...card,
-        faceUp: placeUp,
-        position: placeAttack ? 'attack' : 'defense'
-      });
-    }
+    //TODO firebase functionality
+    placeCard({
+      ...card,
+      faceUp: placeUp,
+      position: placeAttack ? 'attack' : 'defense'
+    });
   };
 
   return (

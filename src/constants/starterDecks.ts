@@ -1,4 +1,4 @@
-import { Deck } from '~/contracts/collector';
+import { Deck } from '@shared/gameTypes';
 
 export const Africa: Deck = {
   title: 'Africa Starter Deck',

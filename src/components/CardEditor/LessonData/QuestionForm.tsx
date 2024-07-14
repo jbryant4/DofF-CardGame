@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import BlueBtn from '@/Global/BlueBtn';
-import { Card, Question } from '~/contracts/card';
+import { Card, Question } from '@shared/cardTypes';
 import QuestionTab from './QuestionTab';
 
 type OwnProps = {

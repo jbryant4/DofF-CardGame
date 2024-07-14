@@ -1,9 +1,9 @@
 import cx from 'classnames';
 import React, { Dispatch, useEffect } from 'react';
+import { Card, CardType, PreReq } from '@shared/cardTypes';
+import { Deck } from '@shared/gameTypes';
 import { useCardContext } from '~/context/CardContext';
 import { useForgeContext } from '~/context/ForgeContext';
-import { Card, CardType, PreReq } from '~/contracts/card';
-import { Deck } from '~/contracts/collector';
 import createComponent, {
   ElementWithProps
 } from '~/utils/styles/createComponent';

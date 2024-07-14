@@ -1,10 +1,10 @@
 import { getDoc } from 'firebase/firestore';
 import { doc } from 'firebase/firestore';
 import { useEffect } from 'react';
+import { Collections, db } from '@firebaseUiConfig';
+import { Card } from '@shared/cardTypes';
 import { useCardContext } from '~/context/CardContext';
-import { Card } from '~/contracts/card';
 import useLoadableState from '~/utils/useLoadableState';
-import { Collections, db } from '../../firebase';
 
 export default function useGetCard(id: string) {
   const { globalCards } = useCardContext();

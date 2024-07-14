@@ -4,10 +4,8 @@ import { Overlay } from '@/DuelOfFates/Battle/Overlays/Overlays';
 import { ActionBtn } from '@/Modals/BattleCardModal/BattleCardModal.styles';
 import { useBoardContext } from '~/context/BoardContext';
 import { GameContext } from '~/context/GameContext';
-import { useSocket } from '~/context/SocketContext';
 import styles from './BattleField.module.css';
 import Decks from './Decks';
-import { GameMessages } from '../../../../server/gameHandlers/gameHandlers';
 
 type OwnProps = {
   overlayOpen: Overlay;
@@ -16,24 +14,25 @@ type OwnProps = {
 
 const ControlCenter = ({ overlayOpen, setShowGraveYard }: OwnProps) => {
   //Currently Need this to determine card width and if not here throws errors
-  const { advanceBattleStage, localPlayer, battleTurn, roomId } =
-    useContext(GameContext);
+  const {
+    // advanceBattleStage,
+    localPlayer,
+    gameData: {
+      data: { battleTurn }
+    },
+
+    roomId
+  } = useContext(GameContext);
 
   const {
     localBoard: { hand },
     enemyBoard: { hand: enemyHand }
   } = useBoardContext();
 
-  const socket = useSocket();
-
   const showControls = localPlayer === battleTurn;
-  // TODO start following the patern of if socket send message if not use the local stuff for deving atm
   const handleAdvance = () => {
-    if (socket) {
-      socket.emit(GameMessages.AdvanceStage, roomId);
-    } else {
-      advanceBattleStage();
-    }
+    //TODO add in the firebase functionality
+    // advanceBattleStage();
   };
 
   return (

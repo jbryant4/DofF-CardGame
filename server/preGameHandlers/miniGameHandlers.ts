@@ -1,5 +1,5 @@
 import { Socket, Server } from 'socket.io';
-import { Players } from '~/constants/common/gameTypes';
+import { Players } from '@shared/gameTypes';
 import { PreGameMessages } from './preGameHandlers';
 import setUpHandler from '../boardHandlers/setUpHandler';
 import { GameRoom } from '../room';

@@ -8,7 +8,10 @@ import links from './internalLinks';
 const navStyles = 'w-fit capitalize font-serif font-bold underline';
 const Header = () => {
   const router = useRouter();
-  const { isLoggedIn, collector } = useCollectorContext();
+  const {
+    isLoggedIn,
+    collector: { data: collector }
+  } = useCollectorContext();
   const [showAdminNav, setShowAdminNav] = useState(false);
   const showAdmin = collector ? collector.isAdmin : false;
   const { internalLinks, adminLinks } = links;

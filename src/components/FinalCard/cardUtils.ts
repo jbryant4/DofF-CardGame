@@ -1,4 +1,4 @@
-import { DuelingCard, Foundation } from '~/contracts/card';
+import { DuelingCard, Foundation } from '@shared/cardTypes';
 
 export function getBorderToUse(canPlace: boolean, foundation: Foundation) {
   switch (true) {

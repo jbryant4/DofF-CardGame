@@ -1,9 +1,7 @@
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import React, {
   createContext,
-  Dispatch,
-  SetStateAction,
   useContext,
   useEffect,
   useMemo,
@@ -11,19 +9,25 @@ import React, {
 } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import LoadingCardCircle from '@/LoadingCardCircle';
-import { ContextCollector } from '~/contracts/collector';
-import { auth, Collections, db } from '../../firebase';
+import { Collections, db, auth } from '@firebaseUiConfig';
+import {
+  Collector,
+  ContextCollector,
+  defaultCollector
+} from '~/contracts/collector';
+import useLoadableState, {
+  defaultLoadableState,
+  LoadableState
+} from '~/utils/useLoadableState';
 
 type CollectorContextType = {
-  collector: ContextCollector | null;
+  collector: LoadableState<Collector | null>;
   isLoggedIn: boolean;
-  setCollector: Dispatch<SetStateAction<ContextCollector | null>>;
 };
 
 const defaultCollectorContext: CollectorContextType = {
-  collector: null,
-  isLoggedIn: false,
-  setCollector: _value => null
+  collector: defaultLoadableState<Collector | null>(null),
+  isLoggedIn: false
 };
 
 export const CollectorContext = createContext<CollectorContextType>(
@@ -40,14 +44,14 @@ async function getCollectorData(uid: string) {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      const { id, ...dataWithoutId } = docSnap.data();
+      const collector = docSnap.data();
 
-      return dataWithoutId as ContextCollector;
+      return collector as Collector;
     } else {
       //TODO Make new doc
-      console.error('No such document!');
-
-      return null;
+      await setDoc(docRef, { ...defaultCollector, id: uid }).then(v =>
+        console.log(v)
+      );
     }
   } catch (error) {
     console.error('Error getting document:', error);
@@ -56,39 +60,50 @@ async function getCollectorData(uid: string) {
 
 export function CollectorProvider({ children }: Props) {
   const [user, loading, error] = useAuthState(auth);
-  const [collector, setCollector] = useState<ContextCollector | null>(null);
+  const collector = useLoadableState<Collector | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const router = useRouter();
+  const [needsUserName, setNeedsUserName] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!collector) return;
+    if (collector.data == null) return;
     setIsLoggedIn(true);
   }, [collector]);
 
   useEffect(() => {
-    if (collector) return;
+    if (collector.data) return;
 
     if (!loading && !user && router.pathname !== '/gateway') {
       void router.push('/gateway');
     }
 
-    if (user && !collector) {
-      console.log();
-      getCollectorData(user.uid).then(collectorData => {
-        if (collectorData === undefined) return;
+    if (user && !collector.data) {
+      collector.setLoading();
 
-        setCollector(collectorData);
+      getCollectorData(user.uid).then(collectorData => {
+        if (collectorData === undefined) {
+          collector.setLoaded();
+
+          return;
+        }
+
+        collector.setData(collectorData);
       });
     }
   }, [user, loading, router, collector]);
 
+  useEffect(() => {
+    if (collector.isLoaded) {
+      setNeedsUserName(Boolean(collector.data?.userName));
+    }
+  }, [collector.data?.userName, collector.isLoaded]);
+
   const value = useMemo(
     () => ({
       collector,
-      isLoggedIn,
-      setCollector
+      isLoggedIn
     }),
-    [collector, isLoggedIn, setCollector]
+    [collector, isLoggedIn]
   );
 
   if (loading) {
@@ -119,5 +134,5 @@ export function useCollectorContext() {
 }
 
 export function useUnlockedCards() {
-  return useCollectorContext().collector?.cards;
+  return useCollectorContext().collector?.data?.cards ?? [];
 }

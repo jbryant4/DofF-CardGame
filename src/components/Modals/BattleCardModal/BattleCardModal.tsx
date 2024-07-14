@@ -30,7 +30,6 @@ export default function BattleCardModal() {
   } = useGetBattleDetails(cardToUse, modalInfo.isEnemy);
   const handleFlipCard = useHandleFlipCard(cardToUse);
   const handleSwitchStance = useHandleSwitchStance(cardToUse);
-  const handleDirectHit = useHandleDirectHit();
   const handleAttack = useHandleCardAttack();
   const [switchedThisOpen, setSwitchedThisTurn] = useState(false);
   const { setDirectHitThisRound, setAttackedThisRound } = useBoardContext();
@@ -43,7 +42,6 @@ export default function BattleCardModal() {
     handleFlipCard();
   };
   const handleDirect = () => {
-    handleDirectHit();
     setDirectHitThisRound(true);
   };
 

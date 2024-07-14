@@ -5,21 +5,14 @@ import React, {
   useMemo,
   useState
 } from 'react';
-import {
-  createDefaultPlayerField,
-  PlayerField
-} from '~/constants/common/gameTypes';
+import { DuelingCard, PreReq } from '@shared/cardTypes';
+import { createDefaultPlayerField, PlayerField } from '@shared/gameTypes';
 import { GameContext } from '~/context/GameContext';
-import { useSocket } from '~/context/SocketContext';
-import { DuelingCard, PreReq } from '~/contracts/card';
 import useDiscardCard from '~/hooks/BoardHooks/useDiscardCard';
 import { useDrawCards } from '~/hooks/BoardHooks/useDrawCards';
 import useGetActivePreReqs from '~/hooks/BoardHooks/useGetActivePreReqs';
 import useGetIsCardSlotsFull from '~/hooks/BoardHooks/useGetIsCardSlotsFull';
 import usePlaceCard from '~/hooks/BoardHooks/usePlaceCard';
-
-import { BoardMessages } from '../../server/boardHandlers/boardHandlers';
-import { GameRoom } from '../../server/room';
 
 export type PlaceCardFunction = (card: DuelingCard) => void;
 export type DiscardCardFunction = (
@@ -75,11 +68,11 @@ type Props = {
 
 export function BoardProvider({ children }: Props) {
   const {
-    advanceBattleStage,
-    battleTurn,
+    // advanceBattleStage,
+    gameData: {
+      data: { battleTurn, battleStage }
+    },
     localPlayer,
-    setGameState,
-    battleStage,
     roomId
   } = useContext(GameContext);
   const [activePreReqs, setActivePreReqs] = useState<PreReq[]>([]);
@@ -101,8 +94,6 @@ export function BoardProvider({ children }: Props) {
   const [directHitThisRound, setDirectHitThisRound] = useState(
     defaultBoard.directHitThisRound
   );
-
-  const socket = useSocket();
 
   const { playerTwoDraw, playerOneDraw } = useDrawCards({
     playerOneBoard,
@@ -174,20 +165,9 @@ export function BoardProvider({ children }: Props) {
   );
 
   useEffect(() => {
-    if (!socket) return;
-
-    // Subscribe to the event
-    socket.on(BoardMessages.BoardSetUp, (data: GameRoom) => {
-      setPlayerOneBoard({ ...data.playerOneBoard });
-      setPlayerTwoBoard({ ...data.playerTwoBoard });
-      setGameState(data.gameState);
-    });
-
-    socket.on(BoardMessages.Update, data => {
-      setPlayerOneBoard({ ...data.playerOneBoard });
-      setPlayerTwoBoard({ ...data.playerTwoBoard });
-    });
-  }, [setGameState, socket]);
+    // Subscribe to the event Board setup and update
+    //TODO firebase functionality
+  }, []);
 
   useEffect(() => {
     setAttackedThisRound([]);
@@ -210,21 +190,20 @@ export function BoardProvider({ children }: Props) {
 
   useEffect(() => {
     if (localPlayer === battleTurn && battleStage === 'respite') {
-      if (socket) {
-        socket.emit(BoardMessages.Respite, roomId, localPlayer);
+      if (false) {
+        //TODO firebase functionality
       } else {
         respiteDiscard();
-        advanceBattleStage();
+        // advanceBattleStage();
       }
     }
   }, [
-    advanceBattleStage,
+    // advanceBattleStage,
     battleStage,
     battleTurn,
     localPlayer,
     respiteDiscard,
-    roomId,
-    socket
+    roomId
   ]);
 
   return (

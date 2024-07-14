@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "baseUrl": "..",
+    "module": "commonjs",
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "outDir": "lib",
+    "paths": {
+      "@shared/*": ["shared/*"]
+    },
+    "sourceMap": true,
+    "strict": true,
+    "target": "es2017"
+  },
+  "compileOnSave": true,
+  "include": ["src"]
+}

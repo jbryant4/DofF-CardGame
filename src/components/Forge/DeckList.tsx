@@ -1,9 +1,9 @@
 import { ChangeEventHandler, Fragment, useState } from 'react';
 import DeckCard from '@/Forge/DeckCard';
 import { ActionBtn } from '@/Modals/BattleCardModal/BattleCardModal.styles';
+import { Deck, defaultForgeDeck } from '@shared/gameTypes';
 import { useCollectorContext } from '~/context/CollectorContext';
-import { defaultForgeDeck, useForgeContext } from '~/context/ForgeContext';
-import { Deck } from '~/contracts/collector';
+import { useForgeContext } from '~/context/ForgeContext';
 import hasSpecialCharacters from '~/utils/getHasSpecialCharacters';
 
 export default function DeckList() {
@@ -15,7 +15,9 @@ export default function DeckList() {
     setIsNewDeck,
     setIsViewMode
   } = useForgeContext();
-  const { collector, setCollector } = useCollectorContext();
+  const {
+    collector: { data: collector, setData: setCollector }
+  } = useCollectorContext();
   const decksToUse = collector ? [...collector.decks] : ([] as Deck[]);
 
   const handleCreateDeck = () => {

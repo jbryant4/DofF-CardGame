@@ -1,13 +1,10 @@
 import { useCallback } from 'react';
 import { getBoardKey } from '@/Modals/BattleCardModal/modalUtils';
+import { DuelingCard } from '@shared/cardTypes';
 import { useBoardContext } from '~/context/BoardContext';
 import { useGameContext } from '~/context/GameContext';
-import { useSocket } from '~/context/SocketContext';
-import { DuelingCard } from '~/contracts/card';
-import { BoardMessages } from '../../../../../server/boardHandlers/boardHandlers';
 
 export default function useHandleFlipCard(card: DuelingCard | null) {
-  const socket = useSocket();
   const { localBoard, setPlayerTwoBoard, setPlayerOneBoard } =
     useBoardContext();
   const { roomId, localPlayer } = useGameContext();
@@ -16,41 +13,30 @@ export default function useHandleFlipCard(card: DuelingCard | null) {
     // Check if card is null
     if (!card) return;
 
-    // Check if socket is available
-    if (socket) {
-      socket.emit(BoardMessages.Flip, roomId, localPlayer, card.type, card.id);
+    //TODO firebase functionality
+
+    // Calculate the board key
+    const boardKey = getBoardKey(card.type);
+
+    // Update the board
+    const newCards = localBoard[boardKey].map(boardCard =>
+      boardCard && boardCard.id === card.id
+        ? { ...boardCard, faceUp: true }
+        : boardCard
+    );
+
+    if (localPlayer === 'playerOne') {
+      setPlayerOneBoard(prevBoard => ({
+        ...prevBoard,
+        [boardKey]: newCards
+      }));
     } else {
-      // Calculate the board key
-      const boardKey = getBoardKey(card.type);
-
-      // Update the board
-      const newCards = localBoard[boardKey].map(boardCard =>
-        boardCard && boardCard.id === card.id
-          ? { ...boardCard, faceUp: true }
-          : boardCard
-      );
-
-      if (localPlayer === 'playerOne') {
-        setPlayerOneBoard(prevBoard => ({
-          ...prevBoard,
-          [boardKey]: newCards
-        }));
-      } else {
-        setPlayerTwoBoard(prevBoard => ({
-          ...prevBoard,
-          [boardKey]: newCards
-        }));
-      }
+      setPlayerTwoBoard(prevBoard => ({
+        ...prevBoard,
+        [boardKey]: newCards
+      }));
     }
-  }, [
-    card,
-    localPlayer,
-    setPlayerOneBoard,
-    setPlayerTwoBoard,
-    socket,
-    roomId,
-    localBoard
-  ]);
+  }, [card, localPlayer, setPlayerOneBoard, setPlayerTwoBoard, localBoard]);
 
   return handleCardFlip;
 }

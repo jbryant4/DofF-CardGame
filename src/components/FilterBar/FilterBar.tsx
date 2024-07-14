@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { useContext } from 'react';
+import { CardType, Foundation, Trait } from '@shared/cardTypes';
 import { CardContext, useCardContext } from '~/context/CardContext';
-import { CardType, Foundation, Trait } from '~/contracts/card';
 import {
   Container,
   FilterTab,

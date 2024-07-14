@@ -1,0 +1,22 @@
+{
+  "rules": {
+    "players": {
+      "$playerId": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
+    },
+    "rpsGames": {
+      "$gameId": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
+    },
+    "games": {
+      "$gameId": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
+    }
+  }
+}

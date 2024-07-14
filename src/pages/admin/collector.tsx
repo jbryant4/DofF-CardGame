@@ -2,9 +2,9 @@ import { setDoc, doc } from 'firebase/firestore';
 import React, { useState } from 'react';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { ActionBtn } from '@/Modals/BattleCardModal/BattleCardModal.styles';
+import { Collections, db, auth } from '@firebaseUiConfig';
 
 import { Collector } from '~/contracts/collector';
-import { auth, Collections, db } from '../../../firebase';
 
 const AdminCollector = () => {
   const [userName, setUserName] = useState('');

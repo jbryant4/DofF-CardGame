@@ -1,8 +1,8 @@
+import { Foundation } from '@shared/cardTypes';
 import ModalEnum from '~/constants/modalEnum';
 import { useBoardContext } from '~/context/BoardContext';
 import { useDimensionsContext } from '~/context/DimensionsContext';
 import { useModalContext } from '~/context/ModalContext';
-import { Foundation } from '~/contracts/card';
 import DesertFoundationIcon from '~/icons/DesertFoundationIcon';
 import EarthFoundationIcon from '~/icons/EarthFoundationIcon';
 import OceanFoundationIcon from '~/icons/OceanFoundationIcon';

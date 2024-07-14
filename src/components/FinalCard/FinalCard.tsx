@@ -1,6 +1,6 @@
 import cx from 'classnames';
 import { useEffect, useState } from 'react';
-import { DuelingCard, PreReq } from '~/contracts/card';
+import { DuelingCard, PreReq } from '@shared/cardTypes';
 import Hex from '~/icons/Hex';
 import {
   getHexIconKeys,

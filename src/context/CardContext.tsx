@@ -5,7 +5,7 @@ import React, {
   useMemo,
   useState
 } from 'react';
-import { CardType, Card, Trait, Foundation } from '~/contracts/card';
+import { Card, CardType, Foundation, Trait } from '@shared/cardTypes';
 
 type GlobalCards = Record<CardType, Card[]>;
 

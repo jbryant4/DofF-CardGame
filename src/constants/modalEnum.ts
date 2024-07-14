@@ -3,7 +3,9 @@ enum ModalEnum {
   Unlock,
   Breakdown,
   Quiz,
-  BattleCard
+  BattleCard,
+  UserName,
+  PlayersActive
 }
 
 export default ModalEnum;

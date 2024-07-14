@@ -1,4 +1,4 @@
-import { DuelingCard } from '~/contracts/card';
+import { DuelingCard } from '@shared/cardTypes';
 
 function shuffleDeck(deck: DuelingCard[]): DuelingCard[] {
   let shuffled = [...deck]; // Clone the deck to avoid modifying the original

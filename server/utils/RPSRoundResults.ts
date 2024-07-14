@@ -1,4 +1,4 @@
-import { Players } from '~/constants/common/gameTypes';
+import { Players } from '@shared/gameTypes';
 import { MiniGame } from '../room';
 
 export default function RPSRoundResults(miniGame: MiniGame): Players {

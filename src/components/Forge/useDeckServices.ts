@@ -1,16 +1,18 @@
 import { doc, arrayUnion, getDoc, updateDoc } from 'firebase/firestore';
 import { useCallback } from 'react';
+import { Collections, db, auth } from '@firebaseUiConfig';
+import { Deck, defaultForgeDeck } from '@shared/gameTypes';
 import { useCollectorContext } from '~/context/CollectorContext';
-import { defaultForgeDeck, useForgeContext } from '~/context/ForgeContext';
-import { Deck } from '~/contracts/collector';
-import { auth, Collections, db } from '../../../firebase';
+import { useForgeContext } from '~/context/ForgeContext';
 
 type Method = 'create' | 'update' | 'delete';
 
 export default function useDeckServices(duelReady: boolean) {
   const { setIsNewDeck, setDeckInForge, setIsViewMode, deckInForge } =
     useForgeContext();
-  const { setCollector } = useCollectorContext();
+  const {
+    collector: { setData: setCollector }
+  } = useCollectorContext();
 
   return useCallback(
     async (method: Method) => {

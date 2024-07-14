@@ -1,7 +1,7 @@
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { auth } from '../../../firebase';
+import { auth } from '@firebaseUiConfig';
 
 export default function GateWay() {
   const [email, setEmail] = useState('');

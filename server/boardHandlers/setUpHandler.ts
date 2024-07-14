@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { Server } from 'socket.io';
+import { DuelingCard } from '@shared/cardTypes';
 import { BoardMessages } from './boardHandlers';
-import { DuelingCard } from '../../src/contracts/card';
 import { GameRoom } from '../room';
 //TODO Replace this giant array of abjects with an api call
 // eslint-disable-next-line

@@ -5,10 +5,11 @@ import {
   Duelist,
   PlayerField,
   Players
-} from '../src/constants/common/gameTypes';
+} from '../shared/gameTypes';
 
 export type Player = Duelist & {
   active: boolean;
+  hitPoints: number;
 };
 
 export type MiniGame = {
@@ -30,8 +31,8 @@ export type GameRoom = {
 };
 
 const defaultRoom: GameRoom = {
-  player1: { ...defaultDuelist, active: false },
-  player2: { ...defaultDuelist, active: false },
+  player1: { ...defaultDuelist, active: false, hitPoints: 1 },
+  player2: { ...defaultDuelist, active: false, hitPoints: 1 },
   playerOneBoard: { ...createDefaultPlayerField() },
   playerTwoBoard: { ...createDefaultPlayerField() },
   gameState: 'Lobby',

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
+import { Card } from '@shared/cardTypes';
 import { useCardContext } from '~/context/CardContext';
 import { useForgeContext } from '~/context/ForgeContext';
-import { Card } from '~/contracts/card';
 
 //TODO let defaultArray = [''];
 export default function useGetCardsToShow() {

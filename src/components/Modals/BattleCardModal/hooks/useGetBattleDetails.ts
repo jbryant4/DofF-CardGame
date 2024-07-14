@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
+import { DuelingCard } from '@shared/cardTypes';
 import { useBoardContext } from '~/context/BoardContext';
 import { useGameContext } from '~/context/GameContext';
-import { DuelingCard } from '~/contracts/card';
 
 const defaultData = {
   canAttack: false,
@@ -17,7 +17,12 @@ export default function useGetBattleDetails(
   card: DuelingCard | null,
   isEnemy: boolean
 ) {
-  const { battleStage, battleTurn, localPlayer } = useGameContext();
+  const {
+    gameData: {
+      data: { battleStage, battleTurn }
+    },
+    localPlayer
+  } = useGameContext();
   const { enemyBoard, directHitThisRound, attackedThisRound } =
     useBoardContext();
 

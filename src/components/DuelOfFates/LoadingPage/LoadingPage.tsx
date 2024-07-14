@@ -2,7 +2,11 @@ import { useContext } from 'react';
 import { GameContext } from '~/context/GameContext';
 
 function LoadingPage() {
-  const { battleTurn } = useContext(GameContext);
+  const {
+    gameData: {
+      data: { battleTurn }
+    }
+  } = useContext(GameContext);
 
   return (
     <div>
