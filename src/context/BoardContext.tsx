@@ -1,18 +1,29 @@
+import { onValue } from '@firebase/database';
+import { ref } from 'firebase/database';
 import React, {
   createContext,
+  Dispatch,
+  SetStateAction,
   useContext,
   useEffect,
   useMemo,
   useState
 } from 'react';
+import { rtdb } from '@firebaseUiConfig';
 import { DuelingCard, PreReq } from '@shared/cardTypes';
-import { createDefaultPlayerField, PlayerField } from '@shared/gameTypes';
+import {
+  createDefaultPlayerField,
+  defaultRTBoard,
+  GameState,
+  PlayerField,
+  RTBoard
+} from '@shared/gameTypes';
 import { GameContext } from '~/context/GameContext';
-import useDiscardCard from '~/hooks/BoardHooks/useDiscardCard';
-import { useDrawCards } from '~/hooks/BoardHooks/useDrawCards';
-import useGetActivePreReqs from '~/hooks/BoardHooks/useGetActivePreReqs';
 import useGetIsCardSlotsFull from '~/hooks/BoardHooks/useGetIsCardSlotsFull';
-import usePlaceCard from '~/hooks/BoardHooks/usePlaceCard';
+import useLoadableState, {
+  defaultLoadableState,
+  LoadableState
+} from '~/utils/useLoadableState';
 
 export type PlaceCardFunction = (card: DuelingCard) => void;
 export type DiscardCardFunction = (
@@ -21,40 +32,30 @@ export type DiscardCardFunction = (
 ) => void;
 
 export type BoardContextType = {
+  board: LoadableState<RTBoard>;
   activePreReqs: PreReq[];
   attackedThisRound: string[];
   directHitThisRound: boolean;
-  enemyBoard: PlayerField;
   localBoard: PlayerField;
-  playerOneBoard: PlayerField;
-  playerTwoBoard: PlayerField;
-  playerOneDraw: (mdDraw: number, fdDraw: number) => void;
-  playerTwoDraw: (mdDraw: number, fdDraw: number) => void;
+  enemyBoard: PlayerField;
+  setLocalBoard: Dispatch<SetStateAction<PlayerField>>;
+  setEnemyBoard: Dispatch<SetStateAction<PlayerField>>;
   setAttackedThisRound: React.Dispatch<React.SetStateAction<string[]>>;
   setDirectHitThisRound: React.Dispatch<React.SetStateAction<boolean>>;
-  setPlayerOneBoard: React.Dispatch<React.SetStateAction<PlayerField>>;
-  setPlayerTwoBoard: React.Dispatch<React.SetStateAction<PlayerField>>;
-  placeCard: PlaceCardFunction;
-  discardCard: DiscardCardFunction;
   getIsBoardSlotFull: (card: DuelingCard) => Boolean;
 };
 
 const defaultBoard: BoardContextType = {
+  board: defaultLoadableState({ ...defaultRTBoard }),
   activePreReqs: [],
   attackedThisRound: [],
   directHitThisRound: false,
-  enemyBoard: { ...createDefaultPlayerField() },
   localBoard: { ...createDefaultPlayerField() },
-  playerOneBoard: { ...createDefaultPlayerField() },
-  playerTwoBoard: { ...createDefaultPlayerField() },
-  playerOneDraw() {},
-  playerTwoDraw() {},
+  enemyBoard: { ...createDefaultPlayerField() },
+  setLocalBoard() {},
+  setEnemyBoard() {},
   setAttackedThisRound() {},
   setDirectHitThisRound() {},
-  setPlayerOneBoard() {},
-  setPlayerTwoBoard() {},
-  placeCard() {},
-  discardCard() {},
   getIsBoardSlotFull(_card) {
     return false;
   }
@@ -69,19 +70,14 @@ type Props = {
 export function BoardProvider({ children }: Props) {
   const {
     // advanceBattleStage,
-    gameData: {
-      data: { battleTurn, battleStage }
+    dynamicGameData: {
+      data: { battleTurn, battleStage, gameState }
     },
-    localPlayer,
+    localPlayer: { data: localPlayer },
     roomId
   } = useContext(GameContext);
+  const board = useLoadableState(defaultBoard.board.data);
   const [activePreReqs, setActivePreReqs] = useState<PreReq[]>([]);
-  const [playerOneBoard, setPlayerOneBoard] = useState(
-    defaultBoard.playerOneBoard
-  );
-  const [playerTwoBoard, setPlayerTwoBoard] = useState(
-    defaultBoard.playerTwoBoard
-  );
   const [enemyBoard, setEnemyBoard] = useState<PlayerField>(
     defaultBoard.enemyBoard
   );
@@ -95,116 +91,132 @@ export function BoardProvider({ children }: Props) {
     defaultBoard.directHitThisRound
   );
 
-  const { playerTwoDraw, playerOneDraw } = useDrawCards({
-    playerOneBoard,
-    setPlayerOneBoard,
-    playerTwoBoard,
-    setPlayerTwoBoard
-  });
+  useEffect(() => {
+    if (!roomId) return; // Guard clause to ensure roomId is present
+    if (gameState !== GameState.Battle) return;
 
-  const { place } = usePlaceCard({
-    playerOneBoard,
-    setPlayerOneBoard,
-    playerTwoBoard,
-    setPlayerTwoBoard,
-    playerTurn: battleTurn
-  });
+    const keys = [
+      'p1MainDeck',
+      'p1FoundationDeck',
+      'p1Hand',
+      'p1Graveyard',
+      'p1Army',
+      'p1Champions',
+      'p1Foundations',
+      'p1Resources',
+      'p2MainDeck',
+      'p2FoundationDeck',
+      'p2Hand',
+      'p2Graveyard',
+      'p2Army',
+      'p2Champions',
+      'p2Foundations',
+      'p2Resources'
+    ];
 
-  const { discard, respiteDiscard } = useDiscardCard({
-    playerOneBoard,
-    setPlayerOneBoard,
-    playerTwoBoard,
-    setPlayerTwoBoard,
-    playerTurn: battleTurn
-  });
+    const unsubscribes = keys.map(key => {
+      const keyRef = ref(rtdb, `board/${roomId}/${key}`);
 
-  const { getIsBoardSlotFull } = useGetIsCardSlotsFull({
-    playerOneBoard,
-    playerTwoBoard,
-    localPlayer
-  });
+      return onValue(
+        keyRef,
+        snapshot => {
+          if (snapshot.exists()) {
+            board.setData(prevState => ({
+              ...prevState,
+              [key]: snapshot.val()
+            }));
+          }
+        },
+        error => {
+          console.error(`Firebase subscription error for ${key}:`, error);
+          board.setError(
+            error instanceof Error ? error : new Error('Unknown error')
+          );
+        }
+      );
+    });
 
-  useGetActivePreReqs({
-    playerBoard: localPlayer === 'playerOne' ? playerOneBoard : playerTwoBoard,
-    setActivePreReqs
-  });
+    // Cleanup function to unsubscribe from Firebase updates
+    return () => unsubscribes.forEach(unsubscribe => unsubscribe());
+  }, [board, gameState, roomId]);
 
-  const value = useMemo(
+  useEffect(() => {
+    if (!localPlayer) return;
+    if (!board.isLoaded) return;
+    const isLocalPlayer1 = localPlayer === 'player1';
+    const {
+      p1MainDeck,
+      p1FoundationDeck,
+      p1Hand,
+      p1Graveyard,
+      p1Army,
+      p1Champions,
+      p1Foundations,
+      p1Resources,
+      p2MainDeck,
+      p2FoundationDeck,
+      p2Hand,
+      p2Graveyard,
+      p2Army,
+      p2Champions,
+      p2Foundations,
+      p2Resources
+    } = board.data;
+
+    setLocalBoard({
+      mainDeck: isLocalPlayer1 ? p1MainDeck : p2MainDeck,
+      foundationDeck: isLocalPlayer1 ? p1FoundationDeck : p2FoundationDeck,
+      hand: isLocalPlayer1 ? p1Hand : p2Hand,
+      graveyard: isLocalPlayer1 ? p1Graveyard : p2Graveyard,
+      army: isLocalPlayer1 ? p1Army : p2Army,
+      champions: isLocalPlayer1 ? p1Champions : p2Champions,
+      foundations: isLocalPlayer1 ? p1Foundations : p2Foundations,
+      resources: isLocalPlayer1 ? p1Resources : p2Resources
+    });
+
+    setEnemyBoard({
+      mainDeck: isLocalPlayer1 ? p2MainDeck : p1MainDeck,
+      foundationDeck: isLocalPlayer1 ? p2FoundationDeck : p1FoundationDeck,
+      hand: isLocalPlayer1 ? p2Hand : p1Hand,
+      graveyard: isLocalPlayer1 ? p2Graveyard : p1Graveyard,
+      army: isLocalPlayer1 ? p2Army : p1Army,
+      champions: isLocalPlayer1 ? p2Champions : p1Champions,
+      foundations: isLocalPlayer1 ? p2Foundations : p1Foundations,
+      resources: isLocalPlayer1 ? p2Resources : p1Resources
+    });
+  }, [board.data, board.isLoaded, localPlayer]);
+
+  const { getIsBoardSlotFull } = useGetIsCardSlotsFull(localBoard);
+
+  const value: BoardContextType = useMemo(
     () => ({
+      board,
       activePreReqs,
       attackedThisRound,
       directHitThisRound,
-      enemyBoard,
+      getIsBoardSlotFull,
       localBoard,
-      playerOneBoard,
-      playerTwoBoard,
-      playerOneDraw,
-      playerTwoDraw,
+      enemyBoard,
+      setLocalBoard,
+      setEnemyBoard,
       setAttackedThisRound,
-      setDirectHitThisRound,
-      setPlayerOneBoard,
-      setPlayerTwoBoard,
-      placeCard: place,
-      discardCard: discard,
-      getIsBoardSlotFull
+      setDirectHitThisRound
     }),
     [
       activePreReqs,
       attackedThisRound,
+      board,
       directHitThisRound,
-      discard,
       enemyBoard,
       getIsBoardSlotFull,
-      localBoard,
-      place,
-      playerOneBoard,
-      playerOneDraw,
-      playerTwoBoard,
-      playerTwoDraw
+      localBoard
     ]
   );
-
-  useEffect(() => {
-    // Subscribe to the event Board setup and update
-    //TODO firebase functionality
-  }, []);
 
   useEffect(() => {
     setAttackedThisRound([]);
     setDirectHitThisRound(false);
   }, [battleTurn]);
-
-  useEffect(() => {
-    if (!localPlayer) return;
-    setLocalBoard(prevBoard =>
-      localPlayer === 'playerOne'
-        ? { ...prevBoard, ...playerOneBoard }
-        : { ...prevBoard, ...playerTwoBoard }
-    );
-    setEnemyBoard(prevBoard =>
-      localPlayer === 'playerOne'
-        ? { ...prevBoard, ...playerTwoBoard }
-        : { ...prevBoard, ...playerOneBoard }
-    );
-  }, [localPlayer, playerOneBoard, playerTwoBoard]);
-
-  useEffect(() => {
-    if (localPlayer === battleTurn && battleStage === 'respite') {
-      if (false) {
-        //TODO firebase functionality
-      } else {
-        respiteDiscard();
-        // advanceBattleStage();
-      }
-    }
-  }, [
-    // advanceBattleStage,
-    battleStage,
-    battleTurn,
-    localPlayer,
-    respiteDiscard,
-    roomId
-  ]);
 
   return (
     <BoardContext.Provider value={value}>{children}</BoardContext.Provider>

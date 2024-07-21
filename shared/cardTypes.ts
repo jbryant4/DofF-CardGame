@@ -97,7 +97,10 @@ export type DuelingCard = Pick<Card, CardFieldsToKeep> & {
   position: 'attack' | 'defense';
 };
 
-export type RTCard = Pick<Card, 'id' | 'hp' | 'atk' | 'def' | 'effectText'> & {
+export type RTCard = Pick<
+  Card,
+  'id' | 'hp' | 'atk' | 'def' | 'effectText' | 'type' | 'class'
+> & {
   faceUp: boolean;
   position: 'attack' | 'defense';
 };

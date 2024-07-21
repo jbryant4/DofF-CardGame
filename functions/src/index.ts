@@ -6,10 +6,9 @@
  *
  * See a full list of supported triggers at https://firebase.google.com/docs/functions
  */
-
 import * as admin from 'firebase-admin';
+import { updateRPSGame } from './rpsFunctions';
+import { boardSetUp } from './boardSetUp';
 admin.initializeApp();
 
-import { updateRPSGame } from './rockPaperScissors';
-
-export { updateRPSGame };
+export { updateRPSGame, boardSetUp };

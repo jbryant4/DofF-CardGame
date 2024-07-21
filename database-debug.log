@@ -1,9 +1,9 @@
-15:54:57.546 [NamespaceSystem-akka.actor.default-dispatcher-5] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started
-15:54:57.632 [main] INFO com.firebase.server.forge.App$ - Listening at 127.0.0.1:9000
-15:55:04.027 [NamespaceSystem-akka.actor.default-dispatcher-5] INFO com.firebase.core.namespace.NamespaceActor - dof-card-game-default-rtdb successfully activated FBKV (SurveyIdle(0)) wait: 64ms, init: 0ms
-15:55:04.052 [NamespaceSystem-blocking-namespace-operation-dispatcher-8] INFO com.firebase.core.namespace.StateManager - Namespace dof-card-game-default-rtdb status Active to Active
-15:55:04.080 [NamespaceSystem-blocking-namespace-operation-dispatcher-8] INFO com.firebase.core.namespace.StateManager - Namespace dof-card-game-default-rtdb status Active to Active
-16:09:45.900 [Thread-0] INFO com.firebase.server.forge.App$ - Attempting graceful shutdown.
-16:09:45.911 [NamespaceSystem-akka.actor.default-dispatcher-12] INFO com.firebase.core.namespace.Terminator$Terminator - 1 actors left to terminate: dof-card-game-default-rtdb
-16:09:45.916 [NamespaceSystem-akka.actor.default-dispatcher-13] INFO com.firebase.core.namespace.NamespaceActor - stopped namespace actor for dof-card-game-default-rtdb
-16:09:45.919 [Thread-0] INFO com.firebase.server.forge.App$ - Graceful shutdown complete.
+12:21:24.882 [NamespaceSystem-akka.actor.default-dispatcher-4] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started
+12:21:24.973 [main] INFO com.firebase.server.forge.App$ - Listening at 127.0.0.1:9000
+12:21:26.069 [NamespaceSystem-akka.actor.default-dispatcher-4] INFO com.firebase.core.namespace.NamespaceActor - dof-card-game-default-rtdb successfully activated FBKV (SurveyIdle(0)) wait: 61ms, init: 0ms
+12:21:26.100 [NamespaceSystem-blocking-namespace-operation-dispatcher-6] INFO com.firebase.core.namespace.StateManager - Namespace dof-card-game-default-rtdb status Active to Active
+12:24:04.110 [NamespaceSystem-blocking-namespace-operation-dispatcher-11] INFO com.firebase.core.namespace.StateManager - Namespace dof-card-game-default-rtdb status Active to Active
+12:24:21.710 [Thread-0] INFO com.firebase.server.forge.App$ - Attempting graceful shutdown.
+12:24:21.718 [NamespaceSystem-akka.actor.default-dispatcher-15] INFO com.firebase.core.namespace.Terminator$Terminator - 1 actors left to terminate: dof-card-game-default-rtdb
+12:24:21.722 [NamespaceSystem-akka.actor.default-dispatcher-15] INFO com.firebase.core.namespace.NamespaceActor - stopped namespace actor for dof-card-game-default-rtdb
+12:24:21.726 [Thread-0] INFO com.firebase.server.forge.App$ - Graceful shutdown complete.

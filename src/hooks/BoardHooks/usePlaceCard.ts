@@ -1,103 +1,100 @@
+import { ref, update } from '@firebase/database';
 import { useCallback } from 'react';
+import { rtdb } from '@firebaseUiConfig';
 import { DuelingCard } from '@shared/cardTypes';
-import { Players } from '@shared/gameTypes';
-import { BoardContextType, PlaceCardFunction } from '~/context/BoardContext';
+import { PlaceCardFunction, useBoardContext } from '~/context/BoardContext';
+import { useGameContext } from '~/context/GameContext';
 
-type OwnProps = Pick<
-  BoardContextType,
-  | 'playerOneBoard'
-  | 'setPlayerOneBoard'
-  | 'playerTwoBoard'
-  | 'setPlayerTwoBoard'
-> & {
-  playerTurn: Players;
-};
+export default function usePlaceCard() {
+  const { localBoard, setLocalBoard } = useBoardContext();
+  const {
+    roomId,
+    localPlayer: { data: localPlayer }
+  } = useGameContext();
 
-const usePlaceCard = ({
-  playerOneBoard,
-  playerTwoBoard,
-  setPlayerOneBoard,
-  setPlayerTwoBoard,
-  playerTurn
-}: OwnProps) => {
-  const placeCardInSlot = (
-    boardSection: (DuelingCard | null)[],
-    card: DuelingCard
-  ) => {
-    const slotIndex = boardSection.findIndex(slot => slot === null);
-    if (slotIndex !== -1) {
-      const updatedSection = [...boardSection];
-      updatedSection[slotIndex] = card;
-
-      return updatedSection;
-    }
-
-    return boardSection;
+  const findEmptySlot = (
+    boardSection: Record<string, DuelingCard | null>
+  ): string | null => {
+    return (
+      Object.keys(boardSection).find(slot => boardSection[slot] === null) ||
+      null
+    );
   };
 
   const place: PlaceCardFunction = useCallback(
-    (card: DuelingCard) => {
-      const boardToUse =
-        playerTurn === 'playerOne' ? playerOneBoard : playerTwoBoard;
-      const setBoardToUse =
-        playerTurn === 'playerOne' ? setPlayerOneBoard : setPlayerTwoBoard;
+    async (card: DuelingCard) => {
+      if (!roomId) return;
 
-      const updatedHand = boardToUse.hand.filter(
+      const isPlayer1 = localPlayer === 'player1';
+      const boardSectionKey = isPlayer1 ? 'p1' : 'p2';
+      const handKey = `${boardSectionKey}Hand`;
+      const updatedHand = localBoard.hand.filter(
         handCard => handCard.id !== card.id
       );
 
-      let updatedSection: (DuelingCard | null)[] = [];
+      let sectionKey = '';
+      let slotKey: string | null = null;
+
       switch (card.type) {
         case 'resource':
-          updatedSection = placeCardInSlot(boardToUse.resources, card);
-          setBoardToUse(prevBoard => ({
-            ...prevBoard,
-            resources: updatedSection,
-            hand: updatedHand
-          }));
+          slotKey = findEmptySlot(localBoard.resources);
+          sectionKey = 'resources';
           break;
 
         case 'foundation':
-          updatedSection = placeCardInSlot(boardToUse.foundations, card);
-          setBoardToUse(prevBoard => ({
-            ...prevBoard,
-            foundations: updatedSection,
-            hand: updatedHand
-          }));
+          slotKey = findEmptySlot(localBoard.foundations);
+          sectionKey = 'foundations';
           break;
 
         case 'army':
-          updatedSection = placeCardInSlot(boardToUse.army, card);
-          setBoardToUse(prevBoard => ({
-            ...prevBoard,
-            army: updatedSection,
-            hand: updatedHand
-          }));
+          slotKey = findEmptySlot(localBoard.army);
+          sectionKey = 'army';
           break;
 
         case 'champion':
-          updatedSection = placeCardInSlot(boardToUse.champions, card);
-          setBoardToUse(prevBoard => ({
-            ...prevBoard,
-            champions: updatedSection,
-            hand: updatedHand
-          }));
+          slotKey = findEmptySlot(localBoard.champions);
+          sectionKey = 'champions';
           break;
 
         default:
           break;
       }
+
+      if (sectionKey && slotKey != null) {
+        const updates = {
+          [`board/${roomId}/${boardSectionKey}${sectionKey}/${slotKey}`]: card,
+          [`board/${roomId}/${handKey}`]: updatedHand
+        };
+
+        await update(ref(rtdb), updates);
+
+        // Update local state for immediate UI feedback
+        setLocalBoard(prevBoard => ({
+          ...prevBoard,
+          [sectionKey]: {
+            ...(prevBoard[sectionKey as keyof typeof prevBoard] as Record<
+              string,
+              DuelingCard | null
+            >),
+            [slotKey as string]: card
+          },
+          hand: updatedHand
+        }));
+      } else {
+        console.error('No available slot found for placing the card.');
+      }
     },
     [
-      playerOneBoard,
-      setPlayerOneBoard,
-      playerTwoBoard,
-      setPlayerTwoBoard,
-      playerTurn
+      localBoard.army,
+      localBoard.champions,
+      localBoard.foundations,
+      localBoard.hand,
+      localBoard.resources,
+      localPlayer,
+      roomId,
+      setLocalBoard
     ]
   );
 
-  return { place };
-};
-
-export default usePlaceCard;
+  return place;
+}

@@ -1,13 +1,13 @@
 import { Duelist } from '@shared/gameTypes';
 import { Africa } from '~/constants/starterDecks';
 
-export const playerOne: Partial<Duelist> = {
+export const player1: Partial<Duelist> = {
   id: '1',
   userName: 'Monkey',
   deck: Africa
 };
 
-export const playerTwo: Partial<Duelist> = {
+export const player2: Partial<Duelist> = {
   id: '2',
   userName: 'Historian',
   deck: Africa

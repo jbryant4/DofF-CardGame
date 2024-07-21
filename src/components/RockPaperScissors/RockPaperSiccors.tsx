@@ -1,35 +1,64 @@
+import { onValue } from '@firebase/database';
 import classnames from 'classnames';
+import { off, ref, set, update } from 'firebase/database';
 import { useEffect, useState } from 'react';
 import BlueBtn from '@/Global/BlueBtn';
+import { ActionBtn } from '@/Modals/BattleCardModal/BattleCardModal.styles';
 import { Circle } from '@/RockPaperScissors/RPS.styles';
-import { Players } from '@shared/gameTypes';
+import { rtdb } from '@firebaseUiConfig';
+import { Players, PlayerSelection } from '@shared/gameTypes';
 import { useGameContext } from '~/context/GameContext';
 
 const RockPaperScissors = () => {
   const [prevResult, setPrevResult] = useState('');
   const [waitingResults, setWaiting] = useState(false);
-  const [selectedOption, setSelectedOption] = useState('');
+  const [selectedOption, setSelectedOption] = useState<PlayerSelection | null>(
+    null
+  );
   const [roundResult, setRoundResult] = useState<Players[]>([]);
-  const { localPlayer, roomId } = useGameContext();
-
-  const handleTimerEnd = () => {
-    // Handle logic when the timer reaches zero
-    // You can send the selected option to the socket here
-    setWaiting(true);
-    //TODO firebase functionality
-    setSelectedOption('');
-  };
+  const {
+    localPlayer: { data: localPlayer },
+    roomId
+  } = useGameContext();
 
   useEffect(() => {
-    // Handle the mini-game result
-    //TODO firebase functionality
-  }, []);
+    const roundWinnerRef = ref(rtdb, `rpsGames/${roomId}/roundWinner`);
 
-  const handleOptionSelect = option => {
+    const handleRoundWinnerChange = (snapshot: { val: () => any }) => {
+      const roundWinner = snapshot.val();
+      if (roundWinner) {
+        setPrevResult(roundWinner);
+        if (roundWinner !== 'tie') {
+          setRoundResult(prevState => [roundWinner, ...prevState]);
+        }
+        setWaiting(false);
+      }
+    };
+
+    onValue(roundWinnerRef, handleRoundWinnerChange);
+
+    return () => {
+      off(roundWinnerRef, 'value', handleRoundWinnerChange);
+    };
+  }, [roomId]);
+
+  async function handleSelectionSubmit() {
+    // Handle logic when the timer reaches zero
+    // You can send the selected option to the socket here
+    console.log(localPlayer);
+    setWaiting(true);
+    await set(
+      ref(rtdb, `rpsGames/${roomId}/${localPlayer}Choice`),
+      selectedOption
+    );
+    setSelectedOption(null);
+  }
+
+  const handleOptionSelect = (option: PlayerSelection) => {
     setSelectedOption(option);
   };
 
-  return (
+  return localPlayer ? (
     <div className="flex flex-col gap-24 items-center mt-36">
       <div>Welcome {localPlayer}</div>
       {prevResult && <div>Round Result was {prevResult}</div>}
@@ -82,12 +111,14 @@ const RockPaperScissors = () => {
         {waitingResults ? (
           'Waiting for Other Player'
         ) : (
-          <button disabled={!selectedOption} onClick={handleTimerEnd}>
+          <ActionBtn disabled={!selectedOption} onClick={handleSelectionSubmit}>
             {!selectedOption ? 'Select Option' : 'Submit'}
-          </button>
+          </ActionBtn>
         )}
       </div>
     </div>
+  ) : (
+    <div>loading</div>
   );
 };
 

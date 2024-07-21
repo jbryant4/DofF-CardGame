@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { DuelingCard } from '@shared/cardTypes';
+import { FighterSlotsType } from '@shared/gameTypes';
 import { useBoardContext } from '~/context/BoardContext';
 import { useGameContext } from '~/context/GameContext';
 
@@ -8,7 +9,11 @@ const defaultData = {
   canAttackPlayer: false,
   canFlip: false,
   canSwitch: false,
-  cardsToAttack: [],
+  cardsToAttack: {
+    slot1: null,
+    slot2: null,
+    slot3: null
+  },
   hasDetailsToShow: false,
   showActions: false
 };
@@ -18,10 +23,10 @@ export default function useGetBattleDetails(
   isEnemy: boolean
 ) {
   const {
-    gameData: {
+    dynamicGameData: {
       data: { battleStage, battleTurn }
     },
-    localPlayer
+    localPlayer: { data: localPlayer }
   } = useGameContext();
   const { enemyBoard, directHitThisRound, attackedThisRound } =
     useBoardContext();
@@ -35,7 +40,11 @@ export default function useGetBattleDetails(
     const isCombatCard = card.type === 'army' || card.type === 'champion';
     const canSwitch = battleStage === 'plan' && isCombatCard;
 
-    let cardsToAttack: (DuelingCard | null)[] = [];
+    let cardsToAttack: FighterSlotsType = {
+      slot1: null,
+      slot2: null,
+      slot3: null
+    };
     let canAttackPlayer = false;
 
     if (card.type === 'army') {
@@ -45,7 +54,7 @@ export default function useGetBattleDetails(
     if (card.type === 'champion') {
       cardsToAttack = enemyBoard.champions;
       canAttackPlayer =
-        cardsToAttack.every(c => c === null) &&
+        Object.values(cardsToAttack).every(c => c === null) &&
         battleStage === 'duel' &&
         !directHitThisRound;
     }
@@ -54,7 +63,7 @@ export default function useGetBattleDetails(
     const canAttack =
       isCombatCard &&
       battleStage === 'duel' &&
-      !cardsToAttack.every(c => c === null) &&
+      !Object.values(cardsToAttack).every(c => c === null) &&
       card.position === 'attack' &&
       !hasAlreadyAttacked;
 

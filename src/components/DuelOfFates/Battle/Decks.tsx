@@ -4,35 +4,23 @@ import { ActionBtn } from '@/Modals/BattleCardModal/BattleCardModal.styles';
 import { BoardContext } from '~/context/BoardContext';
 import { useDimensionsContext } from '~/context/DimensionsContext';
 import { GameContext } from '~/context/GameContext';
+import useHandleDrawFromDeck from '~/hooks/BoardHooks/useDrawCards';
 
 const Decks = () => {
   const {
-    localPlayer,
+    localPlayer: { data: localPlayer },
     // advanceBattleStage,
-    gameData: {
+    dynamicGameData: {
       data: { battleTurn, battleStage }
     }
   } = useContext(GameContext);
 
   const viewDecks = localPlayer === battleTurn && battleStage === 'draw';
-  const { playerOneDraw, playerTwoDraw, localBoard } = useContext(BoardContext);
+  const { localBoard } = useContext(BoardContext);
   const { mainDeck, foundationDeck, hand } = localBoard;
   const { handCardWidth } = useDimensionsContext();
 
-  const deckToDrawFrom =
-    localPlayer === 'playerOne' ? playerOneDraw : playerTwoDraw;
-
-  const handleDeckClick = (fromDeck: 'foundation' | 'main') => {
-    // TODO firebase functionality
-    if (fromDeck === 'main') {
-      deckToDrawFrom(7 - hand.length, 0);
-    } else {
-      deckToDrawFrom(0, 1);
-    }
-    // advanceBattleStage();
-
-    return;
-  };
+  const handleDrawFromDeck = useHandleDrawFromDeck();
 
   const handleReshuffle = () => {
     // TODO firebase functionality
@@ -60,7 +48,7 @@ const Decks = () => {
         )}
         <ActionBtn
           disabled={mainDeck.length === 0 || hand.length >= 7}
-          onClick={() => handleDeckClick('main')}
+          onClick={() => handleDrawFromDeck('main')}
         >
           Fill Deck
         </ActionBtn>
@@ -77,7 +65,7 @@ const Decks = () => {
         )}
         <ActionBtn
           disabled={foundationDeck.length === 0 || hand.length >= 7}
-          onClick={() => handleDeckClick('foundation')}
+          onClick={() => handleDrawFromDeck('foundation')}
         >
           Draw Foundation
         </ActionBtn>

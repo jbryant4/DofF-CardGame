@@ -17,8 +17,8 @@ const HandCard = ({ duelingCard, index = 0 }: OwnProps) => {
   const [placeAttack, setPlaceAttack] = useState(true);
 
   const {
-    localPlayer,
-    gameData: {
+    localPlayer: { data: localPlayer },
+    dynamicGameData: {
       data: { battleTurn, battleStage }
     }
   } = useContext(GameContext);

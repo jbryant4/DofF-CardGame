@@ -1,8 +1,7 @@
 import classNames from 'classnames';
-import { Dispatch, SetStateAction, useContext, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { DuelingCard } from '@shared/cardTypes';
-import { BoardContext } from '~/context/BoardContext';
-import { useGameContext } from '~/context/GameContext';
+import usePlaceCard from '~/hooks/BoardHooks/usePlaceCard';
 import AttackIcon from '~/icons/AttackIcon';
 import ShieldIcon from '~/icons/ShieldIcon';
 
@@ -21,7 +20,6 @@ const PlacementControls = ({
   placeAttack,
   setPlaceAttack
 }: OwnProps) => {
-  const { roomId, localPlayer } = useGameContext();
   const [placeUp, setPlaceUp] = useState(true);
 
   const playIcon = '\u25B6 ';
@@ -30,7 +28,7 @@ const PlacementControls = ({
 
   const fighterCard = card.type === 'army' || card.type === 'champion';
 
-  const { placeCard } = useContext(BoardContext);
+  const placeCard = usePlaceCard();
   const handlePlaceCard = e => {
     e.stopPropagation();
     //TODO firebase functionality

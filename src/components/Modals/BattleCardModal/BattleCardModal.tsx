@@ -6,8 +6,7 @@ import {
   useGetBattleDetails,
   useGetCardOnBoard,
   useHandleCardAttack,
-  useHandleFlipCard,
-  useHandleSwitchStance
+  useHandleFlipCard
 } from '@/Modals/BattleCardModal/hooks';
 import useHandleDirectHit from '@/Modals/BattleCardModal/hooks/useHandleDirectHit';
 import { useBoardContext } from '~/context/BoardContext';
@@ -29,13 +28,12 @@ export default function BattleCardModal() {
     hasDetailsToShow
   } = useGetBattleDetails(cardToUse, modalInfo.isEnemy);
   const handleFlipCard = useHandleFlipCard(cardToUse);
-  const handleSwitchStance = useHandleSwitchStance(cardToUse);
   const handleAttack = useHandleCardAttack();
   const [switchedThisOpen, setSwitchedThisTurn] = useState(false);
   const { setDirectHitThisRound, setAttackedThisRound } = useBoardContext();
 
   const handleSwitch = () => {
-    handleSwitchStance();
+    //TODO firebase functionality
     setSwitchedThisTurn(true);
   };
   const handleFlip = () => {
@@ -77,7 +75,7 @@ export default function BattleCardModal() {
 
         {showCardsToAttack && (
           <Dialog.Description as="div" className="flex gap-16 items-center">
-            {cardsToAttack.map(card =>
+            {Object.values(cardsToAttack).map(card =>
               card ? (
                 <div key={card.id} className="flex flex-col gap-8 items-center">
                   <FinalCard card={card} width={200} />

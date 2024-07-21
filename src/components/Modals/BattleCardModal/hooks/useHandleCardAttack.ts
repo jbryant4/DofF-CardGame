@@ -1,89 +1,94 @@
+import { ref, update, get } from '@firebase/database';
 import { useCallback } from 'react';
+import { rtdb } from '@firebaseUiConfig';
+import { DuelingCard } from '@shared/cardTypes';
 import { useBoardContext } from '~/context/BoardContext';
 import { useGameContext } from '~/context/GameContext';
 
 export default function useHandleCardAttack() {
-  const { localPlayer, roomId } = useGameContext();
-  const { localBoard, enemyBoard, setPlayerOneBoard, setPlayerTwoBoard } =
+  const {
+    localPlayer: { data: localPlayer },
+    roomId
+  } = useGameContext();
+  const { localBoard, enemyBoard, setLocalBoard, setEnemyBoard } =
     useBoardContext();
-  const updateEnemyBoard =
-    localPlayer === 'playerOne' ? setPlayerTwoBoard : setPlayerOneBoard;
-  const updateLocalBoard =
-    localPlayer === 'playerOne' ? setPlayerOneBoard : setPlayerTwoBoard;
 
   const handleAttack = useCallback(
-    (attackingCardId: string, attackedCardId: string, champAttack: boolean) => {
-      const attackingCard =
-        localBoard[champAttack ? 'champions' : 'army'].find(
-          c => c?.id === attackingCardId
-        ) ?? null;
-      const attackedCard =
-        enemyBoard[champAttack ? 'champions' : 'army'].find(
-          c => c?.id === attackedCardId
-        ) ?? null;
-      //so no null nullish checks but the cards will be selected from the field so the type will be there
-      if (!attackingCard || !attackedCard) return;
-
-      //TODO firebase functionality
-
-      let damage = 0;
-
-      if (attackedCard.position === 'attack') {
-        // @ts-ignore
-        damage = attackingCard.atk - attackedCard.atk;
-      } else if (attackedCard.position === 'defense') {
-        // @ts-ignore
-        damage = attackingCard.atk - attackedCard.def;
-      }
-
-      if (attackedCard.position === 'attack') {
-        // @ts-ignore
-        damage = attackingCard.atk - attackedCard.atk;
-        if (damage < 0) {
-          // @ts-ignore
-          attackingCard.hp -= 1;
-          // @ts-ignore
-          attackedCard.hp -= 1;
-        } else if (damage === 0) {
-          // @ts-ignore
-          attackedCard.hp -= 1;
-        } else {
-          // @ts-ignore
-          attackedCard.hp -= damage;
-        }
-      } else if (attackedCard.position === 'defense') {
-        // @ts-ignore
-        damage = attackingCard.atk - attackedCard.def;
-        if (damage <= 0) {
-          // @ts-ignore
-          attackingCard.hp -= 1;
-          // @ts-ignore
-          attackedCard.hp -= 1;
-        } else {
-          // @ts-ignore
-          attackedCard.hp -= damage;
-        }
-      }
-
-      // Update the cards in their respective positions
-      const updatedLocalBoard = { ...localBoard };
-      const updatedEnemyBoard = { ...enemyBoard };
+    async (
+      attackingCardId: string,
+      attackedCardId: string,
+      champAttack: boolean
+    ) => {
+      if (!roomId) return;
 
       const localCardType = champAttack ? 'champions' : 'army';
       const enemyCardType = champAttack ? 'champions' : 'army';
+      const playerPrefix = localPlayer === 'player1' ? 'p1' : 'p2';
+      const enemyPrefix = localPlayer === 'player1' ? 'p2' : 'p1';
 
-      updatedLocalBoard[localCardType] = updatedLocalBoard[localCardType].map(
-        card => (card?.id === attackingCardId ? attackingCard : card)
+      const attackingCardRef = ref(
+        rtdb,
+        `board/${roomId}/${playerPrefix}${localCardType}/${attackingCardId}`
+      );
+      const attackedCardRef = ref(
+        rtdb,
+        `board/${roomId}/${enemyPrefix}${enemyCardType}/${attackedCardId}`
       );
 
-      updatedEnemyBoard[enemyCardType] = updatedEnemyBoard[enemyCardType].map(
-        card => (card?.id === attackedCardId ? attackedCard : card)
-      );
+      try {
+        const attackingCardSnapshot = await get(attackingCardRef);
+        const attackedCardSnapshot = await get(attackedCardRef);
 
-      updateLocalBoard(updatedLocalBoard);
-      updateEnemyBoard(updatedEnemyBoard);
+        const attackingCard: DuelingCard | null = attackingCardSnapshot.exists()
+          ? attackingCardSnapshot.val()
+          : null;
+        const attackedCard: DuelingCard | null = attackedCardSnapshot.exists()
+          ? attackedCardSnapshot.val()
+          : null;
+
+        if (!attackingCard || !attackedCard) return;
+
+        let damage = 0;
+
+        if (attackedCard.position === 'attack') {
+          damage = attackingCard.atk - attackedCard.atk;
+        } else if (attackedCard.position === 'defense') {
+          damage = attackingCard.atk - attackedCard.def;
+        }
+
+        if (attackedCard.position === 'attack') {
+          damage = attackingCard.atk - attackedCard.atk;
+          if (damage < 0) {
+            attackingCard.hp -= 1;
+            attackedCard.hp -= 1;
+          } else if (damage === 0) {
+            attackedCard.hp -= 1;
+          } else {
+            attackedCard.hp -= damage;
+          }
+        } else if (attackedCard.position === 'defense') {
+          damage = attackingCard.atk - attackedCard.def;
+          if (damage <= 0) {
+            attackingCard.hp -= 1;
+            attackedCard.hp -= 1;
+          } else {
+            attackedCard.hp -= damage;
+          }
+        }
+
+        const updates = {
+          [`board/${roomId}/${playerPrefix}${localCardType}/${attackingCardId}`]:
+            attackingCard,
+          [`board/${roomId}/${enemyPrefix}${enemyCardType}/${attackedCardId}`]:
+            attackedCard
+        };
+
+        await update(ref(rtdb), updates);
+      } catch (error) {
+        console.error('Error handling card attack:', error);
+      }
     },
-    [localBoard, enemyBoard, updateLocalBoard, updateEnemyBoard]
+    [roomId, localPlayer]
   );
 
   return handleAttack;

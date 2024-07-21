@@ -1,65 +1,66 @@
+import { get, ref, update } from '@firebase/database';
 import { useCallback } from 'react';
-import { BoardContextType } from '~/context/BoardContext';
+import { rtdb } from '@firebaseUiConfig';
+import { DuelingCard } from '@shared/cardTypes';
+import { useBoardContext } from '~/context/BoardContext';
+import { useGameContext } from '~/context/GameContext';
 
-type OwnProps = Pick<
-  BoardContextType,
-  | 'playerOneBoard'
-  | 'setPlayerOneBoard'
-  | 'playerTwoBoard'
-  | 'setPlayerTwoBoard'
->;
+export default function useHandleDrawFromDeck() {
+  const { localBoard, setLocalBoard } = useBoardContext();
+  const {
+    roomId,
+    localPlayer: { data: localPlayer }
+  } = useGameContext();
 
-export const useDrawCards = ({
-  playerOneBoard,
-  setPlayerOneBoard,
-  playerTwoBoard,
-  setPlayerTwoBoard
-}: OwnProps) => {
-  const drawCards = useCallback(
-    (player: string, mdDraw: number, fdDraw: number) => {
-      const currentPlayerBoard =
-        player === 'playerOne' ? playerOneBoard : playerTwoBoard;
-      const setCurrentPlayerBoard =
-        player === 'playerOne' ? setPlayerOneBoard : setPlayerTwoBoard;
+  return useCallback(
+    async (fromDeck: 'foundation' | 'main') => {
+      if (!roomId) return;
 
-      const newMainDeck = [...currentPlayerBoard.mainDeck];
-      const newFoundationDeck = [...currentPlayerBoard.foundationDeck];
-      const newHand = [...currentPlayerBoard.hand];
+      const isPlayer1 = localPlayer === 'player1';
+      const playerBoardKey = isPlayer1 ? 'p1' : 'p2';
+      const mainDeckKey = `${playerBoardKey}MainDeck`;
+      const foundationDeckKey = `${playerBoardKey}FoundationDeck`;
+      const handKey = `${playerBoardKey}Hand`;
 
-      // Drawing cards from mainDeck
-      const drawnMainCards = newMainDeck.splice(0, mdDraw);
-      newHand.push(...drawnMainCards);
+      const deckKey = fromDeck === 'main' ? mainDeckKey : foundationDeckKey;
 
-      // Drawing cards from foundationDeck
-      const drawnFoundationCards = newFoundationDeck.splice(0, fdDraw);
-      newHand.push(...drawnFoundationCards);
+      try {
+        const deckRef = ref(rtdb, `board/${roomId}/${deckKey}`);
+        const handRef = ref(rtdb, `board/${roomId}/${handKey}`);
 
-      setCurrentPlayerBoard(prev => ({
-        ...prev,
-        mainDeck: newMainDeck,
-        foundationDeck: newFoundationDeck,
-        hand: newHand
-      }));
+        const deckSnapshot = await get(deckRef);
+        const handSnapshot = await get(handRef);
+
+        if (deckSnapshot.exists() && handSnapshot.exists()) {
+          const deck: DuelingCard[] = deckSnapshot.val();
+          const hand: DuelingCard[] = handSnapshot.val();
+
+          const cardsToDraw = fromDeck === 'main' ? 7 - hand.length : 1;
+          const drawnCards = deck.slice(0, cardsToDraw);
+          const remainingDeck = deck.slice(cardsToDraw);
+
+          const updatedHand = [...hand, ...drawnCards];
+
+          const updates = {
+            [`board/${roomId}/${deckKey}`]: remainingDeck,
+            [`board/${roomId}/${handKey}`]: updatedHand
+          };
+
+          await update(ref(rtdb), updates);
+
+          // Update local state for immediate UI feedback
+          setLocalBoard(prevState => ({
+            ...prevState,
+            [deckKey]: remainingDeck,
+            [handKey]: updatedHand
+          }));
+
+          // advanceBattleStage();
+        }
+      } catch (error) {
+        console.error('Error drawing cards from deck:', error);
+      }
     },
-    [playerOneBoard, playerTwoBoard, setPlayerOneBoard, setPlayerTwoBoard]
+    [localPlayer, roomId, setLocalBoard]
   );
-
-  const playerOneDraw = useCallback(
-    (mdDraw: number, fdDraw: number) => {
-      drawCards('playerOne', mdDraw, fdDraw);
-    },
-    [drawCards]
-  );
-
-  const playerTwoDraw = useCallback(
-    (mdDraw: number, fdDraw: number) => {
-      drawCards('playerTwo', mdDraw, fdDraw);
-    },
-    [drawCards]
-  );
-
-  return {
-    playerOneDraw,
-    playerTwoDraw
-  };
-};
+}

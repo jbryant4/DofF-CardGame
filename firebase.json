@@ -20,11 +20,11 @@
     }
   ],
   "emulators": {
-    "functions": {
-      "port": 5001
-    },
     "database": {
       "port": 9000
+    },
+    "functions": {
+      "port": 5001
     },
     "ui": {
       "enabled": true

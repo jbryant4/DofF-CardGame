@@ -4,8 +4,11 @@ import { GameContext } from '~/context/GameContext';
 
 export default function PlayerActivePlayer() {
   const {
-    gameData: {
-      data: { player1Active, player1UserName, player2Active, player2UserName }
+    staticGameData: {
+      data: { player1UserName, player2UserName }
+    },
+    dynamicGameData: {
+      data: { player1Active, player2Active }
     }
   } = useContext(GameContext);
 

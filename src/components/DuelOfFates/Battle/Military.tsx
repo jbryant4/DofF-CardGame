@@ -18,7 +18,7 @@ const Military = ({ isEnemy = false }: OwnProps) => {
         `${styles.military} grid grid-cols-6 justify-items-center py-12`
       )}
     >
-      {champions.map((champ, index) => (
+      {Object.values(champions).map((champ, index) => (
         <MilitaryCard
           key={`champ-${index}`}
           card={champ}
@@ -28,7 +28,7 @@ const Military = ({ isEnemy = false }: OwnProps) => {
         />
       ))}
 
-      {army.map((soldier, index) => (
+      {Object.values(army).map((soldier, index) => (
         <MilitaryCard
           key={`army-${index}`}
           card={soldier}

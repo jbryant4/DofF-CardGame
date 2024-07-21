@@ -3,7 +3,7 @@ import { GameContext } from '~/context/GameContext';
 
 function LoadingPage() {
   const {
-    gameData: {
+    dynamicGameData: {
       data: { battleTurn }
     }
   } = useContext(GameContext);

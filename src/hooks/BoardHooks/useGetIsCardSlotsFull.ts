@@ -1,40 +1,33 @@
 import { useCallback } from 'react';
 import { DuelingCard } from '@shared/cardTypes';
-import { Players } from '@shared/gameTypes';
-import { BoardContextType } from '~/context/BoardContext';
+import { PlayerField } from '@shared/gameTypes';
 
-type OwnProps = Pick<BoardContextType, 'playerOneBoard' | 'playerTwoBoard'> & {
-  localPlayer: Players;
-};
-
-const useGetIsCardSlotsFull = ({
-  playerOneBoard,
-  playerTwoBoard,
-  localPlayer
-}: OwnProps) => {
+const useGetIsCardSlotsFull = (localBoard: PlayerField) => {
   const getIsBoardSlotFull = useCallback(
     (card: DuelingCard) => {
-      const boardToUse =
-        localPlayer === 'playerOne' ? playerOneBoard : playerTwoBoard;
-
       switch (card.type) {
         case 'resource':
-          return boardToUse.resources.every(c => Boolean(c));
+          return Object.values(localBoard.resources).every(c => Boolean(c));
 
         case 'foundation':
-          return boardToUse.foundations.every(c => Boolean(c));
+          return Object.values(localBoard.foundations).every(c => Boolean(c));
 
         case 'army':
-          return boardToUse.army.every(c => Boolean(c));
+          return Object.values(localBoard.army).every(c => Boolean(c));
 
         case 'champion':
-          return boardToUse.champions.every(c => Boolean(c));
+          return Object.values(localBoard.champions).every(c => Boolean(c));
 
         default:
           return false;
       }
     },
-    [localPlayer, playerOneBoard, playerTwoBoard]
+    [
+      localBoard.army,
+      localBoard.champions,
+      localBoard.foundations,
+      localBoard.resources
+    ]
   );
 
   return { getIsBoardSlotFull };

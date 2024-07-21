@@ -16,8 +16,8 @@ const ControlCenter = ({ overlayOpen, setShowGraveYard }: OwnProps) => {
   //Currently Need this to determine card width and if not here throws errors
   const {
     // advanceBattleStage,
-    localPlayer,
-    gameData: {
+    localPlayer: { data: localPlayer },
+    dynamicGameData: {
       data: { battleTurn }
     },
 

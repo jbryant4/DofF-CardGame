@@ -17,20 +17,24 @@ const useGetActivePreReqs = ({ playerBoard, setActivePreReqs }: OwnProps) => {
     let newActivePreReqs: PreReq[] = [];
 
     // Army
-    const armyFaceUpCards = army.filter(card => card && card.faceUp);
+    const armyFaceUpCards = Object.values(army).filter(
+      card => card && card.faceUp
+    );
     newActivePreReqs.push(
       ...armyFaceUpCards.map((_, index) => armyPreReqs[index])
     );
 
     // Champions
-    const championFaceUpCards = champions.filter(card => card && card.faceUp);
+    const championFaceUpCards = Object.values(champions).filter(
+      card => card && card.faceUp
+    );
     newActivePreReqs.push(
       ...championFaceUpCards.map((_, index) => championPreReqs[index])
     );
 
     // Foundations
     let foundationArray: Foundation[] = [];
-    foundations.map(
+    Object.values(foundations).map(
       card =>
         card &&
         card.faceUp &&

@@ -2,7 +2,7 @@ import React, { createContext, useEffect, useMemo, useState } from 'react';
 import { DuelingCard } from '@shared/cardTypes';
 import { Deck, defaultForgeDeck } from '@shared/gameTypes';
 import { useCollectorContext } from '~/context/CollectorContext';
-import devDuelingCards from '../../server/utils/devDuelingCards';
+import devDuelingCards from '~/utils/devDuelingCards';
 
 type ForgeContextType = {
   isNewDeck: boolean;

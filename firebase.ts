@@ -34,8 +34,9 @@ const functions = getFunctions(app);
 
 // Check if we should use emulators based on location.hostname
 if (process.env.NEXT_PUBLIC_USE_EMULATOR === 'true') {
-  connectDatabaseEmulator(rtdb, 'localhost', 9000);
   connectFunctionsEmulator(functions, 'localhost', 5001);
+  connectDatabaseEmulator(rtdb, 'localhost', 9000);
 }
+
 export default app;
 export { auth, db, rtdb };

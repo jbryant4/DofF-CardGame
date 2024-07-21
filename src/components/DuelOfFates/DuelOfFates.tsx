@@ -2,6 +2,7 @@ import { useContext, useEffect } from 'react';
 import BattleField from '@/DuelOfFates/Battle';
 import Stats from '@/DuelOfFates/Stats';
 import RockPaperScissors from '@/RockPaperScissors';
+import ModalEnum from '~/constants/modalEnum';
 import { GameContext } from '~/context/GameContext';
 import { ModalContext } from '~/context/ModalContext';
 import createComponent from '~/utils/styles/createComponent';
@@ -31,8 +32,11 @@ const Container = createComponent('div', {
 
 const DuelOfFates = () => {
   const {
-    gameData: {
-      data: { gameState, player2Id, player1Id, player1Active, player2Active }
+    staticGameData: {
+      data: { player1Id, player2Id }
+    },
+    dynamicGameData: {
+      data: { gameState, player1Active, player2Active }
     }
   } = useContext(GameContext);
   const { setOpenModal } = useContext(ModalContext);
@@ -43,8 +47,9 @@ const DuelOfFates = () => {
     const playersActive = Boolean(player1Active && player2Active);
 
     if (playersLoaded) {
+      setOpenModal(playersActive ? ModalEnum.None : ModalEnum.PlayersActive);
     }
-  }, []);
+  }, [player1Active, player1Id, player2Active, player2Id, setOpenModal]);
 
   return <Container>{ComponentToRender}</Container>;
 };

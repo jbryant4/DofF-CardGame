@@ -1,5 +1,4 @@
-// Import dependencies
-import { PlayerSelection, RPSGame } from '@shared/gameTypes';
+import { GameState, PlayerSelection, RPSGame } from '../../shared/gameTypes';
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 
@@ -55,11 +54,10 @@ export const updateRPSGame = functions.database
       ) {
         const mainGameRef = admin
           .database()
-          .ref(`games/${context.params.gameId}`);
+          .ref(`games/${context.params.gameId}/dynamic`);
         await mainGameRef.update({
-          gameState: 'Battle',
-          battleTurn:
-            updatedGameData.player1Score >= 2 ? 'playerOne' : 'playerTwo'
+          gameState: GameState.SetUp,
+          battleTurn: updatedGameData.player1Score >= 2 ? 'player1' : 'player2'
         });
       }
     }

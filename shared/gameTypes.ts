@@ -28,32 +28,18 @@ export const defaultDuelist: Duelist = {
   deck: { title: '', cards: { ...defaultForgeDeck.cards }, duelReady: false }
 };
 
-export type PlayerField = {
-  mainDeck: DuelingCard[];
-  foundationDeck: DuelingCard[];
-  hand: DuelingCard[];
-  graveyard: DuelingCard[];
-  army: Array<DuelingCard | null>;
-  champions: Array<DuelingCard | null>;
-  foundations: Array<DuelingCard | null>;
-  resources: Array<DuelingCard | null>;
-};
+export type PlayerFieldKey =
+  | 'mainDeck'
+  | 'foundationDeck'
+  | 'hand'
+  | 'graveyard'
+  | 'army'
+  | 'champions'
+  | 'foundations'
+  | 'resources';
 
-export function createDefaultPlayerField(): PlayerField {
-  return {
-    mainDeck: [],
-    foundationDeck: [],
-    hand: [],
-    graveyard: [],
-    army: [null, null, null],
-    champions: [null, null, null],
-    foundations: [null, null, null, null],
-    resources: [null, null]
-  };
-}
-
-export type Players = '' | 'playerOne' | 'playerTwo';
-export type BattleStage = 'plan' | 'place' | 'duel' | 'respite' | 'draw' | null;
+export type Players = '' | 'player1' | 'player2';
+export type BattleStage = 'plan' | 'place' | 'duel' | 'respite' | 'draw';
 
 export enum GameState {
   Lobby = 'Lobby',
@@ -63,37 +49,48 @@ export enum GameState {
   PreLobby = 'PreLobby'
 }
 
-export type RTgame = {
+export type RTgameStatic = {
   player1Id: string;
+  player1UserName: string;
+  player1Deck: string[] | null;
+  player2Id: string;
+  player2UserName: string;
+  player2Deck: string[] | null;
+};
+
+export type RTgameDynamic = {
   player1Active: boolean;
   player1Hp: number;
-  player1Deck: Deck | null;
-  player1UserName: string;
-  player2Id: string;
   player2Active: boolean;
   player2Hp: number;
-  player2Deck: Deck | null;
-  player2UserName: string;
   gameState: GameState;
   battleStage: BattleStage;
   battleTurn: Players;
   victor: Players;
 };
 
-export const defaultRTGame: RTgame = {
+export type RTgame = {
+  static: RTgameStatic;
+  dynamic: RTgameDynamic;
+};
+
+export const defaultRTGameStatic: RTgameStatic = {
   player1Id: '',
-  player1Active: false,
-  player1Hp: 10,
   player1Deck: null,
   player1UserName: '',
   player2Id: '',
+  player2Deck: null,
+  player2UserName: ''
+};
+
+export const defaultRTgameDynamic: RTgameDynamic = {
+  player1Active: false,
+  player1Hp: 10,
   player2Active: false,
   player2Hp: 10,
-  player2Deck: null,
-  player2UserName: '',
   gameState: GameState.PreLobby,
-  battleStage: null,
   battleTurn: '',
+  battleStage: 'plan',
   victor: ''
 };
 
@@ -101,24 +98,83 @@ export type RTplayer = Duelist & {
   currentGameId: string;
 };
 
+type FighterSlot = 'slot1' | 'slot2' | 'slot3';
+type ResourceSlot = 'slot1' | 'slot2';
+type FoundationSlot = 'slot1' | 'slot2' | 'slot3' | 'slot4';
+
+export type FighterSlotsType = {
+  [slot in FighterSlot]: DuelingCard | null;
+};
+
+type ResourceSlotsType = {
+  [slot in ResourceSlot]: DuelingCard | null;
+};
+
+type FoundationSlotsType = {
+  [slot in FoundationSlot]: DuelingCard | null;
+};
+
 export type RTBoard = {
   p1MainDeck: DuelingCard[];
   p1FoundationDeck: DuelingCard[];
   p1Hand: DuelingCard[];
   p1Graveyard: DuelingCard[];
-  p1Army: Array<DuelingCard | null>;
-  p1Champions: Array<DuelingCard | null>;
-  p1Foundations: Array<DuelingCard | null>;
-  p1Resources: Array<DuelingCard | null>;
+  p1Army: FighterSlotsType;
+  p1Champions: FighterSlotsType;
+  p1Foundations: FoundationSlotsType;
+  p1Resources: ResourceSlotsType;
   p2MainDeck: DuelingCard[];
   p2FoundationDeck: DuelingCard[];
   p2Hand: DuelingCard[];
   p2Graveyard: DuelingCard[];
-  p2Army: Array<DuelingCard | null>;
-  p2Champions: Array<DuelingCard | null>;
-  p2Foundations: Array<DuelingCard | null>;
-  p2Resources: Array<DuelingCard | null>;
+  p2Army: FighterSlotsType;
+  p2Champions: FighterSlotsType;
+  p2Foundations: FoundationSlotsType;
+  p2Resources: ResourceSlotsType;
 };
+
+export const defaultRTBoard: RTBoard = {
+  p1MainDeck: [],
+  p1FoundationDeck: [],
+  p1Hand: [],
+  p1Graveyard: [],
+  p1Army: { slot1: null, slot2: null, slot3: null },
+  p1Champions: { slot1: null, slot2: null, slot3: null },
+  p1Foundations: { slot1: null, slot2: null, slot3: null, slot4: null },
+  p1Resources: { slot1: null, slot2: null },
+  p2MainDeck: [],
+  p2FoundationDeck: [],
+  p2Hand: [],
+  p2Graveyard: [],
+  p2Army: { slot1: null, slot2: null, slot3: null },
+  p2Champions: { slot1: null, slot2: null, slot3: null },
+  p2Foundations: { slot1: null, slot2: null, slot3: null, slot4: null },
+  p2Resources: { slot1: null, slot2: null }
+};
+
+export type PlayerField = {
+  mainDeck: DuelingCard[];
+  foundationDeck: DuelingCard[];
+  hand: DuelingCard[];
+  graveyard: DuelingCard[];
+  army: FighterSlotsType;
+  champions: FighterSlotsType;
+  foundations: FoundationSlotsType;
+  resources: ResourceSlotsType;
+};
+
+export function createDefaultPlayerField(): PlayerField {
+  return {
+    mainDeck: [],
+    foundationDeck: [],
+    hand: [],
+    graveyard: [],
+    army: { slot1: null, slot2: null, slot3: null },
+    champions: { slot1: null, slot2: null, slot3: null },
+    foundations: { slot1: null, slot2: null, slot3: null, slot4: null },
+    resources: { slot1: null, slot2: null }
+  };
+}
 
 export type PlayerSelection = 'rock' | 'paper' | 'scissors';
 
@@ -129,3 +185,17 @@ export type RPSGame = {
   player2Score: number;
   roundWinner: 'player1' | 'player2' | 'tie' | null;
 };
+
+export const defaultRpsGame: RPSGame = {
+  player1Choice: null,
+  player2Choice: null,
+  player1Score: 0,
+  player2Score: 0,
+  roundWinner: null
+};
+
+export function convertDeckToCardArray(deckCards: DeckCards): string[] {
+  return Object.values(deckCards).reduce((acc, cardArray) => {
+    return acc.concat(cardArray);
+  }, []);
+}
