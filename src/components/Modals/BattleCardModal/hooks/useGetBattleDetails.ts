@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { DuelingCard } from '@shared/cardTypes';
-import { FighterSlotsType } from '@shared/gameTypes';
+import { FighterSlotsType, isEmptySlot } from '@shared/gameTypes';
 import { useBoardContext } from '~/context/BoardContext';
 import { useGameContext } from '~/context/GameContext';
 
@@ -10,16 +10,16 @@ const defaultData = {
   canFlip: false,
   canSwitch: false,
   cardsToAttack: {
-    slot1: null,
-    slot2: null,
-    slot3: null
+    slot1: 'emptySlot',
+    slot2: 'emptySlot',
+    slot3: 'emptySlot'
   },
   hasDetailsToShow: false,
   showActions: false
 };
 
 export default function useGetBattleDetails(
-  card: DuelingCard | null,
+  card: DuelingCard | 'emptySlot',
   isEnemy: boolean
 ) {
   const {
@@ -32,7 +32,7 @@ export default function useGetBattleDetails(
     useBoardContext();
 
   return useMemo(() => {
-    if (!card) return defaultData;
+    if (card === 'emptySlot') return defaultData;
 
     const isLocalTurn = localPlayer === battleTurn;
     const isLocalCard = !isEnemy;
@@ -41,9 +41,9 @@ export default function useGetBattleDetails(
     const canSwitch = battleStage === 'plan' && isCombatCard;
 
     let cardsToAttack: FighterSlotsType = {
-      slot1: null,
-      slot2: null,
-      slot3: null
+      slot1: 'emptySlot',
+      slot2: 'emptySlot',
+      slot3: 'emptySlot'
     };
     let canAttackPlayer = false;
 
@@ -54,7 +54,7 @@ export default function useGetBattleDetails(
     if (card.type === 'champion') {
       cardsToAttack = enemyBoard.champions;
       canAttackPlayer =
-        Object.values(cardsToAttack).every(c => c === null) &&
+        Object.values(cardsToAttack).every(isEmptySlot) &&
         battleStage === 'duel' &&
         !directHitThisRound;
     }
@@ -63,7 +63,7 @@ export default function useGetBattleDetails(
     const canAttack =
       isCombatCard &&
       battleStage === 'duel' &&
-      !Object.values(cardsToAttack).every(c => c === null) &&
+      !Object.values(cardsToAttack).every(isEmptySlot) &&
       card.position === 'attack' &&
       !hasAlreadyAttacked;
 

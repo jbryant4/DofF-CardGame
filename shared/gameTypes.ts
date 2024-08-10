@@ -1,3 +1,4 @@
+import { number } from 'prop-types';
 import { CardType, DuelingCard, RTCard } from './cardTypes';
 
 type DeckCards = Record<CardType, string[]>;
@@ -102,16 +103,17 @@ type FighterSlot = 'slot1' | 'slot2' | 'slot3';
 type ResourceSlot = 'slot1' | 'slot2';
 type FoundationSlot = 'slot1' | 'slot2' | 'slot3' | 'slot4';
 
+type IsEmpty = 'emptySlot';
 export type FighterSlotsType = {
-  [slot in FighterSlot]: DuelingCard | null;
+  [slot in FighterSlot]: DuelingCard | IsEmpty;
 };
 
 type ResourceSlotsType = {
-  [slot in ResourceSlot]: DuelingCard | null;
+  [slot in ResourceSlot]: DuelingCard | IsEmpty;
 };
 
 type FoundationSlotsType = {
-  [slot in FoundationSlot]: DuelingCard | null;
+  [slot in FoundationSlot]: DuelingCard | IsEmpty;
 };
 
 export type RTBoard = {
@@ -138,18 +140,28 @@ export const defaultRTBoard: RTBoard = {
   p1FoundationDeck: [],
   p1Hand: [],
   p1Graveyard: [],
-  p1Army: { slot1: null, slot2: null, slot3: null },
-  p1Champions: { slot1: null, slot2: null, slot3: null },
-  p1Foundations: { slot1: null, slot2: null, slot3: null, slot4: null },
-  p1Resources: { slot1: null, slot2: null },
+  p1Army: { slot1: 'emptySlot', slot2: 'emptySlot', slot3: 'emptySlot' },
+  p1Champions: { slot1: 'emptySlot', slot2: 'emptySlot', slot3: 'emptySlot' },
+  p1Foundations: {
+    slot1: 'emptySlot',
+    slot2: 'emptySlot',
+    slot3: 'emptySlot',
+    slot4: 'emptySlot'
+  },
+  p1Resources: { slot1: 'emptySlot', slot2: 'emptySlot' },
   p2MainDeck: [],
   p2FoundationDeck: [],
   p2Hand: [],
   p2Graveyard: [],
-  p2Army: { slot1: null, slot2: null, slot3: null },
-  p2Champions: { slot1: null, slot2: null, slot3: null },
-  p2Foundations: { slot1: null, slot2: null, slot3: null, slot4: null },
-  p2Resources: { slot1: null, slot2: null }
+  p2Army: { slot1: 'emptySlot', slot2: 'emptySlot', slot3: 'emptySlot' },
+  p2Champions: { slot1: 'emptySlot', slot2: 'emptySlot', slot3: 'emptySlot' },
+  p2Foundations: {
+    slot1: 'emptySlot',
+    slot2: 'emptySlot',
+    slot3: 'emptySlot',
+    slot4: 'emptySlot'
+  },
+  p2Resources: { slot1: 'emptySlot', slot2: 'emptySlot' }
 };
 
 export type PlayerField = {
@@ -169,10 +181,15 @@ export function createDefaultPlayerField(): PlayerField {
     foundationDeck: [],
     hand: [],
     graveyard: [],
-    army: { slot1: null, slot2: null, slot3: null },
-    champions: { slot1: null, slot2: null, slot3: null },
-    foundations: { slot1: null, slot2: null, slot3: null, slot4: null },
-    resources: { slot1: null, slot2: null }
+    army: { slot1: 'emptySlot', slot2: 'emptySlot', slot3: 'emptySlot' },
+    champions: { slot1: 'emptySlot', slot2: 'emptySlot', slot3: 'emptySlot' },
+    foundations: {
+      slot1: 'emptySlot',
+      slot2: 'emptySlot',
+      slot3: 'emptySlot',
+      slot4: 'emptySlot'
+    },
+    resources: { slot1: 'emptySlot', slot2: 'emptySlot' }
   };
 }
 
@@ -198,4 +215,8 @@ export function convertDeckToCardArray(deckCards: DeckCards): string[] {
   return Object.values(deckCards).reduce((acc, cardArray) => {
     return acc.concat(cardArray);
   }, []);
+}
+
+export function isEmptySlot(slot: DuelingCard | 'emptySlot'): boolean {
+  return slot === 'emptySlot';
 }

@@ -12,7 +12,7 @@ const MilitaryCard = ({
   type,
   isEnemy = false
 }: {
-  card: DuelingCard | null;
+  card: DuelingCard | 'emptySlot';
   index: number;
   type: 'champ' | 'army';
   isEnemy?: boolean;
@@ -20,7 +20,7 @@ const MilitaryCard = ({
   const { setModalInfo, setOpenModal } = useModalContext();
   const { cardWidth, cardHeight } = useDimensionsContext();
 
-  if (!card)
+  if (card === 'emptySlot')
     return (
       <MilitaryCardWrapper
         isPlaceHolder={true}

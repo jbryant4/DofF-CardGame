@@ -13,7 +13,7 @@ export default function usePlaceCard() {
   } = useGameContext();
 
   const findEmptySlot = (
-    boardSection: Record<string, DuelingCard | null>
+    boardSection: Record<string, DuelingCard | 'emptySlot'>
   ): string | null => {
     return (
       Object.keys(boardSection).find(slot => boardSection[slot] === null) ||

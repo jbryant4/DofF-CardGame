@@ -3,10 +3,11 @@ import { useCallback } from 'react';
 import { getBoardKey } from '@/Modals/BattleCardModal/modalUtils';
 import { rtdb } from '@firebaseUiConfig';
 import { DuelingCard } from '@shared/cardTypes';
+import { isEmptySlot } from '@shared/gameTypes';
 import { useBoardContext } from '~/context/BoardContext';
 import { useGameContext } from '~/context/GameContext';
 
-export default function useHandleFlipCard(card: DuelingCard | null) {
+export default function useHandleFlipCard(card: DuelingCard | 'emptySlot') {
   const { localBoard, setLocalBoard } = useBoardContext();
   const {
     roomId,
@@ -15,19 +16,21 @@ export default function useHandleFlipCard(card: DuelingCard | null) {
 
   return useCallback(async () => {
     // Check if card is null or roomId is not available
-    if (!card || !roomId) return;
+    if (card === 'emptySlot' || !roomId) return;
 
     // Calculate the board key
     const boardKey = getBoardKey(card.type);
 
     // Update the board
-    const newCards = Object.values(localBoard[boardKey]).map(
-      (boardCard: DuelingCard | null) =>
-        boardCard && boardCard.id === card.id
-          ? { ...boardCard, faceUp: true }
-          : boardCard
-    );
-
+    // const newCards = Object.values(localBoard[boardKey]).map(
+    //   (boardCard: DuelingCard | 'emptySlot') =>
+    //     isEmptySlot(boardCard)
+    //       ? boardCard
+    //       : boardCard.id === card.id
+    //       ? { ...boardCard, faceUp: true }
+    //       : boardCard
+    // );
+    const newCards = {};
     const isPlayer1 = localPlayer === 'player1';
     const playerBoardKey = isPlayer1 ? 'p1' : 'p2';
     const updates = {
@@ -45,5 +48,5 @@ export default function useHandleFlipCard(card: DuelingCard | null) {
     } catch (error) {
       console.error('Error updating Firebase in flip card function:', error);
     }
-  }, [card, roomId, localBoard, localPlayer, setLocalBoard]);
+  }, [card, roomId, localPlayer, setLocalBoard]);
 }

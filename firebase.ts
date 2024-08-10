@@ -39,4 +39,4 @@ if (process.env.NEXT_PUBLIC_USE_EMULATOR === 'true') {
 }
 
 export default app;
-export { auth, db, rtdb };
+export { auth, db, rtdb, functions };

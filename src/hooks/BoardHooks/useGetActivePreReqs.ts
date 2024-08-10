@@ -18,7 +18,7 @@ const useGetActivePreReqs = ({ playerBoard, setActivePreReqs }: OwnProps) => {
 
     // Army
     const armyFaceUpCards = Object.values(army).filter(
-      card => card && card.faceUp
+      card => card !== 'emptySlot' && card.faceUp
     );
     newActivePreReqs.push(
       ...armyFaceUpCards.map((_, index) => armyPreReqs[index])
@@ -26,7 +26,7 @@ const useGetActivePreReqs = ({ playerBoard, setActivePreReqs }: OwnProps) => {
 
     // Champions
     const championFaceUpCards = Object.values(champions).filter(
-      card => card && card.faceUp
+      card => card !== 'emptySlot' && card.faceUp
     );
     newActivePreReqs.push(
       ...championFaceUpCards.map((_, index) => championPreReqs[index])
@@ -36,7 +36,7 @@ const useGetActivePreReqs = ({ playerBoard, setActivePreReqs }: OwnProps) => {
     let foundationArray: Foundation[] = [];
     Object.values(foundations).map(
       card =>
-        card &&
+        card !== 'emptySlot' &&
         card.faceUp &&
         card.foundation &&
         foundationArray.push(card.foundation[0])

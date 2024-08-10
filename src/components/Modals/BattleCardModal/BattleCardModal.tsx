@@ -43,7 +43,7 @@ export default function BattleCardModal() {
     setDirectHitThisRound(true);
   };
 
-  return cardToUse ? (
+  return cardToUse !== 'emptySlot' ? (
     <Container>
       <Dialog.Panel className="bg-white flex gap-24 items-center justify-between mx-auto p-24 rounded">
         {showActions && !showCardsToAttack && (
@@ -76,7 +76,7 @@ export default function BattleCardModal() {
         {showCardsToAttack && (
           <Dialog.Description as="div" className="flex gap-16 items-center">
             {Object.values(cardsToAttack).map(card =>
-              card ? (
+              card !== 'emptySlot' ? (
                 <div key={card.id} className="flex flex-col gap-8 items-center">
                   <FinalCard card={card} width={200} />
                   <ActionBtn

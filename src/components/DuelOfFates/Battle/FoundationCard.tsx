@@ -32,7 +32,7 @@ const FoundationCards = ({ isEnemy = false }: OwnProps) => {
   return (
     <div className="grid grid-cols-4 items-cente pl-8 relative w-full">
       {Object.values(foundations).map((card, index) => {
-        if (!card) {
+        if (card === 'emptySlot') {
           return (
             <div
               key={`foundation-${index}`}

@@ -8,13 +8,15 @@ function getBoardKey(cardType: CardType): string {
   return cardType === 'army' ? `${cardType}` : `${cardType}s`;
 }
 
-export default function useGetCardOnBoard(card: ModalInfo): DuelingCard | null {
+export default function useGetCardOnBoard(
+  card: ModalInfo
+): DuelingCard | 'emptySlot' {
   const { localBoard, enemyBoard } = useBoardContext();
   const boardToUse = card?.isEnemy ? enemyBoard : localBoard;
 
   return useMemo(() => {
     return card
       ? boardToUse[getBoardKey(card.type)].find(c => c.id === card.id)
-      : null;
+      : 'emptySlot';
   }, [boardToUse, card]);
 }
